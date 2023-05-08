@@ -1,0 +1,46 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Classe do documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Opções:
+%  - Graduação: bacharelado|engenharia|licenciatura
+%  - Pós-graduação: [qualificacao], mestrado|doutorado, ppca|ppginf
+
+% \documentclass[engenharia]{UnB-CIC}%
+\documentclass[qualificacao,mestrado,ppca]{UnB-CIC}%
+
+\usepackage{pdfpages}% incluir PDFs, usado no apêndice
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Informações do Trabalho
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\orientador{\prof \dr Rodrigo Bonifacio de Almeida}{CIC/UnB}%
+%\coorientador{\prof \dr José Ralha}{CIC/UnB}
+\coordenador{\prof \dr Marcelo Ladeira}{CIC/UnB}%
+\diamesano{24}{dezembro}{2023}%
+
+\membrobanca{\prof \dr Donald Knuth}{Stanford University}%
+\membrobanca{\dr Leslie Lamport}{Microsoft Research}%
+
+\autor{Kevin S.}{Araujo}%
+
+\titulo{Spoofing, Layering and Bitcoin Market Manipulation Analysis On a Crypotocurrency Exchange}%
+
+\palavraschave{Bitcoin, Fraudes, Spoofing, Layering}%
+\keywords{LaTeX, scientific method, thesis}%
+
+\newcommand{\unbcic}{\texttt{UnB-CIC}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Texto
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}%
+    \capitulo{1_Introducao}{Introdução}%
+    \capitulo{2_UnB-CIC}{A Classe \unbcic}%
+    \capitulo{3_TCC}{Trabalho de Conclusão de Curso}%
+    \capitulo{4_Apresentacao}{Apresentações}%
+
+    \apendice{Apendice_Fichamento}{Fichamento de Artigo Científico}%
+    \anexo{Anexo1}{Documentação Original \unbcic\ (parcial)}%
+\end{document}%
