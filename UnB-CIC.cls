@@ -582,8 +582,8 @@
 
 \newenvironment{0_preamble/dedication}
 	{\begin{paginatitulo}%
-	\pdfbookmark{{Dedicated to}{Dedicat\'oria}}{0_preamble/dedication}%
-		\chapter*{{Dedicated to}{Dedicat\'oria}}}%
+	\pdfbookmark{{Dedicated to}{}}{0_preamble/dedication}%
+		\chapter*{{Dedicated to}{}}}%
 	{\end{paginatitulo}}
 
 \def\@printfulltitle{%
@@ -933,7 +933,7 @@
 }%
 
 \newcommand{\@listofacronyms}{%
-	\@inputTeXFile{acronyms}%
+	\@inputTeXFile{0_preamble/acronyms}%
 	\printglossary[type=\acronymtype]%
 }%
 
