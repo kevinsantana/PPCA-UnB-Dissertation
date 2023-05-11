@@ -1,19 +1,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Classe do documento
+% Document Class Definition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Opções:
-%  - Graduação: bacharelado|engenharia|licenciatura
-%  - Pós-graduação: [qualificacao], mestrado|doutorado, ppca|ppginf
+% Options for document class:
+%  - Undergraduate: bacharelado|engenharia|licenciatura
+%  - Post-graduate: [qualificacao], mestrado|doutorado, ppca|ppginf
 
-% \documentclass[engenharia]{UnB-CIC}%
-\documentclass[qualificacao,mestrado,ppca]{UnB-CIC}%
+% define document type
+\documentclass[qualificacao,mestrado,ppca]{UnB-CIC}
 
-\usepackage{pdfpages}% incluir PDFs, usado no apêndice
+% define preferable language (default is pt-br)
+\selectlanguage{american}\entrue\brfalse
+
+% include PDFs, used on appendix
+\usepackage{pdfpages}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Informações do Trabalho
+% Dissertation Information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \orientador{\prof \dr Rodrigo Bonifacio de Almeida}{CIC/UnB}%
 %\coorientador{\prof \dr José Ralha}{CIC/UnB}
@@ -33,14 +37,8 @@
 \newcommand{\unbcic}{\texttt{UnB-CIC}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Texto
+% Main Text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}%
-    \capitulo{1_Introducao}{Introdução}%
-    \capitulo{2_UnB-CIC}{A Classe \unbcic}%
-    \capitulo{3_TCC}{Trabalho de Conclusão de Curso}%
-    \capitulo{4_Apresentacao}{Apresentações}%
-
-    \apendice{Apendice_Fichamento}{Fichamento de Artigo Científico}%
-    \anexo{Anexo1}{Documentação Original \unbcic\ (parcial)}%
+    \capitulo{1_introduction/1_introduction}{Introduction}%
 \end{document}%
