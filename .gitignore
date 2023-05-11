@@ -1,0 +1,12 @@
+# latex build files
+*.acn
+*.aux
+*.glo
+*.glsdefs
+*.ist
+*.log
+*.out
+*.toc
+
+# pdf builded
+dissertation_main.pdf
