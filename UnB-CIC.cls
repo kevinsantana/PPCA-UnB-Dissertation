@@ -427,7 +427,7 @@
 	\xdef\@title{\expandafter{\@title}: #1}
 }
 
-%definicao de  palavras-chave - para cip e resumo/abstract
+%definicao de  palavras-chave - para cip e resumo/
 \newcommand*{\keywords}{\@dblarg\set@keywords}
 \newcommand*{\set@keywords}[2][]{%
 	\gdef\@keywords{#1}
@@ -486,11 +486,11 @@
               {\at@orienta}%Se primeiro argumento opcional chama esta
               {\at@oriento}}%senao chama esta rotina
 
-\def\at@orienta[#1]#2#3{\def\@sexoorientador{\en{Advisor}\br{Orientadora}}%
+\def\at@orienta[#1]#2#3{\def\@sexoorientador{\en{Adviser}\br{Orientadora}}%
                         \def\@nomeorientador{#2}%
                         \def\@filiorientador{#3}}
 
-\def\at@oriento#1#2{\def\@sexoorientador{\en{Advisor}\br{Orientador}}%
+\def\at@oriento#1#2{\def\@sexoorientador{\en{Adviser}\br{Orientador}}%
                         \def\@nomeorientador{#1}%
                         \def\@filiorientador{#2}}
 
@@ -558,16 +558,16 @@
 	{\cleardoublepage\thispagestyle{empty}}
 	{}
 
-\newenvironment{agradecimentos}
+\newenvironment{0_preamble/acknowledgments}
 	{\begin{paginatitulo}%
-	\pdfbookmark{IfLanguageName{american}{Acknowledgements}{Agradecimentos}}{acknowledgements}%
-		\chapter*{IfLanguageName{american}{Acknowledgements}{Agradecimentos}}}%
+	\pdfbookmark{{Acknowledgements}}{0_preamble/acknowledgements}%
+		\chapter*{{Acknowledgements}}}%
 	{\end{paginatitulo}}
 
 \renewenvironment{abstract}
 	{\begin{paginatitulo}%
 	\begin{otherlanguage*}{english}
-	\pdfbookmark{Abstract}{abstract}%
+	\pdfbookmark{{Abstract}}{tex/0_preamble/abstract}%
 		\chapter*{Abstract}}%
 		{\vskip 15pt\noindent\textbf{Keywords:}\ \@@keywords%
 	\end{otherlanguage*}
@@ -575,15 +575,15 @@
 
 \newenvironment{resumo}
 	{\begin{paginatitulo}%
-	\pdfbookmark{Resumo}{resumo}%
+	\pdfbookmark{Resumo}{{resumo}}%
 	\chapter*{Resumo}}%
 		{\vskip 15pt\noindent\textbf{Palavras-chave:}\ \@@palavraschave%
     \end{paginatitulo}}
 
-\newenvironment{dedicatoria}
+\newenvironment{0_preamble/dedication}
 	{\begin{paginatitulo}%
-	\pdfbookmark{IfLanguageName{american}{Dedicated to}{Dedicat\'oria}}{dedication}%
-		\chapter*{IfLanguageName{american}{Dedicated to}{Dedicat\'oria}}}%
+	\pdfbookmark{{Dedicated to}{Dedicat\'oria}}{0_preamble/dedication}%
+		\chapter*{{Dedicated to}{Dedicat\'oria}}}%
 	{\end{paginatitulo}}
 
 \def\@printfulltitle{%
@@ -881,7 +881,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\titulo}[1]{\title{#1}}%
 
-\def\@texpath{tex}%
+\def\@texpath{tex}
 \newcommand{\@erroSeNaoExiste}[1]{%
     \IfFileExists{#1}{}%
 	    {\ClassError{UnB-CIC}%
@@ -940,8 +940,8 @@
 \newcommand{\@conteudoPreTextual}{%
 	\maketitle%
 	\if@qualificacao\else%
-		\@IncluirSecao{dedicatoria}%
-		\@IncluirSecao{agradecimentos}%
+		\@IncluirSecao{0_preamble/dedication}%
+		\@IncluirSecao{0_preamble/acknowledgments}%
 	\fi%
     \en{%
         \@IncluirSecao{abstract}%
