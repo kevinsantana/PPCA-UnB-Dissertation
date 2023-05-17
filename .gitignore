@@ -7,6 +7,13 @@
 *.log
 *.out
 *.toc
+*.acr
+*.alg
+*.bbl
+*.blg
+*.brf
+*.glg
+*.gls
 
 # pdf builded
 dissertation_main.pdf

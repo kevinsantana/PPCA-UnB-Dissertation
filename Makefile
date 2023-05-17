@@ -13,6 +13,13 @@ clean:
 		   *.lot \
 	       *.out \
 	       *.toc \
+		   *.acr \
+		   *.alg \
+		   *.bbl \
+		   *.blg \
+		   *.brf \
+		   *.glg \
+		   *.gls \
 		   monografia.pdf \
 		   dissertation_main.pdf
 
