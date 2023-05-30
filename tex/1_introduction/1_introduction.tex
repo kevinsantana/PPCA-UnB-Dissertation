@@ -1,4 +1,4 @@
-\section{The Rise Of Money}
+\section{Money is Corruptible}
 Bitcoin (BTC) emerged on the scene in late 2008, allegedly as a response to the financial crisis of 2007-2008, and some suggest that it was also motivated by frustrations with the bureaucratic nature of the Japanese banking system. However, the latter claim ventures into more conspiratorial territory, largely based on the notion that the original author or authors of the Bitcoin whitepaper may have had connections to Japan \cite{nakamoto2008bitcoin}. Nevertheless, prior to delving into the intricacies of Bitcoin, it is crucial to first explore the concept of money and, more significantly, its foundational aspect: value.
 
 What is Money? Or rather, what does money represent?
@@ -80,9 +80,46 @@ As the money supply continues to expand, the purchasing power of each individual
 
 But what's the end goal of all of this? With fiat and an unlimited supply of money, will the value of each currency just continue to decrease until
 the end of time? Will the gap between the rich and the poor continue to grow wider? Or are we going to finally fix a problem as old as man itself, and
-stop placing our financial success in the hands of those who are destroying it day by day?
+stop placing our financial success in the hands of those who are destroying it day by day? Money is corruptible.
 
-Only time will tell, but just know, there is a way out: \textbf{Bitcoin}.
+Only time will tell, but just to know, there is a way out: \textbf{Bitcoin}.
 
-\subsection{Bitcoin}
-WIP
+\section{Bitcoin: A Peer-to-Peer Electronic Cash System}
+Bitcoin is a decentralized digital currency that operates on a peer-to-peer network called the blockchain. It was introduced in a 2008 whitepaper by an anonymous person or group of people using the pseudonym Satoshi Nakamoto \cite{nakamoto2008bitcoin}. Bitcoin is not controlled by any central authority, such as a government or financial institution, making it a unique form of currency. It relies on cryptographic techniques to secure transactions and control the creation of new units.
+
+In the subsequent sections, we will delve into the fundamental principles of Bitcoin, its architectural design, the blockchain technology underlying it, the representation of assets in the stock market, instances of fraudulent activities and scams, and ultimately explore potential solutions to address the inherent flaws associated with money and its susceptibility to corruption.
+
+\subsection{Basic Concepts of Bitcoin}
+At its core, Bitcoin is a form of digital money that can be sent from one party to another without the need for intermediaries like banks. Transactions are verified by network nodes through cryptography, and these verified transactions are bundled into blocks, forming a chronological chain of blocks, hence the term \textit{blockchain}.
+
+This introduction aims to provide a concise overview of the key concepts that underpin the operation of Bitcoin. By delving into the blockchain technology, cryptographic security measures, consensus mechanisms, and its unique monetary policy, this study seeks to elucidate the scientific foundations of Bitcoin. Understanding these concepts is essential for comprehending the mechanisms driving the secure and transparent peer-to-peer transactions facilitated by Bitcoin. These concepts form the foundation of Bitcoin's innovative design and functionality, driving its potential to reshape financial systems and promote financial inclusion. Understanding these concepts is crucial for comprehending the underlying mechanisms of this groundbreaking cryptocurrency.
+
+\begin{enumerate}
+    \item Blockchain Technology: Bitcoin employs a distributed ledger known as the blockchain, which records all transactional data in a transparent and immutable manner. The blockchain consists of a chain of blocks, each containing a set of transactions, cryptographically linked to the previous block. This technology ensures the integrity and transparency of the transaction history \cite{nakamoto2008bitcoin} by employing cryptographic hashing algorithms \cite{merkle1988digital}.
+    \item Cryptographic Security: Bitcoin utilizes cryptographic techniques to ensure the security and privacy of transactions. Public-key cryptography, specifically elliptic curve cryptography (ECC) \cite{johnson2001elliptic}, enables the creation of unique public and private key pairs for users. The private key is kept secret and used for signing transactions, while the corresponding public key allows for the verification of digital signatures \cite{dworkin2016recommendation}. Additionally, cryptographic hash functions, such as SHA-256 (National Institute of Standards and Technology, 2015), provide data integrity by generating fixed-size hash values, facilitating efficient verification of transactional data.
+    \item Consensus Mechanisms: Bitcoin employs a consensus mechanism called Proof-of-Work (PoW) \cite{dwork1993pricing}, which ensures agreement among network participants on the validity of transactions and the ordering of blocks. Miners compete to solve computationally intensive puzzles, providing a probabilistic guarantee that a majority of the network's computing power is honest. This process incentivizes miners through the possibility of being rewarded with newly minted bitcoins and transaction fees \cite{nakamoto2008bitcoin}.
+    \item Monetary Policy: Bitcoin's monetary policy is predetermined and governed by code, rather than central authorities. The total supply of bitcoins is limited to 21 million \cite{nakamoto2008bitcoin}. Through scheduled halvings, which reduce the block reward given to miners, the issuance of new bitcoins decreases over time until the maximum supply is reached. This deflationary feature distinguishes Bitcoin from traditional fiat currencies \cite{maurer2013}.
+\end{enumerate}
+
+On the upcoming sections, we explain in a more detailed way 
+
+\subsection{Blockchain}
+Blockchain is a decentralized and distributed digital ledger that employs cryptographic techniques to secure and maintain the integrity of transaction records across multiple computers or nodes \cite{nakamoto2008bitcoin}. It operates by grouping transactions into blocks and linking them together in a sequential and unalterable chain. The transparency and immutability of blockchain, coupled with consensus mechanisms for transaction validation, make it a promising technology with applications in various domains \cite{swan2015blockchain}.
+
+One way to visualize a blockchain is as a digital ledger with multiple pages or "blocks" that are chained together. When a new transaction occurs, it is added to a new block in the chain, which is then verified by the network and added to the existing chain. This creates an immutable record of all transactions on the network, which can be accessed and audited by anyone with access to the blockchain.
+
+Here's an example of how a blockchain might look:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{blockchain_structure.png}
+    \caption{Structure of a blockchain \cite{nakamoto2008bitcoin}}
+    \label{fig:blockchain}
+\end{figure}
+
+```
+Block 1 (hash: 0x123456789abcdef) -> Block 2 (hash: 0xdefcafbadcadabef) -> ... -> Block N (hash: 0xefghijklmnopqrst)
+```
+Each block contains a list of transactions, along with a timestamp and a unique cryptographic hash that identifies the block. When a new transaction is added to the network, it is broadcast to all nodes on the network, which then verify the transaction using consensus algorithms such as proof-of-work or proof-of-stake. Once the transaction is verified, it is added to a new block in the chain and the block is added to the existing chain.
+
+Blockchain technology has numerous applications beyond cryptocurrency, including supply chain management, voting systems, and digital identity verification. It offers a secure and transparent way to store and manage data without the need for intermediaries or centralized authorities.
