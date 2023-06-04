@@ -110,3 +110,29 @@ The concept of decentralization in trustless payment systems has been subject to
 
 \subsection{Creating Your Own Cryptocurrency}
 One common scenario where distributed ledgers can be useful is when multiple individuals frequently exchange small amounts of money, such as paying for shared expenses like dinner bills. To simplify this process, they may choose to maintain a communal ledger that records these transactions in a manner similar to using physical currency. By doing so, participants can easily keep track of their contributions and settle up when necessary.
+
+%% figure 1.1
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/1_ledger.png}{A ledger is a record of financial transactions, utilized for monitoring the accounts of all parties involved}{3blue1brown_ledger}{ledgerr}{width=.85\textwidth}%
+
+The proposed ledger system would be a publicly accessible platform similar to a website where users can add new entries. At the end of each month, participants could review the list of transactions and calculate the total sum. If an individual has spent more than they have received, they would contribute that amount to the collective pool, while those who have received more than they have spent would withdraw funds from the pool.
+
+The protocol for participation in the system involves the following steps:
+
+\begin{enumerate}
+    \item Any individual can add entries to the distributed ledger;
+    \item At the end of each month, all participants gather to reconcile their accounts using physical currency.
+\end{enumerate}
+
+However, a potential issue arises with a public ledger that allows any individual to add entries. How can one ensure that Bob does not enter "Alice pays Bob 100" without Alice's approval? There is a Cryptography solution: \emph{Digital signatures}.
+
+\subsection{Digital Signatures}
+Digital signatures provide a means to ensure the authenticity and integrity of electronic transactions. The use of digital signatures allows recipients to verify that the information sent by a sender is what they intended to send, thereby establishing trust in the transaction \cite{stinson2018cryptography}.
+
+The concept described here is similar to a handwritten signature, whereby Alice can add a message or proof of approval to a transaction that cannot be easily replicated by others. This is achieved through the use of digital signatures, which are based on cryptographic algorithms and provide a secure method for verifying the authenticity of a message or transaction \cite{elgamal1985public}. The infeasibility of forging a signature is ensured through the use of advanced encryption techniques that make it difficult for unauthorized parties to tamper with or counterfeit digital signatures \cite{elgamal1985public}.
+
+%% figure 1.2
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/2_digital_signature.png}{Digital signature}{docusign_digital_signature}{docusign_digital_signature}{width=.85\textwidth}%
+
+It may seem counterintuitive at first, but digital signatures can be implemented in a way that prevents forgery. In this context, a digital signature is a function of two elements: the private key, which only the signatory possesses, and the message being signed \cite{diffie2022new}. This means that even if an attacker were able to copy the initial signature, subsequent attempts to use it would result in a different value due to the unique relationship between the private key and the message.
+
+In contrast, forgeries in the physical world are often based on replicating handwritten signatures, which can be easily copied and pasted onto new documents. However, digital signatures rely on the secure management of the private key, which ensures that only the intended signatory can create a valid signature. As a result, even if an attacker were able to intercept or modify the message being signed, they would not be able to produce a valid digital signature without access to the corresponding private key.
