@@ -989,7 +989,7 @@
 	\begin{figure}[#1]%
 		\begin{center}%
 			\includegraphics[#6]{#2}%
-			\caption[#3.]{#3\ifx#4\empty\else~(Fonte: ~\cite{#4})\fi.\label{#5}}%
+			\caption[#3.]{#3\ifx#4\empty\else~(Reference: ~\cite{#4})\fi.\label{#5}}%
 		\end{center}%
 	\end{figure}%
 }%
@@ -1009,7 +1009,7 @@
 \newcommand{\tabelaBib}[5]{%
 	\begin{table}%
 		\centering%
-		\caption[#1.]{#1\ifx#2\empty\else~(Fonte: ~\cite{#2})\fi.\label{#3}}%
+		\caption[#1.]{#1\ifx#2\empty\else~(Reference: ~\cite{#2})\fi.\label{#3}}%
 		\begin{tabular}{#4}%
 			#5
 		\end{tabular}%

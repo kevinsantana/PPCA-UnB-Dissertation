@@ -131,8 +131,91 @@ Digital signatures provide a means to ensure the authenticity and integrity of e
 The concept described here is similar to a handwritten signature, whereby Alice can add a message or proof of approval to a transaction that cannot be easily replicated by others. This is achieved through the use of digital signatures, which are based on cryptographic algorithms and provide a secure method for verifying the authenticity of a message or transaction \cite{elgamal1985public}. The infeasibility of forging a signature is ensured through the use of advanced encryption techniques that make it difficult for unauthorized parties to tamper with or counterfeit digital signatures \cite{elgamal1985public}.
 
 %% figure 1.2
-\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/2_digital_signature.png}{Digital signature}{docusign_digital_signature}{docusign_digital_signature}{width=.85\textwidth}%
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/2_digital_signature.png}{Digital signature}{docusign_digital_signature}{signature}{width=.85\textwidth}%
 
 It may seem counterintuitive at first, but digital signatures can be implemented in a way that prevents forgery. In this context, a digital signature is a function of two elements: the private key, which only the signatory possesses, and the message being signed \cite{diffie2022new}. This means that even if an attacker were able to copy the initial signature, subsequent attempts to use it would result in a different value due to the unique relationship between the private key and the message.
 
-In contrast, forgeries in the physical world are often based on replicating handwritten signatures, which can be easily copied and pasted onto new documents. However, digital signatures rely on the secure management of the private key, which ensures that only the intended signatory can create a valid signature. As a result, even if an attacker were able to intercept or modify the message being signed, they would not be able to produce a valid digital signature without access to the corresponding private key.
+In cryptography, a signature function is only effective if there exists a verification function to confirm its validity \cite{stallings2006cryptography}. The mechanism for this involves generating a public-private key pair consisting of two strings of 1's and 0's. The private key, also known as the \textit{secret} key, is often abbreviated as $sk$ while the public key is denoted as $pk$. As suggested by their names, the secret key should be kept confidential \cite{dss}.
+
+A digital signature scheme can be defined as a set of two operations: one for generating a digital signature on a given message, denoted as $\text{Sign}$, and the other for verifying the authenticity of a purported signature, denoted as $\text{Verify}$. These functions are typically implemented as follows:
+
+\begin{enumerate}
+    \item \emph{Signing function} $\text{Sign}$: This operation takes as input a message $m \in \{0, 1\}^*$, and produces a digital signature
+    $\text{Sign} \in \mathbb{Z}_q^*$, where $q$ is a prime number. The security of the scheme is typically guaranteed by the assumption that it is computationally infeasible to compute the discrete logarithm in the underlying finite field, $\mathbb{Z}_q$.
+
+    \item \emph{Verification function} $\text{Verify}$: This operation takes as input a message $m \in \{0, 1\}^*$, a digital signature $\text{Sign} \in \mathbb{Z}_q^*$, and the public key $(pk, sk)$, where $pk = g^x$ for some generator polynomial $g \in \mathbb{Z}[X]$ of degree $n-1$ and $x \in \mathbb{Z}_q$. The verification function outputs a Boolean value indicating whether or not the given signature is valid, i.e., $\text{Sign}(m) = g^y \mod q$, where $y \in \mathbb{Z}$ is the unique integer such that $g^{y\bmod{n}} \equiv sk \pmod{q}$.
+
+\end{enumerate}
+
+The signing process requires employing the private key. The objective is that if Alice alone possesses her private key, then she is the only individual capable of generating a digital signature. In the event that this key is compromised, the security of the system is significantly undermined.
+
+The $\text{Verify}$ function serves as a means of determining whether a given message bears a valid digital signature generated using the corresponding public key. It should return True when applied to an authentic signature and False for all other signatures.
+
+The security of a digital signature scheme relies on the secrecy of the private key used to generate the signature. However, it is theoretically possible for an attacker to brute-force the public key and find a valid signature by exhaustively trying different potential signatures until one returns true \cite{boneh2001short}.
+
+In the case of Bitcoin's digital signature scheme, there are $2^256$ possible signatures due to the large number of bits in the hash function used for signature generation \cite{dss}. However, this number is so large that it makes brute-force attacks on the public key infeasible, providing a high level of security for Bitcoin's digital signatures.
+
+\subsection{Adding Lines to the Ledger}
+In blockchain systems, transactions are recorded on a distributed ledger and secured through cryptographic techniques. Specifically, each transaction needs to be signed by its corresponding private key, which ensures its authenticity and non-repudiation \cite{stinson2018cryptography}. The signature generated for a given transaction is unique and dependent on the content of that transaction, making it impossible to reuse signatures from one transaction to another \cite{bruce1996applied}.
+
+However, there is an issue with this approach. Suppose Alice signs a transaction, such as "Alice pays Bob \$100," which is then recorded on the blockchain. Although Bob cannot forge Alice's signature on new messages, he could still copy that same line multiple times and submit it to the network. Since the message/signature combination is still valid, these duplicate transactions may be accepted by the network and included in its consensus state \cite{swan2015blockchain}.
+
+%% figure 1.3
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/3_duplicate-transaction.png}{Anyone can create copies of previous transactions}{3blue1brown_duplicate-transaction}{duplicate-transaction}{width=.85\textwidth}%
+
+The development of digital signatures can address the issue of trust in the initial protocol by introducing unique identifiers for transactions and requiring a distinct signature for each transaction. This approach has been proposed and implemented in various cryptographic systems, such as the RSA signature scheme \cite{rivest1978method} and the elliptic curve digital signature algorithm (ECDSA). The use of digital signatures not only enhances security but also enables efficient verification of the authenticity and integrity of electronic messages.
+
+\subsection{Removing Cash}
+The effectiveness of this system relies on an implicit agreement between individuals to uphold their financial obligations. Specifically, participants are expected to pay in cash at the end of each month, despite the absence of a formal enforcement mechanism. However, there is no guarantee that all parties will comply with this arrangement, as demonstrated by instances where one individual (e.g., Charlie) may accumulate significant debt and subsequently fail to fulfill their financial obligations.
+
+In this cashless economic system, it may be necessary to revert to cash to settle up if certain individuals owe a significant amount of money (e.g., Charlie). However, as long as no one falls into debt and the ledger is properly maintained, the use of cash can be avoided. The ledger alone can function effectively as long as there is a mechanism in place to prevent excessive spending.
+
+One strategy for managing a cashless economy without resorting to cash settlements is to have all participants deposit an equal amount (e.g., \$100) into the pot, and record the initial distribution of funds on the ledger. For example, Alice would receive \$100 in the first transaction, while Bob would receive \$100 in the second transaction, and so on. By using this approach, individuals can maintain their financial balance without the need for cash transactions.
+
+%% figure 1.4
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/4_pay-in-100.png}{Cashless economic system}{3blue1brown_cashless}{cashless}{width=.85\textwidth}%
+
+Now that we are under a cashless economic systems, it is important to prevent double-spending attacks where a user attempts to spend the same cryptocurrency more than once. One way to accomplish this is by verifying that transactions are valid before they are added to the ledger. Specifically, if all users on the network start with zero balance (\$0) and the first two transactions are of \$100 value (Charlie pays Alice \$50 and Charlie pays Bob \$50), then a third transaction where Charlie pays You \$20 would be invalid. This is because it violates the rule that a user cannot spend more than they have in their account.
+
+%% figure 1.5
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/5_invalid.png}{In this new system, we don't allow people to spend more than they have.}{3blue1brown_invalid}{invalid}{width=.85\textwidth}%
+
+It can be noted that the requirement to ascertain the legitimacy of a transaction necessitates knowledge of the entire transaction history. This principle applies not only to traditional financial systems but also to decentralized digital currencies, although opportunities for improvement are present.
+
+%% figure 1.6
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/6_overdrawn.png}{Now verifying a transaction requires checking the entire ledger history to make sure nobody overdraws.}{3blue1brown_overdrawn}{overdrawn}{width=.85\textwidth}%
+
+The use of the above ledger system appears to dissociate it from physical cash transactions. If everyone in the world were to utilize this ledger, one could theoretically conduct all financial transactions solely through the ledger without any need for conversion to United States Dollars (USD). In fact, many individuals currently perform digital transactions exclusively while occasionally using physical cash. The latter scenario involves a more intricate system of banks wherein the balance on a digital account can be converted into USD. However, if one and their associates were to completely detach their ledger from USD, there would be no guarantee that having a positive balance in the ledger could translate into physical currency in hand. To accentuate this point, one can stop using the \$ sign and digital quantities, on the ledger can be referred to as "Ledger Dollars" (LD).
+
+Individuals possessing Ledger Dollars have the liberty to convert them into US dollars at their discretion. An illustrative scenario involves Alice offering Bob a zero-value US dollar bill in exchange for him adding and signing a transaction entry to the shared ledger, wherein Bob pays Alice ten units of Ledger Dollar value. However, the protocol does not explicitly guarantee the occurrence of such exchanges. Instead, it operates more similarly to foreign currency exchange in an open market where 10LD is its own independent entity. Additionally, if there is high demand for inclusion within the ledger, a transaction of 10LD may require a non-zero amount of physical cash. Conversely, if there is low demand for participation, it may require only a minimal amount of physical cash.
+
+%% figure 1.7
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/7_exchange-currency.png}{Exchange currencies}{3blue1brown_exchange_currency}{exchange}{width=.85\textwidth}%
+
+Our ledger has been transformed into a form of currency that operates within a closed system, allowing for peer-to-peer transactions between individuals without the backing of a state or taxation imposed in the form of Ledger Dollars. It is important to recognize that, at its core, cryptocurrency can be viewed as a ledger that records the history of financial transactions, serving as the currency itself.
+
+%% figure 1.8
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/8_ledger-is-currency.png}{Ledger is currency.}{3blue1brown_ledger_is_currency}{ledgerr}{width=.85\textwidth}%
+
+The concept of possessing Bitcoin is simply represented by a positive balance on the Bitcoin ledger, which is associated with a secret key. This differs from traditional currency systems where money enters the ledger through cash transactions. In the case of Bitcoin, the process for introducing new money into the ledger will be discussed in more detail shortly. However, it is important to note that there are fundamental differences between Ledger Dollars and true cryptocurrencies.
+
+\subsection{Distributing The Ledger}
+The distributed nature of the blockchain technology used by the ledger system necessitates the use of a centralized platform for public access and modification of the ledger's contents. However, this raises concerns regarding the trustworthiness of the entity responsible for hosting the website and regulating the rules governing the addition of new entries to the ledger. In particular, it is important to identify and evaluate the credibility of the entity that controls the website and establishes the protocols for updating the ledger.
+
+In order to eliminate trust in a centralized system where one ledger is maintained, we will replace this with a decentralized approach, where each individual will maintain their own copy of the ledger. This will enable transactions, such as "Alice pays Bob 100 LD," to be broadcasted and recorded on personal ledgers by all parties involved in the network.
+
+The distributed ledger technology employed by Bitcoin involves the broadcast of transactions by users, which are then recorded on a decentralized set of records. This eliminates the need for trust in a central authority. However, this system is problematic due to the possibility of disagreement among participants regarding the correct ledger. For example, when Bob receives a transaction "Alice pays Bob 10 LD", how can he be certain that everyone else has received and believes in the same transaction? If even one person does not know about this transaction, they may not allow Bob to spend those 10 Ledger Dollars later
+
+%% figure 1.9
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/9_are-these-the-same.png}{If everyone keeps a unique copy of the ledger, how can we ensure that everybody agrees on what it should say?}{3blue1brown_ledgers}{ledgerr}{width=.85\textwidth}%
+
+The verification of the integrity and consensus of a blockchain network relies on a distributed ledger system where all participants maintain a copy of the same transaction history. The trustworthiness of this system is predicated on the assumption that all nodes will accurately record and remember past transactions, which may be subject to potential inconsistencies or discrepancies in the event of faulty or malicious behavior. Therefore, it is essential to establish a mechanism for ensuring that the distributed ledger remains consistent across all participating nodes. The solution proposed by Satoshi Nakamoto in 2008 for decentralized systems was a method to validate the validity of a growing document, such as a ledger, without relying on a central authority. This problem was solved through the use of computational work to determine trustworthiness, where the ledger with the most computational effort invested in it is considered legitimate. The idea is that if an individual attempts to manipulate the ledger, it would require an impractical amount of computational power, making fraudulent transactions computationally infeasible. This concept forms the core of Bitcoin and other cryptocurrencies.
+
+\subsection{Hash Functions}
+Cryptographic hash functions are the primary tool utilized by Nakamoto's solution to this puzzle. These functions take in arbitrary messages or files as input and produce a fixed-length string of bits referred to as the "hash" or "digest" of the message, which is intended to exhibit randomness. The output of this process is deterministic and consistent for a given input, but minor alterations to the input can lead to drastically different hash values.
+
+The property of unpredictability in the output changes when slightly changing the input is what makes SHA256 a cryptographic hash function \cite{dang2015secure}. This means that it is computationally infeasible to compute the original message from its hash value in reverse direction \cite{butin2017hash}. Therefore, given a specific hash value such as $1001111100111100\ldots1001001110000100$, there is no efficient method to determine the corresponding input message other than brute-force guessing and checking with random inputs.
+
+Given the provided function, what is the empirical evidence indicating a significant correlation between a specified set of Bitcoin transactions and an exceptional computational expenditure?
+
+\subsection{Proof-Of-Work}
