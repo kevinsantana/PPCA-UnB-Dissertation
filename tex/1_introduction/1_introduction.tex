@@ -153,7 +153,7 @@ The $\text{Verify}$ function serves as a means of determining whether a given me
 
 The security of a digital signature scheme relies on the secrecy of the private key used to generate the signature. However, it is theoretically possible for an attacker to brute-force the public key and find a valid signature by exhaustively trying different potential signatures until one returns true \cite{boneh2001short}.
 
-In the case of Bitcoin's digital signature scheme, there are $2^256$ possible signatures due to the large number of bits in the hash function used for signature generation \cite{dss}. However, this number is so large that it makes brute-force attacks on the public key infeasible, providing a high level of security for Bitcoin's digital signatures.
+In the case of Bitcoin's digital signature scheme, there are $2^{256}$ possible signatures due to the large number of bits in the hash function used for signature generation \cite{dss}. However, this number is so large that it makes brute-force attacks on the public key infeasible, providing a high level of security for Bitcoin's digital signatures.
 
 \subsection{Adding Lines to the Ledger}
 In blockchain systems, transactions are recorded on a distributed ledger and secured through cryptographic techniques. Specifically, each transaction needs to be signed by its corresponding private key, which ensures its authenticity and non-repudiation \cite{stinson2018cryptography}. The signature generated for a given transaction is unique and dependent on the content of that transaction, making it impossible to reuse signatures from one transaction to another \cite{bruce1996applied}.
@@ -219,3 +219,80 @@ The property of unpredictability in the output changes when slightly changing th
 Given the provided function, what is the empirical evidence indicating a significant correlation between a specified set of Bitcoin transactions and an exceptional computational expenditure?
 
 \subsection{Proof-Of-Work}
+The task described involves manipulating a collection of transactions (enclosed within a container), whose hash value is computed utilizing the SHA256 algorithm. The objective is to modify a specified element within the container, such that the resulting hash commences with at least six consecutive zeros.
+
+Achieving a solution to this problem is indeed possible, albeit requiring a considerable amount of time. Due to the inherent unpredictability of the hash function's output, the prevailing method for tackling this challenge remains a process of trial and error \cite{Dworkin2001}.
+
+As the number of required leading zeroes increases, the difficulty of the problem escalates exponentially. Discovering a solution with 7 zeroes proves manageable, with the most optimal solution I have encountered producing 9 zeroes. Should you come across any noteworthy solutions that yield a significant number of leading zeroes, I encourage you to share them in the comments section.
+
+Consider a scenario where an individual presents you with a list of transactions and asserts that they have identified a special number. They claim that by appending this number to the end of the transaction list and applying the SHA256 hash function to the entire sequence, the resulting output will exhibit 30 leading zero bits.
+
+Assessing the level of difficulty involved in discovering the aforementioned number necessitates a thoughtful analysis. It is evident that the task likely posed significant challenges. When considering a randomly selected message, the probability of the resulting hash beginning with 30 consecutive zeroes is 1 in $2^{30}$, which corresponds to approximately 1 in a billion \cite{Dworkin2001}. Consequently, it is highly probable that the individual in question had to iterate through approximately one billion distinct guesses before successfully identifying this specific value.
+
+%% figure 1.10
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/10_30-zeroes.png}{There is no better way than guess and check for the special hash}{3blue1brown_guess_and_check}{guess}{width=.85\textwidth}%
+
+Nevertheless, what proves intriguing is that once the number is known, its verification as a hash commencing with 30 zeros can be efficiently conducted. This verification process offers the ability to ascertain the substantial effort expended by the individual without necessitating the replication of the original labor. Termed a proof of work, this number holds significance.
+
+It is crucial to emphasize that the entirety of this endeavor is intrinsically linked to the underlying list of transactions. Even a slight modification to any transaction would result in a completely altered hash, compelling a full repetition of the laborious process to identify a new number that yields a hash with 30 zeros \cite{nakamoto2008bitcoin}.
+
+\subsection{Blockchain}
+A distributed ledger system is composed of multiple nodes that broadcast transactions. To ensure consensus on the correct ledger, it is necessary to develop a mechanism that allows all nodes to agree on the validity of each transaction \cite{el2018review}.
+
+The core concept of the original Bitcoin paper \cite{nakamoto2008bitcoin} is based on the assumption that a distributed ledger will be trusted if it has been subject to a large amount of computational effort. This idea is implemented through the use of the many-zeroes game, which involves proving that a particular block in the chain contains a hash that is difficult to reverse-engineer.
+
+Rather than hashing the entire ledger repeatedly, it is more efficient to allow for the accumulation of computational effort over time. Transactions are grouped into blocks and added to the chain in a linear fashion, with each new block containing a reference to the previous one. This approach allows for the creation of a tamper-evident history of transactions that is trusted by network participants due to the large amount of computational work required to manipulate it.
+
+%% figure 1.11
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/11_blocks.png}{Blocks on a blockchain}{3blue1brown_blocks}{blocks}{width=.85\textwidth}%
+
+The block is a collection of transactions enclosed with a unique identifier, known as proof-of-work (PoW), which serves as evidence of the computational effort expended in validating the block. In PoW schemes, the miner must solve a complex mathematical problem to validate the block and add it to the blockchain. The difficulty level of this problem is determined by the target number of leading zeros required in the hash value of the block.
+
+A block is considered valid if it contains a proof-of-work (PoW) value, analogous to how a transaction is only considered valid when signed by its sender. Additionally, maintaining the integrity of the blockchain requires that blocks are not rearranged as this would disrupt the transaction history. To address this issue, each new block must begin with the hash of the previous block (hash-based chain), ensuring that the order of the blocks remains consistent.
+
+%% figure 1.12
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/12_block-ordering.png}{Because blocks are chained together like this, instead of calling it a ledger, this is commonly called a “blockchain”}{3blue1brown_blockchain}{blockchain}{width=.85\textwidth}%
+
+\subsubsection{Block Creators: Miners}
+In order to maintain the integrity of our ledger after it has been split into blocks, we have introduced a new process for adding new transactions. This involves grouping together transactions into blocks and computing a proof of work. As part of our updated protocol, anyone in the world is allowed to act as a "block creator". The responsibility of the block creator is to listen for broadcasted transactions, collect them into a block, and then perform a significant amount of computational work to find a special number that will result in the hash of the block starting with 60 zeros. This computed hash value is then broadcasted to the network as proof of work \cite{wood2014ethereum}.
+
+A special transaction can be included at the beginning of each block, where the creator is rewarded with a predetermined amount of digital currency. This practice has been suggested as a means of compensating individuals for their efforts in constructing blocks within a distributed ledger system \cite{ding2020incentive}.
+
+%% figure 1.13
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/13_block-reward.png}{Block Reward}{3blue1brown_block_reward}{reward}{width=.85\textwidth}%
+
+The block reward is a unique exception to our usual transaction acceptance rules in the Ledger Dollar economy, as it does not require signature verification and increases the total number of currency units with each new block. The process of creating blocks, known as "mining," involves a significant amount of work and introduces new currency into the economy. However, when discussing miners, it is essential to understand that they are primarily focused on listening to transactions, constructing blocks, broadcasting them, and receiving newly minted currency as reward for their efforts.
+
+For miners, each block can be thought of as a miniature lottery where individuals guess numbers rapidly until one person finds a combination that results in a hash starting with many zeros, earning the resulting reward. In contrast to mining, non-mining Bitcoin users no longer need to record all individual transactions on their personal ledger. Instead, they can simply monitor block production and rely on the fact that these blocks contain verified transactions. This approach is more manageable than maintaining a comprehensive transaction ledger.
+
+In the consensus algorithm used by Bitcoin and other cryptocurrencies, a mechanism known as "longest chain rule" is employed to resolve potential conflicts between competing blocks. Specifically, if two miners broadcast distinct blockchains with conflicting transaction histories, the system defers to the one that has been longest in terms of cumulative proof-of-work effort expended on it, which is assumed to be more resistant to manipulation \cite{buterin2014next}. If there is a tie between two competing blocks, it may be necessary to wait for additional information to determine which block is longer. This process relies on the assumption that the longest chain represents the most widely accepted version of the blockchain. However, this approach has been subject to criticism due to its reliance on proof-of-work mechanisms, which require significant computational effort and can lead to centralization.
+
+\subsection{Attempt Fraud On The Blockchain}
+To evaluate the trustworthiness of this method, it is instructive to consider what steps an individual, such as Alice, would need to take in order to deceive the system. In particular, suppose that Alice desires to purchase an item from Bob for 100 Ledger Dollars (LD), but does not actually possess those LD. She might attempt to send a block to Bob containing a line indicating "Alice pays Bob 100 LD," without broadcasting this block to the broader network. By doing so, Bob would believe that he has been paid and provide Alice with the item she desires. However, at a later time, Alice could re-enter the economy and spend those same 100 LD elsewhere. When Bob attempts to spend those same 100 LD, other individuals in the network may not recognize them as valid, leading to the potential for deception to be detected.
+
+To evaluate the trustworthiness of this method, it is instructive to consider what steps an individual, such as Alice, would need to take in order to deceive the system. In particular, suppose that Alice desires to purchase an item from Bob for 100 Ledger Dollars (LD), but does not actually possess those LD. She might attempt to send a block to Bob containing a line indicating "Alice pays Bob 100 LD," without broadcasting this block to the broader network. By doing so, Bob would believe that he has been paid and provide Alice with the item she desires. However, at a later time, Alice could re-enter the economy and spend those same 100 LD elsewhere. When Bob attempts to spend those same 100 LD, other individuals in the network may not recognize them as valid, leading to the potential for deception to be detected.
+
+The process of creating a fraudulent transaction in a blockchain network requires a valid proof-of-work (PoW) that is found before other miners who are listening to the same set of transactions as the attacker, each working on their own block. This is a difficult task but can be accomplished if the attacker has a significant portion of the network's computation power. If Alice is able to find the PoW before other miners, she can create a fraudulent transaction and present it to Bob (but not to anyone else) \cite{fang2022cryptocurrency}.
+
+However, Bob will continue to receive broadcasts from other miners, and Alice did not inform these miners about the block she produced for Bob. Therefore, they will not include this block in their own versions of the blockchain. As a result, Bob will be hearing conflicting chains: one from Alice and another from everyone else \cite{TAN2022101625}. According to the protocol, Bob always trusts the longest chain he knows about, which may create challenges for detecting and resolving fraudulent transactions in the network.
+
+The probability of Alice's computational resources being smaller than the combined computational resources of the rest of the network is high, and as a result, it is more likely for the rest of the network to find a valid proof of work for their next block before she does. Additionally, if Alice has less than 50\% of the total computation on the network (which is highly probable), outpacing everyone else indefinitely will be nearly impossible \cite{nakamoto2008bitcoin}.
+
+Eventually, when Alice fails to maintain her chain longer than the rest of the network, Bob will reject what he is hearing from Alice and follow the longer chain that everyone else is working on. This is due to the fact that creating blocks requires significant computational effort, making it extremely difficult for any individual or group to manipulate the consensus \cite{szabo2005bit}.
+
+It's worth noting that while building a single fraudulent block may be possible, maintaining the lie for an extended period is challenging. Therefore, users should exercise caution and wait for several new blocks to be added on top of a newly discovered block before trusting it as part of the main chain. By doing so, they can ensure that they are not being tricked by a malicious actor attempting to manipulate the network \cite{dupont2019cryptocurrencies}.
+
+%% figure 1.14
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/14_dont-trust-yet.png}{Blocks are most trustworthy when they aren't brand new}{3blue1brown_trust}{trust}{width=.85\textwidth}%
+
+\subsection{Ledger Dollars vs. Bitcoin}
+The distributed ledger system based on proof-of-work, as demonstrated by Bitcoin and other cryptocurrencies, involves a mining process where miners compete to solve a computational puzzle in order to validate transactions and add them to the blockchain. This is accomplished through the use of hash functions, which are designed to be difficult to reverse engineer, thereby ensuring the integrity of the distributed ledger \cite{bashir2017mastering}. The proof-of-work challenge may involve finding a special number that will make the hash of the block start with 60 zeros. However, in practice, this is achieved by systematically changing the number of zeros so that it takes approximately 10 minutes for miners to find a new block \cite{nakamoto2008bitcoin}.
+
+As a result of this process, a block reward is awarded to the miner who successfully validates a block. Initially, the reward was set at 50 Bitcoin per block, but it has since been reduced to 6.25 Bitcoin per block every 210,000 blocks \cite{nakamoto2008bitcoin}. However, miners can also earn transaction fees by including them in the validation process of transactions.
+
+%% figure 1.15
+\figuraBib{img/chapter-1/1-2-2-creating-your-own-cryptocurrency/15_limited-to-2400.png}{Transactions on a Bitcoin Blockchain is limited}{3blue1brown_limited}{limited}{width=.85\textwidth}%
+
+Considering Bitcoin's objective of approximately one block addition per 10 minutes, its processing capacity is constrained to about 4 Bitcoin transactions per second, with some variability. By comparison, Visa handles an average of approximately 1,700 transactions per second, with the capability to process over 24,000 per second. The relatively slower processing speed of Bitcoin leads to higher transaction fees, as they determine the selection of transactions included in new blocks by miners. Moreover, Bitcoin has faced criticism for its significant energy consumption. While the proof-of-work concept effectively combats fraud, it necessitates an immense allocation of resources for block mining.
+
+According to the Cambridge Bitcoin Electricity Consumption Index, the present annual electricity consumption for Bitcoin mining (as of 2021) is estimated at around 115 Terrawatt-Hours. To provide context, this consumption surpasses the energy usage of the entire country of Finland. Since 2008, an alternative approach to proof of work, known as "proof of stake," has emerged, offering a substantial reduction in energy requirements. Several newer cryptocurrencies have embraced this methodology \cite{CBECS2021}.
