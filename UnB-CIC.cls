@@ -622,14 +622,14 @@
 			\if@posgraduacao%
 				\if@ppca%
                 \en{%
-					submitted in partial fullfilment of the requirements to %
+					submitted in partial fulfillment of the requirements to %
 					\if@qualificacao{qualify for}\else{}\fi\\%
                 }\br{%
 					apresentada como requisito parcial para %
 					\if@qualificacao{qualificação}\else{conclus\~ao}\fi~do\\}%
 				\else%
                 \en{%
-					submitted in partial fullfilment of\\the requirements to %
+					submitted in partial fulfillment of\\the requirements to %
 					\if@qualificacao{qualify for}\else{}\fi~%
                 }\br{%
 					apresentada como requisito parcial para\\
@@ -638,7 +638,7 @@
 				\@nomecurso\ \en{in}\br{em} \@nomeDoPrograma%
 			\else%
                 \en{%
-					submitted in partial fullfilment of\\
+					submitted in partial fulfillment of\\
                     the requirements to \@nomecurso%
                 }\br{%
                     apresentada como requisito parcial\\
@@ -669,7 +669,7 @@
 			\if@posgraduacao%
 				\if@ppca%
                 \en{%
-					submitted in partial fullfilment of the requirements to %
+					submitted in partial fulfillment of the requirements to %
 					\if@qualificacao{qualify for}\else{}\fi\\%
                 }\br{%
 					apresentada como requisito parcial para %
@@ -677,7 +677,7 @@
                 }%
 				\else%
                 \en{%
-					submitted in partial fullfilment of\\the requirements to %
+					submitted in partial fulfillment of\\the requirements to %
 					\if@qualificacao{qualify for}\else{}\fi~%
                 }\br{%
 					apresentada como requisito parcial para\\
@@ -687,7 +687,7 @@
 				\@nomecurso\ \en{in}\br{em} \@nomeDoPrograma%
 			\else%
                 \en{%
-					submitted in partial fullfilment of\\
+					submitted in partial fulfillment of\\
                     the requirements to \@nomecurso%
                 }\br{%
                     apresentada como requisito parcial\\
