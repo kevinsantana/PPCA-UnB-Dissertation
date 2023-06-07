@@ -1,0 +1,44 @@
+\subsection{Attempt Fraud On The Blockchain}
+To evaluate the trustworthiness of this method, it is instructive to consider what steps an individual, such as Alice, would need to take
+in order to deceive the system. In particular, suppose that Alice desires to purchase an item from Bob for 100 Ledger Dollars (LD), but
+does not actually possess those LD. She might attempt to send a block to Bob containing a line indicating "Alice pays Bob 100 LD"
+without broadcasting this block to the broader network. By doing so, Bob would believe that he has been paid and provide Alice with the
+item she desires. However, at a later time, Alice could re-enter the economy and spend those same 100 LD elsewhere. When Bob attempts to
+spend those same 100 LD, other individuals in the network may not recognize them as valid, leading to the potential for deception to be
+detected.
+
+To evaluate the trustworthiness of this method, it is instructive to consider what steps an individual, such as Alice, would need to take
+in order to deceive the system. In particular, suppose that Alice desires to purchase an item from Bob for 100 Ledger Dollars (LD), but
+does not actually possess those LD. She might attempt to send a block to Bob containing a line indicating "Alice pays Bob 100 LD"
+without broadcasting this block to the broader network. By doing so, Bob would believe that he has been paid and provide Alice with the
+item she desires. However, at a later time, Alice could re-enter the economy and spend those same 100 LD elsewhere. When Bob attempts to
+spend those same 100 LD, other individuals in the network may not recognize them as valid, leading to the potential for deception to be
+detected.
+
+The process of creating a fraudulent transaction in a blockchain network requires a valid proof-of-work (PoW) that is found before other
+miners who are listening to the same set of transactions as the attacker, each working on their own block. This is a difficult task but
+can be accomplished if the attacker has a significant portion of the network's computation power. If Alice is able to find the PoW before
+other miners, she can create a fraudulent transaction and present it to Bob (but not to anyone else) \cite{fang2022cryptocurrency}.
+
+However, Bob will continue to receive broadcasts from other miners, and Alice did not inform these miners about the block she produced for
+Bob. Therefore, they will not include this block in their own versions of the blockchain. As a result, Bob will be hearing conflicting
+chains: one from Alice and another from everyone else \cite{TAN2022101625}. According to the protocol, Bob always trusts the longest
+chain he knows about, which may create challenges for detecting and resolving fraudulent transactions in the network.
+
+The probability of Alice's computational resources being smaller than the combined computational resources of the rest of the network is
+high, and as a result, it is more likely for the rest of the network to find a valid proof of work for their next block before she does.
+Additionally, if Alice has less than 50\% of the total computation on the network (which is highly probable), outpacing everyone else
+indefinitely will be nearly impossible \cite{nakamoto2008bitcoin}.
+
+Eventually, when Alice fails to maintain her chain longer than the rest of the network, Bob will reject what he is hearing from Alice
+and follow the longer chain that everyone else is working on. This is due to the fact that creating blocks requires significant computational
+effort, making it extremely difficult for any individual or group to manipulate the consensus \cite{szabo2005bit}.
+
+It's worth noting that while building a single fraudulent block may be possible, maintaining the lie for an extended period is
+challenging. Therefore, users should exercise caution and wait for several new blocks to be added on top of a newly discovered
+block before trusting it as part of the main chain. By doing so, they can ensure that they are not being tricked by a malicious
+actor attempting to manipulate the network \cite{dupont2019cryptocurrencies}.
+
+%% figure 1.14
+\figuraBib{img/chapter-1/1_2_11_attempt_fraud_on_the_blockchain/14_dont-trust-yet.png}
+{Blocks are most trustworthy when they aren't brand new}{3blue1brown_trust}{trust}{width=.85\textwidth}%

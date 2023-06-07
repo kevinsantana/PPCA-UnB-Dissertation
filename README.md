@@ -1,6 +1,6 @@
 # Master's Degree on Applied Computation - CIC/UnB #
 
-Presented as a requirement for the Master On Applied Computation title.
+Presented as a requirement for the Master On Applied Computing title.
 
 
 ## About ##

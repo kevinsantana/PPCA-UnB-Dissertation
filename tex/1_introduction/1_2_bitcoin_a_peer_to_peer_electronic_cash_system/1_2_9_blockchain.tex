@@ -1,0 +1,30 @@
+\subsection{Blockchain}
+A distributed ledger system is composed of multiple nodes that broadcast transactions. To ensure consensus on the correct ledger, it is
+necessary to develop a mechanism that allows all nodes to agree on the validity of each transaction \cite{el2018review}.
+
+The core concept of the original Bitcoin paper \cite{nakamoto2008bitcoin} is based on the assumption that a distributed ledger will be
+trusted if it has been subject to a large amount of computational effort. This idea is implemented through the use of the many-zeroes
+game, which involves proving that a particular block in the chain contains a hash that is difficult to reverse-engineer.
+
+Rather than hashing the entire ledger repeatedly, it is more efficient to allow for the accumulation of computational effort over time.
+Transactions are grouped into blocks and added to the chain in a linear fashion, with each new block containing a reference to the
+previous one. This approach allows for the creation of a tamper-evident history of transactions that is trusted by network participants
+due to the large amount of computational work required to manipulate it.
+
+%% figure 1.11
+\figuraBib{img/chapter-1/1_2_9_blockchain/11_blocks.png}{Blocks on a blockchain}{3blue1brown_blocks}
+{blocks}{width=.85\textwidth}%
+
+The block is a collection of transactions enclosed with a unique identifier, known as proof-of-work (PoW), which serves as evidence of
+the computational effort expended in validating the block. In PoW schemes, the miner must solve a complex mathematical problem to validate
+the block and add it to the blockchain. The difficulty level of this problem is determined by the target number of leading zeros required
+in the hash value of the block.
+
+A block is considered valid if it contains a proof-of-work (PoW) value, analogous to how a transaction is only considered valid when signed
+by its sender. Additionally, maintaining the integrity of the blockchain requires that blocks are not rearranged as this would disrupt the
+transaction history. To address this issue, each new block must begin with the hash of the previous block (hash-based chain), ensuring that
+the order of the blocks remains consistent.
+
+%% figure 1.12
+\figuraBib{img/chapter-1/1_2_9_blockchain/12_block-ordering.png}{Because blocks are chained together like this,
+instead of calling it a ledger, this is commonly called a “blockchain”}{3blue1brown_blockchain}{blockchain}{width=.85\textwidth}%

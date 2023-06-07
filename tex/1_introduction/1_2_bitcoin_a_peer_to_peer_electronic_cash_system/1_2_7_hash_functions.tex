@@ -1,0 +1,13 @@
+\subsection{Hash Functions}
+Cryptographic hash functions are the primary tool utilized by Nakamoto's solution to this puzzle. These functions take in arbitrary messages or
+files as input and produce a fixed-length string of bits referred to as the "hash" or "digest" of the message, which is intended to exhibit
+randomness. The output of this process is deterministic and consistent for a given input, but minor alterations to the input can lead to
+drastically different hash values.
+
+The property of unpredictability in the output changes when slightly changing the input is what makes SHA256 a cryptographic hash function
+\cite{dang2015secure}. This means that it is computationally infeasible to compute the original message from its hash value in reverse
+direction \cite{butin2017hash}. Therefore, given a specific hash value such as $1001111100111100\ldots$, there is no
+efficient method to determine the corresponding input message other than brute-force guessing and checking with random inputs.
+
+Given the provided function, what is the empirical evidence indicating a significant correlation between a specified set of Bitcoin
+transactions and an exceptional computational expenditure?
