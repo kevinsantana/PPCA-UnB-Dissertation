@@ -1,5 +1,5 @@
 \subsubsection{Block Creators: Miners}
-In order to maintain the integrity of our ledger after it has been split into blocks, we have introduced a new process for adding new
+To maintain the integrity of our ledger after it has been split into blocks, we have introduced a new process for adding new
 transactions. This involves grouping together transactions into blocks and computing a proof of work. As part of our updated protocol,
 anyone in the world is allowed to act as a "block creator". The responsibility of the block creator is to listen for broadcasted transactions,
 collect them into a block, and then perform a significant amount of computational work to find a special number that will result in the
@@ -14,7 +14,9 @@ distributed ledger system~\cite{ding2020incentive}.
 {width=.45\textwidth}%
 
 The block reward is a unique exception to our usual transaction acceptance rules in the Ledger Dollar economy, as it does not require
-signature verification and increases the total number of currency units with each new block. The process of creating blocks, known as
+signature verification and increases the total number of currency units with each new block.
+
+The process of creating blocks, known as
 "mining", involves a significant amount of work and introduces new currency into the economy. However, when discussing miners, it is
 essential to understand that they are primarily focused on listening to transactions, constructing blocks, broadcasting them, and
 receiving newly minted currency as reward for their efforts.
