@@ -3,7 +3,7 @@ In blockchain systems, transactions are recorded on a distributed ledger and sec
 Specifically, each transaction needs to be signed by its corresponding private key, which ensures its authenticity and
 non-repudiation~\cite{stinson2018cryptography}. The signature generated for a given transaction is unique and dependent
 on the content of that transaction, making it impossible to reuse signatures from one transaction to another~\cite{bruce1996applied}.
-However, there is an issue with this approach. Suppose Alice signs a transaction, such as ``Alice pays Bob \$100,`` which
+However, there is an issue with this approach. Suppose Alice signs a transaction, such as "Alice pays Bob \$100", which
 is then recorded on the blockchain. Although Bob cannot forge Alice's signature on new messages, he could still copy that
 same line multiple times and submit it to the network. Since the message/signature combination is still valid, these duplicate
 transactions may be accepted by the network and included in its consensus state~\cite{swan2015blockchain}.
