@@ -1,0 +1,30 @@
+name: Build LaTeX document and deploy
+on:
+  push:
+  pull_request:
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: dissertation_main.tex
+          working_directory: .
+          continue_on_error: true
+          latexmk_shell_escape: true
+      
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: Spoofing, Layering and Bitcoin Market Manipulation Analysis On a Crypotocurrency Exchange
+          path: dissertation_main.pdf
+      
+      # - name: Deploy
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GH_ACTION_DISSERTATION }}
+      #     publish_dir: dissertation_main.pdf
