@@ -7,6 +7,21 @@
 *.log
 *.out
 *.toc
+*.acr
+*.alg
+*.bbl
+*.blg
+*.brf
+*.glg
+*.gls
+*.lof
+*.fuse_*
 
 # pdf builded
 dissertation_main.pdf
+dissertation_main.synctex.gz
+
+# folders
+citations
+img/_old-btc
+tex/_old
