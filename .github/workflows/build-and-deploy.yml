@@ -23,8 +23,6 @@ jobs:
           name: PDF
           path: dissertation_main.pdf
       
-      - run: echo hello > dissertation_main.pdf
-      
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
