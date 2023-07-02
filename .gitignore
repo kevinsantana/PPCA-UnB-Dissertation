@@ -15,6 +15,8 @@
 *.glg
 *.gls
 *.lof
+*.fuse_*
+*.fls
 
 # pdf builded
 dissertation_main.pdf
