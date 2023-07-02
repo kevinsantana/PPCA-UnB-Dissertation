@@ -967,7 +967,7 @@
 	\@PosTextualNaoInclusofalse%
     \postextual%
 	\bibliographystyle{babunsrt}%
-    \bibliography{bibliografia}%
+    \bibliography{references}%
 }%
 
 
