@@ -13,6 +13,14 @@ clean:
 		   *.lot \
 	       *.out \
 	       *.toc \
+		   *.acr \
+		   *.alg \
+		   *.bbl \
+		   *.blg \
+		   *.brf \
+		   *.glg \
+		   *.gls \
+		   *.fuse_*
 		   monografia.pdf \
 		   dissertation_main.pdf
 
@@ -20,7 +28,7 @@ build:
 	pdflatex dissertation_main.tex
 
 references:
-	pdflatex dissertation_main
+	pdflatex dissertation_main.tex
 	bibtex dissertation_main
 	makeglossaries dissertation_main
-	pdflatex dissertation_main
+	pdflatex dissertation_main.tex

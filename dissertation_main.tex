@@ -7,6 +7,7 @@
 %  - Post-graduate: [qualificacao], mestrado|doutorado, ppca|ppginf
 
 % define document type
+% \documentclass[mestrado,mestrado,ppca]{UnB-CIC}
 \documentclass[qualificacao,mestrado,ppca]{UnB-CIC}
 
 % define preferable language (default is pt-br)
@@ -14,6 +15,11 @@
 
 % include PDFs, used on appendix
 \usepackage{pdfpages}
+
+% additional packages
+\usepackage{csquotes}
+\usepackage{amssymb}
+\usepackage{movie15}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,10 +35,10 @@
 
 \autor{Kevin S.}{Araujo}%
 
-\titulo{Spoofing, Layering and Bitcoin Market Manipulation Analysis On a Crypotocurrency Exchange}%
+\titulo{Spoofing, Layering and Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange}%
 
 \palavraschave{Bitcoin, Fraudes, Spoofing, Layering}%
-\keywords{LaTeX, scientific method, thesis}%
+\keywords{Bitcoin, Scams, Spoofing, Layering}%
 
 \newcommand{\unbcic}{\texttt{UnB-CIC}}%
 
@@ -40,5 +46,7 @@
 % Main Text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}%
-    \capitulo{1_introduction/1_introduction}{Introduction}%
+    \capitulo{1_introduction/1_introduction.tex}{Introduction}%
+    \capitulo{2_definitions_of_terms/2_definitions_of_terms.tex}{Definitions of Terms}%
+    \capitulo{3_related_work/3_related_work.tex}{Related Work}%
 \end{document}%
