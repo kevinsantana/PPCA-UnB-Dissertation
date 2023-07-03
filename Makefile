@@ -20,6 +20,7 @@ clean:
 		   *.brf \
 		   *.glg \
 		   *.gls \
+		   *.fuse_*
 		   monografia.pdf \
 		   dissertation_main.pdf
 
