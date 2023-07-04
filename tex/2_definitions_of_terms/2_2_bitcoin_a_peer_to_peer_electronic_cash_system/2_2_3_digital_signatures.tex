@@ -1,57 +1,25 @@
 \subsection{Digital Signatures}
-Digital signatures provide a means to ensure the authenticity and integrity of electronic transactions. The use of digital
-signatures allow recipients to verify that the information sent by a sender is what they intended to send, thereby establishing
-trust in the transaction~\cite{stinson2018cryptography}.
+Digital signatures provide a means to ensure the authenticity and integrity of electronic transactions. The use of digital signatures allow recipients to verify that the information sent by a sender is what they intended to send, thereby establishing trust in the transaction~\cite{stinson2018cryptography}.
 
-The concept described here is similar to a handwritten signature, whereby Alice can add a message or proof of approval to
-a transaction that cannot be easily replicated by others. This is achieved through the use of digital signatures, which
-are based on cryptographic algorithms and provide a secure method for verifying the authenticity of a message or
-transaction~\cite{elgamal1985public}. The infeasibility of forging a signature is ensured through the use of advanced
-encryption techniques that make it difficult for unauthorized parties to tamper with or counterfeit digital
+The concept described here is similar to a handwritten signature, whereby Alice can add a message or proof of approval to a transaction that cannot be easily replicated by others. This is achieved through the use of digital signatures, which are based on cryptographic algorithms and provide a secure method for verifying the authenticity of a message or transaction~\cite{elgamal1985public}. The infeasibility of forging a signature is ensured through the use of advanced encryption techniques that make it difficult for unauthorized parties to tamper with or counterfeit digital
 signatures~\cite{elgamal1985public}.
 
 %% figure 1.2
-\figuraBib{img/chapter-2/2_2_3_digital_signatures/2_digital_signature.png}{Digital signature}{docusign_digital_signature}
-{signature}{width=.85\textwidth}%
+\figuraBib{img/chapter-2/2_2_3_digital_signatures/2_digital_signature.png}{Digital signature}{docusign_digital_signature}{signature}{width=.85\textwidth}%
 
-It may seem counterintuitive at first, but digital signatures can be implemented in a way that prevents forgery. In this
-context, a digital signature is a function of two elements: the private key, which only the signatory possesses, and the
-message being signed~\cite{diffie2022new}. This means that even if an attacker were able to copy the initial signature,
-subsequent attempts to use it would result in a different value due to the unique relationship between the private key
-and the message.
+It may seem counterintuitive at first, but digital signatures can be implemented in a way that prevents forgery. In this context, a digital signature is a function of two elements: the private key, which only the signatory possesses, and the message being signed~\cite{diffie2022new}. This means that even if an attacker were able to copy the initial signature, subsequent attempts to use it would result in a different value due to the unique relationship between the private key and the message.
 
-In cryptography, a signature function is only effective if there exists a verification function to confirm its validity
-\cite{stallings2006cryptography}. The mechanism for this involves generating a public-private key pair consisting of two
-strings of 1's and 0's. The private key, also known as the \textit{secretkey}, is often abbreviated as $sk$ while the public
-key is denoted as $pk$. As suggested by their names, the secret key should be kept confidential~\cite{dss}.
+In cryptography, a signature function is only effective if there exists a verification function to confirm its validity \cite{stallings2006cryptography}. The mechanism for this involves generating a public-private key pair consisting of two strings of 1's and 0's. The private key, also known as the \textit{secretkey}, is often abbreviated as $sk$ while the public key is denoted as $pk$. As suggested by their names, the secret key should be kept confidential~\cite{dss}.
 
-A digital signature scheme can be defined as a set of two operations: one for generating a digital signature on a given
-message, denoted as $\text{Sign}$, and the other for verifying the authenticity of a purported signature, denoted as
-$\text{Verify}$. These functions are typically implemented as follows:
+A digital signature scheme can be defined as a set of two operations: one for generating a digital signature on a given message, denoted as $\text{Sign}$, and the other for verifying the authenticity of a purported signature, denoted as $\text{Verify}$. These functions are typically implemented as follows:
 
 \begin{enumerate}
-    \item \emph{Signing function} $\text{Sign}$: This operation takes as input a message $m \in \{0, 1\}^*$, and produces
-    a digital signature $\text{Sign} \in \mathbb{Z}_q^*$, where $q$ is a prime number. The security of the scheme is typically
-    guaranteed by the assumption that it is computationally infeasible to compute the discrete logarithm in the underlying
-    finite field, $\mathbb{Z}_q$.
+    \item \emph{Signing function} $\text{Sign}$: This operation takes as input a message $m \in \{0, 1\}^*$, and produces a digital signature $\text{Sign} \in \mathbb{Z}_q^*$, where $q$ is a prime number. The security of the scheme is typically guaranteed by the assumption that it is computationally infeasible to compute the discrete logarithm in the underlying finite field, $\mathbb{Z}_q$.
 
-    \item \emph{Verification function} $\text{Verify}$: This operation takes as input a message $m \in \{0, 1\}^*$, a digital
-    signature $\text{Sign} \in \mathbb{Z}_q^*$, and the public key $(pk, sk)$, where $pk = g^x$ for some generator polynomial
-    $g \in \mathbb{Z}[X]$ of degree $n-1$ and $x \in \mathbb{Z}_q$. The verification function outputs a Boolean value indicating
-    whether or not the given signature is valid, i.e., $\text{Sign}(m) = g^y \mod q$, where $y \in \mathbb{Z}$ is the unique
-    integer such that $g^{y\bmod{n}} \equiv sk \pmod{q}$.
+    \item \emph{Verification function} $\text{Verify}$: This operation takes as input a message $m \in \{0, 1\}^*$, a digital signature $\text{Sign} \in \mathbb{Z}_q^*$, and the public key $(pk, sk)$, where $pk = g^x$ for some generator polynomial $g \in \mathbb{Z}[X]$ of degree $n-1$ and $x \in \mathbb{Z}_q$. The verification function outputs a Boolean value indicating whether or not the given signature is valid, i.e., $\text{Sign}(m) = g^y \mod q$, where $y \in \mathbb{Z}$ is the unique integer such that $g^{y\bmod{n}} \equiv sk \pmod{q}$.
 
 \end{enumerate}
 
-The signing process requires employing the private key. The objective is that if Alice alone possesses her private key,
-then she is the only individual capable of generating a digital signature. If this key is compromised the security of the
-system is significantly undermined. The $\text{Verify}$ function serves as a means of determining whether a given message
-bears a valid digital signature generated using the corresponding public key. It should return True when applied to an
-authentic signature and False for all other signatures.
+The signing process requires employing the private key. The objective is that if Alice alone possesses her private key, then she is the only individual capable of generating a digital signature. If this key is compromised the security of the system is significantly undermined. The $\text{Verify}$ function serves as a means of determining whether a given message bears a valid digital signature generated using the corresponding public key. It should return True when applied to an authentic signature and False for all other signatures.
 
-The security of a digital signature scheme relies on the secrecy of the private key used to generate the signature. However,
-it is theoretically possible for an attacker to brute-force the public key and find a valid signature by exhaustively trying
-different potential signatures until one returns true~\cite{boneh2001short}. In the case of Bitcoin's digital signature scheme,
-there are $2^{256}$ possible signatures due to the large number of bits in the hash function used for signature generation
-~\cite{dss}. However, this number is so large that it makes brute-force attacks on the public key infeasible, providing
-a high level of security for Bitcoin's digital signatures.
+The security of a digital signature scheme relies on the secrecy of the private key used to generate the signature. However, it is theoretically possible for an attacker to brute-force the public key and find a valid signature by exhaustively trying different potential signatures until one returns true~\cite{boneh2001short}. In the case of Bitcoin's digital signature scheme, there are $2^{256}$ possible signatures due to the large number of bits in the hash function used for signature generation ~\cite{dss}. However, this number is so large that it makes brute-force attacks on the public key infeasible, providing a high level of security for Bitcoin's digital signatures.
