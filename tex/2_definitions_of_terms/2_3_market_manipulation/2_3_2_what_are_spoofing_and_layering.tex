@@ -1,44 +1,16 @@
 \subsection{What Are Spoofing and Layering?}
-Spoofing is a trading practice that lacks a universally accepted definition, but certain behaviors are commonly recogniz
-ed as constituting spoofing. A typical spoofing scheme involves a trader placing a substantial order on one side of the
-to cancel it before execution, while simultaneously entering one or more smaller orders on the opposite side that the trader
-intends to execute. By placing the large order, the trader creates an illusion of market depth, prompting responses from
-other market participants that ultimately benefit the trader's smaller positions. These responses occur because many participants
-shape their market strategies based on their perceptions of supply and demand at different price levels. Often, these
-responses are automated and occur nearly simultaneously due to the widespread use of trading algorithms
-\cite{corwin2012large, jarrow2011manipulation}.
+Spoofing is a trading practice that lacks a universally accepted definition, but certain behaviors are commonly recognized as constituting spoofing. A typical spoofing scheme involves a trader placing a substantial order on one side of the to cancel it before execution, while simultaneously entering one or more smaller orders on the opposite side that the trader intends to execute. By placing the large order, the trader creates an illusion of market depth, prompting responses from other market participants that ultimately benefit the trader's smaller positions. These responses occur because many participants shape their market strategies based on their perceptions of supply and demand at different price levels. Often, these responses are automated and occur nearly simultaneously due to the widespread use of trading algorithms \cite{corwin2012large, jarrow2011manipulation}.
 
-Spoofing and layering are typically not isolated incidents but rather ongoing practices that span over extended periods,
-involving the placement of numerous spoof or layered orders. For instance, in August 2019, a former J.P. Morgan Chase
-precious metals trader admitted to engaging in thousands of instances of spoofing between 2007 and 2016. Furthermore, a
-2018 enforcement action by the CFTC revealed over 36,000 instances of spoof orders,
-while an earlier enforcement action by the SEC uncovered more than 325,000 layered
-transactions, corresponding to the entry of over eight million layered orders \cite{cftc2018spoofing, sec2015spoofing}.
+Spoofing and layering are typically not isolated incidents but rather ongoing practices that span over extended periods, involving the placement of numerous spoof or layered orders. For instance, in August 2019, a former J.P. Morgan Chase precious metals trader admitted to engaging in thousands of instances of spoofing between 2007 and 2016. Furthermore, a 2018 enforcement action by the CFTC revealed over 36,000 instances of spoof orders, while an earlier enforcement action by the SEC uncovered more than 325,000 layered transactions, corresponding to the entry of over eight million layered orders \cite{cftc2018spoofing, sec2015spoofing}.
 
-The repercussions of spoofing can lead to significant losses for the affected traders. For instance, in an October 2018
-case where codefendants pleaded guilty, market participants trading futures contracts in the spoofed markets suffered
-losses exceeding \$60 million, as estimated by the DoJ. Additionally, in a separate spoofing ca
-se settled by Merrill Lynch Commodities, Inc. in June 2019 with the CFTC and the
-DOJ, the settlement encompassed disgorgement and restitution. The NPA entered into by Merrill
-Lynch with the DOJ highlighted the detrimental impacts of the spoofing scheme, including exposing market participants to
-potential losses, unwinding precious metals futures positions at a financial detriment, incurring investigative and liti
-gation costs, and causing reputational damage \cite{doj2018spoofing, cftc2019merrill}.
+The repercussions of spoofing can lead to significant losses for the affected traders. For instance, in an October 2018 case where codefendants pleaded guilty, market participants trading futures contracts in the spoofed markets suffered losses exceeding \$60 million, as estimated by the DoJ. Additionally, in a separate spoofing case settled by Merrill Lynch Commodities, Inc. in June 2019 with the CFTC and the DOJ, the settlement encompassed disgorgement and restitution. The NPA entered into by Merrill Lynch with the DOJ highlighted the detrimental impacts of the spoofing scheme, including exposing market participants to potential losses, unwinding precious metals futures positions at a financial detriment, incurring investigative and litigation costs, and causing reputational damage \cite{doj2018spoofing, cftc2019merrill}.
 
 %% figure 1.16
 \figuraBib{img/chapter-2/2_3_2_what_are_spoofing_and_layering/16_spoofing.jpg}{A Tipical Spoofing}
 {spoofing}{spoofing}{width=.85\textwidth}%
 
-Layering represents a more advanced iteration of spoofing techniques. In a typical layering scheme, multiple limit orders
-are strategically placed on one side of the market at various price levels, without the intention of execution. The primary
-objective remains the creation of an illusionary shift in supply and demand levels, thereby artificially influencing
-the price of the targeted commodity or security. Subsequently, an order is executed on the opposite side of the market
-at the artificially induced price, while the previously entered multiple orders are swiftly canceled. The foundations of
-spoofing and layering rely on the fundamental microeconomic principle that an increase in supply exerts downward pressure
-on prices, while an increase in demand drives prices upward. Nevertheless, trading techniques have evolved and grown more
-intricate in recent years. Noteworthy variations include spoofing with vacuuming, collapsing of layers, flipping, and the
-spread squeeze. Moreover, cross-market schemes executed across highly correlated markets introduce further complexities.
-The heightened complexity has significantly exacerbated the challenge of detection \cite{corcoran2020understanding,
-cheung2019understanding}.
+Layering represents a more advanced iteration of spoofing techniques. In a typical layering scheme, multiple limit orders are strategically placed on one side of the market at various price levels, without the intention of execution. The primary objective remains the creation of an illusionary shift in supply and demand levels, thereby artificially influencing the price of the targeted commodity or security. Subsequently, an order is executed on the opposite side of the market at the artificially induced price, while the previously entered multiple orders are swiftly canceled. The foundations of spoofing and layering rely on the fundamental microeconomic principle that an increase in supply exerts downward pressure
+on prices, while an increase in demand drives prices upward. Nevertheless, trading techniques have evolved and grown more intricate in recent years. Noteworthy variations include spoofing with vacuuming, collapsing of layers, flipping, and the spread squeeze. Moreover, cross-market schemes executed across highly correlated markets introduce further complexities. The heightened complexity has significantly exacerbated the challenge of detection \cite{corcoran2020understanding,cheung2019understanding}.
 
 %% figure 1.17
 \figuraBib{img/chapter-2/2_3_2_what_are_spoofing_and_layering/17_layering.jpg}{A Tipical Layering}
@@ -47,31 +19,9 @@ cheung2019understanding}.
 The motivations of a trader in a spoofing or layering scheme typically revolve around market manipulation for financial
 gain, although this is not always the case. 
 
-Another motivation involves testing the market's response to specific order
-types. A notable example occurred in September 2018 when Mizuho Bank settled allegations of engaging in multiple acts of
-spoofing on the Chicago Mercantile Exchange (CME) and Chicago Board of Trade (CBOT), the world's largest futures exchange.
-Mizuho's trader was accused by the U.S. CFTC of placing spoof orders to assess mar
-ket reaction to their trading activities, as part of their anticipation of hedging Mizuho's swaps positions with futures
-contracts at a later date. It is important to note that the CFTC did not claim that the trader executed or placed genuine
-orders that directly benefited from the spoofed large orders. In previous spoofing cases handled by the CFTC, both spoof
-and genuine orders were alleged to be involved in the misconduct. However, the CFTC maintains that a trader's conduct is
-considered unlawful regardless of whether the motive is market manipulation or assessing market reactions. While this
-position has not been tested in court, the CFTC's stance is expected to be upheld given that the Commodity Exchange Act
-(CEA) does not specify any motive requirement for prohibited spoofing. \cite{cftc2018mizuho, lu2021individual,
-schultz2019spoofing}.
+Another motivation involves testing the market's response to specific order types. A notable example occurred in September 2018 when Mizuho Bank settled allegations of engaging in multiple acts of spoofing on the Chicago Mercantile Exchange (CME) and Chicago Board of Trade (CBOT), the world's largest futures exchange. Mizuho's trader was accused by the U.S. CFTC of placing spoof orders to assess mar ket reaction to their trading activities, as part of their anticipation of hedging Mizuho's swaps positions with futures contracts at a later date. It is important to note that the CFTC did not claim that the trader executed or placed genuine orders that directly benefited from the spoofed large orders. In previous spoofing cases handled by the CFTC, both spoof and genuine orders were alleged to be involved in the misconduct. However, the CFTC maintains that a trader's conduct is considered unlawful regardless of whether the motive is market manipulation or assessing market reactions. While this
+position has not been tested in court, the CFTC's stance is expected to be upheld given that the Commodity Exchange Act (CEA) does not specify any motive requirement for prohibited spoofing. \cite{cftc2018mizuho,lu2021individual,schultz2019spoofing}.
 
-In January 2018, the U.S. CFTC announced the establishment of a Spoofing Task Force,
-representing a collaborative effort within the CFTC's Division of Enforcement, with team members stationed across various
-CFTC offices in Chicago, Kansas City, New York, and Washington, D.C. The purpose of the Task Force, as stated by the CFTC,
-was to "eradicate spoofing from our markets." Concurrently, the CFTC disclosed the resolution of spoofing enforcement actions
-involving Deutsche Bank, UBS, and HSBC, resulting in fines reaching up to \$30 million. Furthermore, civil complaints alleging
-spoofing and manipulation were filed against six individuals and one company in coordination with the U.S. DOJ and the
-Federal Bureau of Investigation (FBI). The DOJ also pursued criminal charges against these individuals, as well as two others.
-This series of actions marked the largest coordinated enforcement effort involving criminal authorities
-in the history of the CFTC and was identified by the DOJ as its most extensive criminal enforcement action in the futures
-market to date. Subsequently, a review conducted in September 2018 concluded that the CFTC's dedication to combating spoofing
-remained steadfast and ongoing. By the end of the fiscal year on September 30, 2018, the CFTC's Division of Enforcement
-had initiated a higher number of actions related to spoofing and manipulation than in any prior year. While the CFTC averaged
-six such cases per year between 2009 and 2017, it filed 26 cases in 2018. More recently, in August 2019, a comprehensive
-evaluation affirmed that spoofing continues to be a prominent area of focus for both the DOJ and the CFTC \cite{andrews2018cftc,
-doherty2019taming}.
+In January 2018, the U.S. CFTC announced the establishment of a Spoofing Task Force, representing a collaborative effort within the CFTC's Division of Enforcement, with team members stationed across various CFTC offices in Chicago, Kansas City, New York, and Washington, D.C. The purpose of the Task Force, as stated by the CFTC, was to "eradicate spoofing from our markets." Concurrently, the CFTC disclosed the resolution of spoofing enforcement actions involving Deutsche Bank, UBS, and HSBC, resulting in fines reaching up to \$30 million. Furthermore, civil complaints alleging
+spoofing and manipulation were filed against six individuals and one company in coordination with the U.S. DOJ and the Federal Bureau of Investigation (FBI). The DOJ also pursued criminal charges against these individuals, as well as two others. This series of actions marked the largest coordinated enforcement effort involving criminal authorities in the history of the CFTC and was identified by the DOJ as its most extensive criminal enforcement action in the futures market to date. Subsequently, a review conducted in September 2018 concluded that the CFTC's dedication to combating spoofing remained steadfast and ongoing. By the end of the fiscal year on September 30, 2018, the CFTC's Division of Enforcement had initiated a higher number of actions related to spoofing and manipulation than in any prior year. While the CFTC averaged
+six such cases per year between 2009 and 2017, it filed 26 cases in 2018. More recently, in August 2019, a comprehensive evaluation affirmed that spoofing continues to be a prominent area of focus for both the DOJ and the CFTC \cite{andrews2018cftc,doherty2019taming}.
