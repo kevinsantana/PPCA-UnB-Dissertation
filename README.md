@@ -22,7 +22,6 @@ if it not works on first try, run this command one more time.
 
 Everytime a push or a pull request is made, `Build LaTeX document and deploy` action will come on place. Building the pdf from tex files and uploading it to the artifact section.
 
-
 # Chapters
 
 ### Chapter 1 - Introduction
