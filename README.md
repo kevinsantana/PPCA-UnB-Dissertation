@@ -26,14 +26,14 @@ Everytime a push or a pull request is made, `Build LaTeX document and deploy` ac
 # Chapters
 
 ### Chapter 1 - Introduction
-Introduces the readers with the fundamental problem with money and its centralization. Shows Bitcoin, and cryptocurrency as a solution to this centralized nature of money. Define aims and objectives to the overall research.
+Introduces the readers to the fundamental problem of money and its centralization. Shows Bitcoin, and cryptocurrency as a solution to the centralized nature of money. Define the aims and objectives of the overall research.
 
-Ultimately, section `Justification` shows justification on the purposes of this dissertation, exposing what can be achieve throughout this research.
+Ultimately, section `Justification` explains the purposes of this dissertation, exposing what can be achieve throughout this research.
 
 ### Chapter 2 - Definitions of Terms
-Present readers with basic concepts from the cryptocurrency ecosystem. Section `Money is Corruptible`, in special, shows the author vision on how society global economy is manipulated through the corruptible nature of money and how `Bitcoin` presents a solution to this corruptible nature.
+Present readers with basic concepts from the cryptocurrency ecosystem. Section `Money is Corruptible`, in particular, shows the author's vision of how society's global economy is manipulated through corruptible nature of money and how `Bitcoin` presents a solution to this corruptible nature.
 
-Finally, section `Market Manipulation` brings critic to flaws on Bitcoin, specially `Spoofing` and `Layering` which are subject of study on this dissertation.
+Finally, section `Market Manipulation` introduces critics to flaws in Bitcoin, especially `Spoofing` and `Layering` which is the subject of study int this dissertation.
 
 ### Chapter 3 - Related Work
 Work in progress.
