@@ -20,7 +20,7 @@ jobs:
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
-          name: Spoofing, Layering and Bitcoin Market Manipulation Analysis On a Crypotocurrency Exchange
+          name: Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange
           path: dissertation_main.pdf
       
       # - name: Deploy

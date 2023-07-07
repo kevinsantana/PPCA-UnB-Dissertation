@@ -6,7 +6,7 @@ Presented as a requirement for the Master On Applied Computing title.
 
 Notice that this is a ongoing project and it may not reflect the final findings, results and conclusions on the topics abroad.
 
-Spoofing, Layering and Bitcoin Market Manipulation Analysis On a Crypotocurrency Exchange is a dissertation thesis upon which, market manipulation under a cryptocurrency exchange - [Mercado Bitcoin](https://www.mercadobitcoin.com.br/?lang=en) will be investigated; to conclude either or not the cryptocurrency market can be a target to such scams.
+Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange is a dissertation thesis upon which, market manipulation under a cryptocurrency exchange - [Mercado Bitcoin](https://www.mercadobitcoin.com.br/?lang=en) will be investigated; to conclude either or not the cryptocurrency market can be a target to such scams.
 
 ## Building
 
@@ -22,17 +22,17 @@ if it not works on first try, run this command one more time.
 
 Everytime a push or a pull request is made, `Build LaTeX document and deploy` action will come on place. Building the pdf from tex files and uploading it to the artifact section.
 
-
 # Chapters
 
 ### Chapter 1 - Introduction
-Work in progress.
+Introduces the readers to the fundamental problem of money and its centralization. Shows Bitcoin, and cryptocurrency as a solution to the centralized nature of money. Define the aims and objectives of the overall research.
 
+Ultimately, section `Justification` explains the purposes of this dissertation, exposing what can be achieve throughout this research.
 
 ### Chapter 2 - Definitions of Terms
-Present readers with basic concepts from the cryptocurrency ecosystem. Section `Money is Corruptible`, in special, shows the author vision on how society global economy is manipulated through the corruptible nature of money and how `Bitcoin` presents a solution to this corruptible nature.
+Present readers with basic concepts from the cryptocurrency ecosystem. Section `Money is Corruptible`, in particular, shows the author's vision of how society's global economy is manipulated through corruptible nature of money and how `Bitcoin` presents a solution to this corruptible nature.
 
-Finally, section `Market Manipulation` brings critic to flaws on Bitcoin, specially `Spoofing` and `Layering` which are subject of study on this dissertation.
+Finally, section `Market Manipulation` introduces critics to flaws in Bitcoin, especially `Spoofing` and `Layering` which is the subject of study int this dissertation.
 
 ### Chapter 3 - Related Work
 Work in progress.
