@@ -1,37 +1,70 @@
 \subsubsection{Removing Cash}
-The effectiveness of this system relies on an implicit agreement between individuals to uphold their financial obligations. Specifically, participants are expected to pay in cash at the end of each month, despite the absence of a formal enforcement mechanism. However, there is no guarantee that all parties will comply with this arrangement, as demonstrated by instances where one individual (e.g., Charlie) may accumulate significant debt and subsequently fail to fulfill their financial obligations.
+The effectiveness of this system relies on an implicit agreement between individuals to uphold their financial
+obligations. Specifically, participants are expected to pay in cash at the end of each month, despite the absence of a
+formal enforcement mechanism. However, there is no guarantee that all parties will comply with this arrangement, as
+demonstrated by instances where one individual (e.g., Charlie) may accumulate significant debt and subsequently fail to
+fulfill their financial obligations.
 
-In this cashless economic system, it may be necessary to revert to cash to settle up if certain individuals owe a significant amount of money (e.g., Charlie). However, as long as no one falls into debt and the ledger is properly maintained, the use of cash can be avoided. The ledger alone can function effectively as long as there is a mechanism in place to prevent excessive spending.
+In this cashless economic system, it may be necessary to revert to cash to settle up if certain individuals owe a
+significant amount of money (e.g., Charlie). However, as long as no one falls into debt and the ledger is properly
+maintained, the use of cash can be avoided. The ledger alone can function effectively as long as there is a mechanism in
+place to prevent excessive spending.
 
-One strategy for managing a cashless economy without resorting to cash settlements is to have all participants deposit an equal amount (e.g., \$100) into the pot, and record the initial distribution of funds on the ledger. For example, Alice would receive \$100 in the first transaction, while Bob would receive \$100 in the second transaction, and so on. By using this approach, individuals can maintain their financial balance without the need for cash transactions.
+One strategy for managing a cashless economy without resorting to cash settlements is to have all participants deposit
+an equal amount (e.g., \$100) into the pot, and record the initial distribution of funds on the ledger. For example,
+Alice would receive \$100 in the first transaction, while Bob would receive \$100 in the second transaction, and so on.
+By using this approach, individuals can maintain their financial balance without the need for cash transactions.
 
-%% figure 1.4
-% \figuraBib{img/chapter-1/1_2_5_removing_cash/4_pay-in-100.png}{Cashless economic system}{3blue1brown_cashless}
-% {cashless}{width=.85\textwidth}%
+%% figure 1.4 \figuraBib{img/chapter-1/1_2_5_removing_cash/4_pay-in-100.png}{Cashless economic
+% system}{3blue1brown_cashless} {cashless}{width=.85\textwidth}%
 
-Now that we are under a cashless economic system, it is important to prevent double-spending attacks where a user attempts to spend the same cryptocurrency more than once. One way to accomplish this is by verifying that transactions are valid before they are added to the ledger. Specifically, if all users on the network start with zero balance (\$0) and the first two transactions are of \$100 value (Charlie pays Alice \$50 and Charlie pays Bob \$50), then a third transaction where Charlie pays You \$20 would be invalid. This is because it violates the rule that a user cannot spend more than they have in their account.
+Now that we are under a cashless economic system, it is important to prevent double-spending attacks where a user
+attempts to spend the same cryptocurrency more than once. One way to accomplish this is by verifying that transactions
+are valid before they are added to the ledger. Specifically, if all users on the network start with zero balance (\$0)
+and the first two transactions are of \$100 value (Charlie pays Alice \$50 and Charlie pays Bob \$50), then a third
+transaction where Charlie pays You \$20 would be invalid. This is because it violates the rule that a user cannot spend
+more than they have in their account.
 
 %% figure 1.5
-\figuraBib{img/chapter-2/2_2_5_removing_cash/5_invalid.png}{In this new system, we don't allow people to spend more than they have.}{3blue1brown_invalid}{invalid}{width=.85\textwidth}%
+\figuraBib{img/chapter-2/2_2_5_removing_cash/5_invalid.png}{In this new system, we don't allow people to spend more than
+they have.}{3blue1brown_invalid}{invalid}{width=.85\textwidth}%
 
-It can be noted that the requirement to ascertain the legitimacy of a transaction necessitates knowledge of the entire transaction history. This principle applies not only to traditional financial systems but also to decentralized digital currencies, although opportunities for improvement is present.
+It can be noted that the requirement to ascertain the legitimacy of a transaction necessitates knowledge of the entire
+transaction history. This principle applies not only to traditional financial systems but also to decentralized digital
+currencies, although opportunities for improvement is present.
 
 %% figure 1.6
-\figuraBib{img/chapter-2/2_2_5_removing_cash/6_overdrawn.png}
-{Now verifying a transaction requires checking the entire ledger history to make sure nobody overdraws.}
-{3blue1brown_overdrawn}{overdrawn}{width=.85\textwidth}%
+\figuraBib{img/chapter-2/2_2_5_removing_cash/6_overdrawn.png} {Now verifying a transaction requires checking the entire
+ledger history to make sure nobody overdraws.} {3blue1brown_overdrawn}{overdrawn}{width=.85\textwidth}%
 
-The use of the above ledger system appears to dissociate it from physical cash transactions. If everyone in the world were to utilize this ledger, one could theoretically conduct all financial transactions solely through the ledger without any need for conversion to United States Dollars (USD). Many individuals currently perform digital transactions exclusively while occasionally using physical cash. The latter scenario involves a more intricate system of banks wherein the balance on a digital account can be converted into USD. However, if one and their associates were to completely detach their ledger from USD, there would be no guarantee that having a positive balance in the ledger could translate into physical currency in hand. To accentuate this point, one can stop using the \$ sign, and digital quantities, on the ledger can be referred to as "Ledger Dollars" (LD).
+The use of the above ledger system appears to dissociate it from physical cash transactions. If everyone in the world
+were to utilize this ledger, one could theoretically conduct all financial transactions solely through the ledger
+without any need for conversion to United States Dollars (USD). Many individuals currently perform digital transactions
+exclusively while occasionally using physical cash. The latter scenario involves a more intricate system of banks
+wherein the balance on a digital account can be converted into USD. However, if one and their associates were to
+completely detach their ledger from USD, there would be no guarantee that having a positive balance in the ledger could
+translate into physical currency in hand. To accentuate this point, one can stop using the \$ sign, and digital
+quantities, on the ledger can be referred to as "Ledger Dollars" (LD).
 
-Individuals possessing Ledger Dollars have the liberty to convert them into US dollars at their discretion. An example involves Alice offers Bob a zero-value US dollar bill in exchange for him adding and signing a transaction entry to the shared ledger, wherein Bob pays Alice ten units of Ledger Dollar value. However, the protocol does not explicitly guarantee the occurrence of such exchanges. Instead, it operates more similarly to foreign currency exchange in an open market where 10LD is its own independent entity. Additionally, if there is high demand for inclusion within the ledger, a transaction of 10LD may require a non-zero amount of physical cash. Conversely, if there is a low demand for participation, it may
-require only a minimal amount of physical cash.
+Individuals possessing Ledger Dollars have the liberty to convert them into US dollars at their discretion. An example
+involves Alice offers Bob a zero-value US dollar bill in exchange for him adding and signing a transaction entry to the
+shared ledger, wherein Bob pays Alice ten units of Ledger Dollar value. However, the protocol does not explicitly
+guarantee the occurrence of such exchanges. Instead, it operates more similarly to foreign currency exchange in an open
+market where 10LD is its own independent entity. Additionally, if there is high demand for inclusion within the ledger,
+a transaction of 10LD may require a non-zero amount of physical cash. Conversely, if there is a low demand for
+participation, it may require only a minimal amount of physical cash.
 
-% %% figure 1.7
-% \figuraBib{img/chapter-1/1_2_5_removing_cash/7_exchange-currency.png}{Exchange currencies}{3blue1brown_exchange_currency}
-% {exchange}{width=.75\textwidth}%
+% %% figure 1.7 \figuraBib{img/chapter-1/1_2_5_removing_cash/7_exchange-currency.png}{Exchange
+% currencies}{3blue1brown_exchange_currency} {exchange}{width=.75\textwidth}%
 
-Our ledger has been transformed into a form of currency that operates within a closed system, allowing for peer-to-peer transactions between individuals without the backing of a state or taxation imposed in the form of Ledger Dollars. It is important to recognize that, at its core, cryptocurrency can be viewed as a ledger that records the history of financial transactions, serving as the currency itself. The concept of possessing Bitcoin is simply represented by a positive balance on the Bitcoin ledger, which is associated with a secret key. This differs from traditional currency systems where money enters the ledger through cash transactions. In the case of Bitcoin, the process for introducing new money into the ledger will be discussed in more detail shortly. However, it is important to note that there are fundamental differences between Ledger Dollars and true cryptocurrencies.
+Our ledger has been transformed into a form of currency that operates within a closed system, allowing for peer-to-peer
+transactions between individuals without the backing of a state or taxation imposed in the form of Ledger Dollars. It is
+important to recognize that, at its core, cryptocurrency can be viewed as a ledger that records the history of financial
+transactions, serving as the currency itself. The concept of possessing Bitcoin is simply represented by a positive
+balance on the Bitcoin ledger, which is associated with a secret key. This differs from traditional currency systems
+where money enters the ledger through cash transactions. In the case of Bitcoin, the process for introducing new money
+into the ledger will be discussed in more detail shortly. However, it is important to note that there are fundamental
+differences between Ledger Dollars and true cryptocurrencies.
 
-% %% figure 1.8
-% \figuraBib{img/chapter-1/1_2_5_removing_cash/8_ledger-is-currency.png}{Ledger is currency.}{3blue1brown_ledger_is_currency}
-% {ledgerr}{width=.75\textwidth}%
+% %% figure 1.8 \figuraBib{img/chapter-1/1_2_5_removing_cash/8_ledger-is-currency.png}{Ledger is
+% currency.}{3blue1brown_ledger_is_currency} {ledgerr}{width=.75\textwidth}%
