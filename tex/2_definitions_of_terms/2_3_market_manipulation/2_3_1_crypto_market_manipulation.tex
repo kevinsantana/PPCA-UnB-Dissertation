@@ -1,97 +1,114 @@
 \subsection{Crypto Market Manipulation}
-Crypto market manipulation should be differentiated from currency manipulation, which is primarily carried out by governments
-and authorized entities like central banks~\cite{goldstein2018currency}. Currency manipulation, though legal, may face challenges
-from other countries. Governments may engage in currency devaluation to enhance their competitiveness~\cite{goldstein2018currency}.
+Crypto market manipulation should be differentiated from currency manipulation, which is primarily carried out by
+governments and authorized entities like central banks~\cite{goldstein2018currency}. Currency manipulation, though
+legal, may face challenges from other countries. Governments may engage in currency devaluation to enhance their
+competitiveness~\cite{goldstein2018currency}.
 
-Cryptocurrency manipulation encompasses a range of deceptive practices aimed at influencing the cryptocurrency market for
-personal gain or to create artificial market conditions. While it is challenging to provide an exhaustive list, some
+Cryptocurrency manipulation encompasses a range of deceptive practices aimed at influencing the cryptocurrency market
+for personal gain or to create artificial market conditions. While it is challenging to provide an exhaustive list, some
 well-known forms of cryptocurrency manipulation include:
 
 \subsubsection{Pump and Dump}
-Pump-and-dump fraud is a manipulative practice commonly observed in cryptocurrency markets. It involves artificially inflating
-the price of a cryptocurrency through coordinated efforts, creating a buying frenzy among unsuspecting investors. Once the
-price reaches a peak, the fraudsters sell their holdings at the inflated price, causing the price to plummet. This results
-in significant losses for those who bought the cryptocurrency during the manipulation~\cite{karim2018manipulation}.
+Pump-and-dump fraud is a manipulative practice commonly observed in cryptocurrency markets. It involves artificially
+inflating the price of a cryptocurrency through coordinated efforts, creating a buying frenzy among unsuspecting
+investors. Once the price reaches a peak, the fraudsters sell their holdings at the inflated price, causing the price to
+plummet. This results in significant losses for those who bought the cryptocurrency during the
+manipulation~\cite{karim2018manipulation}.
 
 Pump-and-dump schemes typically follow a similar pattern~\cite{cheah2015pump}:
 
 \begin{enumerate}
     \item \textit{Accumulation Phase:} The fraudsters accumulate a significant amount of the targeted cryptocurrency at
     relatively low prices, often in low-liquidity markets.
-    \item Promotion Phase: Using various means such as social media, online forums, or messaging platforms, the fraudsters
-    create a buzz around the targeted cryptocurrency. They disseminate positive news, rumors, or false information to attract
-    potential investors.
-    \item \textit{Pump Phase:} As the promotion gains traction, the fraudsters initiate a buying spree, often in a coordinated fashion.
-    This influx of demand drives up the price of cryptocurrency rapidly.
-    \item \textit{Dump Phase:} Once the price reaches a peak and enough retail investors have entered the market, the fraudsters
-    sell their holdings, flooding the market with cryptocurrency. This sudden increase in supply causes the price to collapse,
-    leaving unsuspecting investors with losses.
-    \item Pump-and-dump fraud exploits the lack of regulatory oversight and the relatively small market capitalization of
-    certain cryptocurrencies. It takes advantage of investors fear of missing out (FOMO) and their susceptibility to market
-    manipulation techniques.
+    \item Promotion Phase: Using various means such as social media, online forums, or messaging platforms, the
+    fraudsters create a buzz around the targeted cryptocurrency. They disseminate positive news, rumors, or false
+    information to attract potential investors.
+    \item \textit{Pump Phase:} As the promotion gains traction, the fraudsters initiate a buying spree, often in a
+    coordinated fashion. This influx of demand drives up the price of cryptocurrency rapidly.
+    \item \textit{Dump Phase:} Once the price reaches a peak and enough retail investors have entered the market, the
+    fraudsters sell their holdings, flooding the market with cryptocurrency. This sudden increase in supply causes the
+    price to collapse, leaving unsuspecting investors with losses.
+    \item Pump-and-dump fraud exploits the lack of regulatory oversight and the relatively small market capitalization
+    of certain cryptocurrencies. It takes advantage of investors fear of missing out (FOMO) and their susceptibility to
+    market manipulation techniques.
 \end{enumerate}
 
 Researchers and regulators have extensively studied pump-and-dump fraud in cryptocurrency markets, aiming to understand
-its characteristics, impact, and potential detection methods. However, the decentralized and anonymous nature of cryptocurrencies
-poses challenges in effectively combating this form of manipulation~\cite{jin2020pump, yang2019pump}.
+its characteristics, impact, and potential detection methods. However, the decentralized and anonymous nature of
+cryptocurrencies poses challenges in effectively combating this form of manipulation~\cite{jin2020pump, yang2019pump}.
 
 \subsubsection{Wash Trading}
-Wash trading is a fraudulent practice commonly observed in cryptocurrency markets. It involves creating artificial trading
-activity by buying and selling the same cryptocurrency simultaneously or in quick succession, with the intention of misleading
-other market participants. The primary goal of wash trading is to create a false impression of high trading volume and liquidity,
-which can attract investors and manipulate the market price \cite{gandal2018price}.
+Wash trading is a fraudulent practice commonly observed in cryptocurrency markets. It involves creating artificial
+trading activity by buying and selling the same cryptocurrency simultaneously or in quick succession, with the intention
+of misleading other market participants. The primary goal of wash trading is to create a false impression of high
+trading volume and liquidity, which can attract investors and manipulate the market price \cite{gandal2018price}.
 
-In a wash trading scenario, a single entity or a group of colluding entities control both sides of the trade, effectively
-trading with themselves. This activity creates the illusion of market demand and activity, making the cryptocurrency appear
-more popular and active than it is. By artificially inflating the trading volume, the fraudsters aim to attract other traders
-and investors to participate in the market. Wash trading can occur through various methods, such as executing trades through
-multiple accounts controlled by the same entity, using automated trading bots to simulate trading activity, or coordinating
-with other individuals or entities to perform simultaneous buy and sell orders. The goal is to manipulate market sentiment,
-create a false sense of market depth, and potentially influence the price of the cryptocurrency \cite{edelman2018detecting}.
+In a wash trading scenario, a single entity or a group of colluding entities control both sides of the trade,
+effectively trading with themselves. This activity creates the illusion of market demand and activity, making the
+cryptocurrency appear more popular and active than it is. By artificially inflating the trading volume, the fraudsters
+aim to attract other traders and investors to participate in the market. Wash trading can occur through various methods,
+such as executing trades through multiple accounts controlled by the same entity, using automated trading bots to
+simulate trading activity, or coordinating with other individuals or entities to perform simultaneous buy and sell
+orders. The goal is to manipulate market sentiment, create a false sense of market depth, and potentially influence the
+price of the cryptocurrency \cite{edelman2018detecting}.
 
-Wash trading is considered illegal in regulated financial markets as it undermines market integrity and misleads investors.
-However, in the cryptocurrency market, which often operates with limited regulations and oversight, wash trading remains
-prevalent. Detecting and combating wash trading can be challenging due to the lack of transparency and the pseudonymous
-nature of cryptocurrency transactions. Researchers and market surveillance teams are actively exploring data analysis
-techniques and algorithms to identify patterns indicative of wash trading and develop effective countermeasures
-\cite{gandal2018price, edelman2018detecting}.
+Wash trading is considered illegal in regulated financial markets as it undermines market integrity and misleads
+investors. However, in the cryptocurrency market, which often operates with limited regulations and oversight, wash
+trading remains prevalent. Detecting and combating wash trading can be challenging due to the lack of transparency and
+the pseudonymous nature of cryptocurrency transactions. Researchers and market surveillance teams are actively exploring
+data analysis techniques and algorithms to identify patterns indicative of wash trading and develop effective
+countermeasures \cite{gandal2018price, edelman2018detecting}.
 
 \subsubsection{Front-running}
-front-running is a fraudulent practice that can occur in cryptocurrency markets, where a trader or entity exploits non-public
-information to gain an unfair advantage over other market participants. It involves executing trades based on advanced
-knowledge of pending orders or transactions that are likely to impact the market price \cite{van2021front}.
+front-running is a fraudulent practice that can occur in cryptocurrency markets, where a trader or entity exploits
+non-public information to gain an unfair advantage over other market participants. It involves executing trades based on
+advanced knowledge of pending orders or transactions that are likely to impact the market price \cite{van2021front}.
 
-In the context of cryptocurrency, front-running typically involves a trader or entity having access to privileged information
-about a large buy or sell order that is about to be executed. The front runner quickly enters their order ahead of the known
-trade, taking advantage of the subsequent price movement resulting from the anticipated transaction. By front-running, the
-fraudulent party can potentially profit from the price impact caused by the forthcoming order. This practice is unethical
-and can harm market integrity by exploiting information asymmetry and disadvantaging other traders who do not possess the
-same privileged knowledge. It can erode trust in the market and deter fair participation. Detecting and preventing
-front-running in cryptocurrency markets can be challenging due to the decentralized and pseudonymous nature of the transactions.
-However, regulatory bodies and market surveillance teams are exploring methods to identify suspicious trading patterns and
-investigate potential instances of front-running \cite{bistarelli2018front}.
+In the context of cryptocurrency, front-running typically involves a trader or entity having access to privileged
+information about a large buy or sell order that is about to be executed. The front runner quickly enters their order
+ahead of the known trade, taking advantage of the subsequent price movement resulting from the anticipated transaction.
+By front-running, the fraudulent party can potentially profit from the price impact caused by the forthcoming order.
+This practice is unethical and can harm market integrity by exploiting information asymmetry and disadvantaging other
+traders who do not possess the same privileged knowledge. It can erode trust in the market and deter fair participation.
+Detecting and preventing front-running in cryptocurrency markets can be challenging due to the decentralized and
+pseudonymous nature of the transactions. However, regulatory bodies and market surveillance teams are exploring methods
+to identify suspicious trading patterns and investigate potential instances of front-running \cite{bistarelli2018front}.
 
 \subsubsection{Insider Trading}
-Insider trading fraud in the cryptocurrency market involves individuals or entities trading based on non-public information
-that can potentially influence the market price of a cryptocurrency. It refers to the act of buying or selling cryptocurrencies
-using confidential information not yet available to the general public, thereby gaining an unfair advantage over other
-market participants.
+Insider trading fraud in the cryptocurrency market involves individuals or entities trading based on non-public
+information that can potentially influence the market price of a cryptocurrency. It refers to the act of buying or
+selling cryptocurrencies using confidential information not yet available to the general public, thereby gaining an
+unfair advantage over other market participants.
 
 Insider trading can occur in various forms within the cryptocurrency market. It may involve individuals with access to
 privileged information about upcoming announcements, partnerships, regulatory decisions, or other market-moving events.
-By trading on this information before it becomes public knowledge, insiders can profit from the subsequent price movement.
+By trading on this information before it becomes public knowledge, insiders can profit from the subsequent price
+movement.
 
 Engaging in insider trading is considered fraudulent and illegal in many jurisdictions, as it undermines the principles
-of fairness, transparency, and equal opportunity in financial markets. It can harm market integrity, erode investor confidence,
-and distort the true market value of cryptocurrencies. Detecting and preventing insider trading in the cryptocurrency market
-can be challenging due to the pseudonymous nature of transactions and the global and decentralized nature of the market.
-However, regulatory authorities and exchanges are implementing measures such as enhanced surveillance systems, strict
-disclosure requirements, and cooperation with law enforcement agencies to deter and identify instances of insider trading
-\cite{chai2019insider, liu2020detecting}.
+of fairness, transparency, and equal opportunity in financial markets. It can harm market integrity, erode investor
+confidence, and distort the true market value of cryptocurrencies. Detecting and preventing insider trading in the
+cryptocurrency market can be challenging due to the pseudonymous nature of transactions and the global and decentralized
+nature of the market. However, regulatory authorities and exchanges are implementing measures such as enhanced
+surveillance systems, strict disclosure requirements, and cooperation with law enforcement agencies to deter and
+identify instances of insider trading \cite{chai2019insider, liu2020detecting}.
 
 \subsubsection{False News and Rumors}
-False news and rumors fraud in the cryptocurrency market refer to the dissemination of misleading or fabricated information to manipulate cryptocurrency prices for personal gain. It involves spreading false news, exaggerated claims, or unfounded rumors about cryptocurrencies, projects, or market events to deceive investors and create artificial price movements. Perpetrators of false news and rumors fraud may use various methods to spread misinformation. They can utilize social media platforms, online forums, news, and websites, or even create fake accounts to amplify the reach of their fraudulent claims. The false information may include announcements of partnerships, regulatory approvals, technological breakthroughs, or negative news targeting specific cryptocurrencies or projects.
+False news and rumors fraud in the cryptocurrency market refer to the dissemination of misleading or fabricated
+information to manipulate cryptocurrency prices for personal gain. It involves spreading false news, exaggerated claims,
+or unfounded rumors about cryptocurrencies, projects, or market events to deceive investors and create artificial price
+movements. Perpetrators of false news and rumors fraud may use various methods to spread misinformation. They can
+utilize social media platforms, online forums, news, and websites, or even create fake accounts to amplify the reach of
+their fraudulent claims. The false information may include announcements of partnerships, regulatory approvals,
+technological breakthroughs, or negative news targeting specific cryptocurrencies or projects.
 
-False news and rumors aim to create a sense of urgency or FOMO (fear of missing out) among investors, leading them to make impulsive investment decisions based on inaccurate or incomplete information. By manipulating market sentiment, fraudsters can artificially inflate or deflate the price of a cryptocurrency, allowing them to profit from the subsequent price movement.
+False news and rumors aim to create a sense of urgency or FOMO (fear of missing out) among investors, leading them to
+make impulsive investment decisions based on inaccurate or incomplete information. By manipulating market sentiment,
+fraudsters can artificially inflate or deflate the price of a cryptocurrency, allowing them to profit from the
+subsequent price movement.
 
-Detecting and combating false news and rumors fraud in the cryptocurrency market is challenging due to the decentralized nature of information dissemination and the lack of regulatory oversight. However, industry participants, regulatory bodies, and exchanges are increasingly implementing measures to combat this type of fraud. These include improved due diligence on information sources, community-driven fact-checking initiatives, and stricter regulations on the disclosure of news and information \cite{yang2021spreading, feng2020cryptocurrency}.
+Detecting and combating false news and rumors fraud in the cryptocurrency market is challenging due to the decentralized
+nature of information dissemination and the lack of regulatory oversight. However, industry participants, regulatory
+bodies, and exchanges are increasingly implementing measures to combat this type of fraud. These include improved due
+diligence on information sources, community-driven fact-checking initiatives, and stricter regulations on the disclosure
+of news and information \cite{yang2021spreading, feng2020cryptocurrency}.
