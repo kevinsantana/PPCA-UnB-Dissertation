@@ -36,3 +36,6 @@ Finally, section `Market Manipulation` introduces critics to flaws in Bitcoin, e
 
 ### Chapter 3 - Related Work
 Work in progress.
+
+### Chapter 4 - Methods
+Work in progress.
