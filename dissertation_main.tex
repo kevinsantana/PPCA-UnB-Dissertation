@@ -20,6 +20,11 @@
 \usepackage{csquotes}
 \usepackage{amssymb}
 \usepackage{movie15}
+\usepackage{booktabs,calc,xcolor}
+
+% additional commands
+\newcommand{\Heading}[1]{\multicolumn{1}{@{}c@{}}{#1}}
+\newcommand{\timebar}[1]{\multicolumn{#1}{@{}p{#1cm}@{}}{\textcolor{cyan}{\rule[0pt]{#1cm}{10pt}}}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,6 +53,7 @@
 \begin{document}%
     \capitulo{1_introduction/1_introduction.tex}{Introduction}%
     \capitulo{2_definitions_of_terms/2_definitions_of_terms.tex}{Definitions of Terms}%
-    \capitulo{3_related_work/3_related_work.tex}{Related Work}%
-    \capitulo{4_research_methodology/4_research_methodology.tex}{Methodology}%3
+    % \capitulo{3_related_work/3_related_work.tex}{Related Work}%
+    \capitulo{4_research_methodology/4_research_methodology.tex}{Methodology}%
+    \apendice{appendix/appendixes.tex}{Appendix}%
 \end{document}%
