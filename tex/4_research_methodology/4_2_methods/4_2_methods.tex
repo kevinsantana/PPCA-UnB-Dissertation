@@ -1,3 +1,56 @@
 \section{Methods}
 \subsection{Data Collection}
-WIP
+\label{data:data_collection}
+We will collect data from the public API provided by Mercado Bitcoin \footnote{\href{https://www.mercadobitcoin.com.br/api-doc/\#method_trade_api_daysummary}{APIV3}} \footnote{\href{https://api.mercadobitcoin.net/api/v4/docs\#tag/Public-Data/paths/\~1candles/get}{APIV4}}
+
+The first dataset will be created from \href{https://www.mercadobitcoin.com.br/api-doc/\#method_trade_api_daysummary}{day-summary endpoint}. This endpoint returns daily-summary of trades carried out.
+Here we plan to collect historical Bitcoin market data, to detect the market behaviour on a given day. As Mercado Bitcoin first started its activities on 2013, we will have data starting at 2013 to nowdays. The main goal is to have some mechanism to forecast the Bitcoin market movement, on which we plan to have some undestand on the behaviour of the market. The table \ref{dataset1} describes the data that form this dataset.
+
+\begin{table}[ht]
+    \centering
+    \caption{Historical Bitcoin market data, by day.}
+    \label{dataset1}
+    \setlength{\tabcolsep}{2pt}
+    \small
+    \begin{tabular}{|c | c | c | c | c|}
+    \hline
+    \multicolumn{1}{|p{2cm}}{\centering Data} &
+    \multicolumn{1}{|p{4.8cm}}{\centering Description} &
+    \multicolumn{1}{|p{2cm}}{\centering Type} & 
+    \multicolumn{1}{|p{4.8cm}|}{\centering Format} \\ \hline
+    \multirow{1}{*}{\centering date} & \centering Date & String& AAAA-MM-DD\\ \hline
+    \multirow{1}{*}{\centering opening} & \centering Opening price (first trade) & Decimal& 262.99999\\ \hline
+    \multirow{1}{*}{\centering closing}& \centering Closing price (last trade) & Decimal & 269.0\\ \hline
+    \multirow{1}{*}{\centering lowest}& \centering Lowest price & Decimal & 260.00002\\ \hline
+    \multirow{1}{*}{\centering highest}& \centering Highest price & Decimal & 269.2\\ \hline
+    \multirow{1}{*}{\centering volume}& \centering Volume of trading activity (BRL) & Decimal & 7253.1336356785\\ \hline
+    \multirow{1}{*}{\centering quantity}& \centering Quantity of the pair negotiated & Decimal & 27.11390588\\ \hline
+    \multirow{1}{*}{\centering amount}& \centering Number of unique tradings & Integer & 28\\ \hline
+    \multirow{1}{*}{\centering avg\_price}& \centering Average Price & Decimal & 267.5060416518087\\ \hline
+    \end{tabular}
+\end{table}
+
+The second dataset \href{https://api.mercadobitcoin.net/api/v4/docs\#tag/Public-Data/paths/\~1candles/get}{candles} will be used to determine, on a given moment, if some fraud is ocurring. As Bitcoin is extreme volatile we need a time window information to detect an anomaly. The table \ref{dataset2} describes the data that form this dataset.
+
+\begin{table}[ht]
+    \centering
+    \caption{Historical Bitcoin market data by a giving period of time (candle)}
+    \label{dataset2}
+    \setlength{\tabcolsep}{2pt}
+    \small
+    \begin{tabular}{|c | c | c | c | c|}
+    \hline
+    \multicolumn{1}{|p{2cm}}{\centering Data} &
+    \multicolumn{1}{|p{2cm}}{\centering Description} & 
+    \multicolumn{1}{|p{2cm}}{\centering Type} & 
+    \multicolumn{1}{|p{2.8cm}|}{\centering Format} \\ \hline
+    \multirow{1}{*}{\centering c} & \centering Closing price & Array of strings & ["500.00000000","1000.00000000"]\\ \hline
+    \multirow{1}{*}{\centering h} & \centering Highest price & Array of strings & ["1000.00000000","1000.00000000"]\\ \hline
+    \multirow{1}{*}{\centering l}& \centering Lowest price & Array of strings & ["500.00000000","300.00000000"]\\ \hline
+    \multirow{1}{*}{\centering o}& \centering Opening price & Array of strings & ["1000.00000000","300.00000000"]\\ \hline
+    \multirow{1}{*}{\centering t}& \centering Bucket start time (UTC) & Array of integers & [1652119200,1652187600]\\ \hline
+    \multirow{1}{*}{\centering v}& \centering Volume of trading activity & Array of strings & ["4.00000000","2.00000000"]\\ \hline
+    \end{tabular}
+\end{table}
+
+Dataset \ref{dataset2} uses the same data that forms a candle chart \footnote{\href{https://br.tradingview.com/symbols/BTCBRL/?exchange=MERCADO}{chart}}

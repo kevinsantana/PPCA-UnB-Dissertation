@@ -17,6 +17,7 @@
 *.lof
 *.fuse_*
 *.fls
+*.lot
 
 # pdf builded
 dissertation_main.pdf
