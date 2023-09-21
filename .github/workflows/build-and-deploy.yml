@@ -17,14 +17,36 @@ jobs:
           continue_on_error: true
           latexmk_shell_escape: true
       
-      - name: Upload PDF file
-        uses: actions/upload-artifact@v3
-        with:
-          name: Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange
-          path: dissertation_main.pdf
+      # - name: Upload PDF file
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange
+      #     path: dissertation_main.pdf
       
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      # - name: Deploy
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GH_ACTION_DISSERTATION }}
+      #     publish_dir: dissertation_main.pdf
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github_token: ${{ secrets.GH_ACTION_DISSERTATION }}
-          publish_dir: dissertation_main.pdf
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./main.pdf
+          asset_name: main.pdf
+          asset_content_type: pdf
