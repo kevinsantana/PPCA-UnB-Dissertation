@@ -23,8 +23,8 @@ jobs:
           name: Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange
           path: dissertation_main.pdf
       
-      # - name: Deploy
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GH_ACTION_DISSERTATION }}
-      #     publish_dir: dissertation_main.pdf
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_ACTION_DISSERTATION }}
+          publish_dir: dissertation_main.pdf
