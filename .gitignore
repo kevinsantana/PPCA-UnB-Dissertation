@@ -20,7 +20,6 @@
 *.lot
 
 # pdf builded
-dissertation_main.pdf
 dissertation_main.synctex.gz
 
 # folders

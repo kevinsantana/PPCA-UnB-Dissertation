@@ -4,6 +4,7 @@ Presented as a requirement for the Master On Applied Computing title.
 
 ## PDF File
 
+You can get the dissertation pdf file [here](dissertation_main.pdf). 
 
 ## About
 
