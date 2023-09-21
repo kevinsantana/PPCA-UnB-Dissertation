@@ -2,6 +2,9 @@
 
 Presented as a requirement for the Master On Applied Computing title.
 
+## PDF File
+
+
 ## About
 
 Notice that this is a ongoing project and it may not reflect the final findings, results and conclusions on the topics abroad.
