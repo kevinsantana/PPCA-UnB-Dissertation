@@ -20,5 +20,5 @@ jobs:
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
-          name: Bitcoin Market Manipulation Analysis On a Cryptocurrency Exchange
+          name: Exploring Anomaly Detection Techniques in the Cryptocurrency Market
           path: dissertation_main.pdf

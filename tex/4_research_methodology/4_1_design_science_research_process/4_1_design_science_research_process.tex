@@ -3,33 +3,33 @@ The Design Science Research process consists of a series of iterative steps that
 application of the designed artifact. The steps include problem identification and motivation, definition of objectives,
 design and development, demonstration and evaluation, and communication of results \cite{hevner2010design,
 peffers2007design}. In this study, these steps are adapted to the specific context of building a language model pipeline
-for detecting spoofing and layering in Bitcoin trading.
+for detecting anomalies on trading data of cryptocurrencies transactions.
 
 \subsubsection{Problem Identification and Motivation}
 The first step of the DSR process involves identifying and defining the problem to be addressed. In the realm of
-cryptocurrency markets, spoofing and layering are deceptive trading practices that can artificially inflate trading
-volumes and manipulate market prices \cite{gandal2018price, cartea2016algorithmic}. The rapid growth of cryptocurrency
-markets, including Bitcoin, has highlighted the need for effective tools to detect and prevent such manipulative
-activities \cite{chan2017statistical}. Therefore, the problem addressed in this study is the detection of spoofing and
-layering in Bitcoin trading, using advanced language model techniques.
+cryptocurrency markets, anomalies are deceptive trading practices that can artificially inflate trading volumes and
+manipulate market prices \cite{gandal2018price, cartea2016algorithmic}. The rapid growth of cryptocurrency markets,
+including Bitcoin, has highlighted the need for effective tools to detect and prevent such manipulative activities
+\cite{chan2017statistical}. Therefore, the problem addressed in this study is the detection of anomalies on
+cryptocurrencies trading, using advanced language model techniques.
 
 \subsubsection{Objectives}
 The objectives of this methodology are as follows:
 
 \begin{enumerate}
-    \item To design a language model pipeline capable of analyzing Bitcoin time series data and identifying patterns
-    indicative of spoofing and layering.
+    \item To design a language model pipeline capable of analyzing Bitcoin time series data and identifying of possible
+    patterns indicative of anomalies.
     \item To implement and develop the designed pipeline using state-of-the-art natural language processing (NLP) and
     machine learning (ML) techniques.
     \item To evaluate the performance of the language model pipeline using relevant metrics, such as precision, recall,
     F1-score, and receiver operating characteristic (ROC) curve analysis.
-    \item To compare the effectiveness of the developed pipeline with existing methods for spoofing and layering
-    detection in cryptocurrency markets.
+    \item To compare the effectiveness of the developed pipeline with existing methods for anomaly detection in
+    cryptocurrency markets.
 \end{enumerate}
 
 \subsubsection{Design and Development}
-The design and development phase encompasses the creation of the language model pipeline for detecting spoofing and
-layering in the Bitcoin time series dataset. The pipeline consists of the following components:
+The design and development phase encompasses the creation of the language model pipeline for detecting anomalies in the
+cryptocurrencies time series dataset. The pipeline consists of the following components:
 
 \begin{enumerate}
     \item Data Collection and Preprocessing: Historical Bitcoin trading data, including price, volume, and order book
@@ -40,10 +40,10 @@ layering in the Bitcoin time series dataset. The pipeline consists of the follow
     language model.
     \item Language Model Architecture: A deep neural network-based language model, such as a transformer architecture
     \cite{vaswani2017attention}, will be designed to process the extracted features and learn patterns associated with
-    spoofing and layering activities. Pre-trained models and fine-tuning will be evaluated as well.
+    fraudelent activities. Pre-trained models and fine-tuning will be evaluated as well.
     \item Training and Fine-Tuning: The language model will be trained using a labeled dataset containing instances of
-    spoofing and layering, as well as genuine trading behaviors. Fine-tuning techniques, such as transfer learning, will
-    be employed to enhance the model's ability to detect manipulative activities \cite{howard2018universal}.
+    anomalies, as well as genuine trading behaviors. Fine-tuning techniques, such as transfer learning, will be employed
+    to enhance the model's ability to detect manipulative activities \cite{howard2018universal}.
 \end{enumerate}
 
 \subsubsection{Demonstration and Evaluation}
@@ -51,21 +51,21 @@ The demonstration and evaluation phase assesses the effectiveness of the develop
 following steps will be taken:
 
 \begin{enumerate}
-    \item Simulation and Testing: Simulated spoofing and layering scenarios will be created to test the pipeline's
-    ability to identify manipulative patterns. Additionally, the pipeline will be tested on a holdout dataset to
-    evaluate its real-world performance.
+    \item Simulation and Testing: Simulated anomalies scenarios will be created to test the pipeline's ability to
+    identify manipulative patterns. Additionally, the pipeline will be tested on a holdout dataset to evaluate its
+    real-world performance.
     \item Performance Metrics: The pipeline's performance will be evaluated using standard metrics, including precision,
     recall, F1-score, and ROC curve analysis. These metrics will provide insights into the model's ability to correctly
-    identify spoofing and layering activities.
+    identify anomalies activities.
     \item Comparison with Existing Methods: The performance of the language model pipeline will be compared with
-    existing methods for detecting spoofing and layering in cryptocurrency markets. This comparison will highlight the
-    pipeline's innovation and effectiveness.
+    existing methods for detecting anomalies in cryptocurrency markets. This comparison will highlight the pipeline's
+    innovation and effectiveness.
 \end{enumerate}
 
 \subsubsection{Closure}
 The final phase of the DSR process involves communicating the results of the study. This includes presenting the design
 and development of the language model pipeline, detailing the evaluation outcomes, and discussing the implications of
-the findings for detecting spoofing and layering in Bitcoin trading.
+the findings for detecting anomalies in Bitcoin trading.
 
 Throughout the research process, ethical considerations related to data privacy, potential bias, and unintended
 consequences of model deployment will be taken into account \cite{barocas2017fairness, mittelstadt2016ethics}. Measures
