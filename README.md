@@ -10,7 +10,7 @@ You can get the dissertation pdf file [here](dissertation_main.pdf).
 
 Notice that this is a ongoing project and it may not reflect the final findings, results and conclusions on the topics abroad.
 
-Exploring Machine Learning Techniques to Identify Fraudulent Crypto-currency Transactions: A Case Study at Mercado Bitcoin is a dissertation thesis upon which, market manipulation under a cryptocurrency exchange - [Mercado Bitcoin](https://www.mercadobitcoin.com.br/?lang=en) will be investigated; to conclude either or not the cryptocurrency market can be a target to such scams.
+Exploring Machine Learning Techniques to Identify Fraudulent Cryptocurrency Transactions: A Case Study at Mercado Bitcoin is a dissertation thesis upon which, market manipulation under a cryptocurrency exchange - [Mercado Bitcoin](https://www.mercadobitcoin.com.br/?lang=en) will be investigated; to conclude either or not the cryptocurrency market can be a target to such scams.
 
 ## Building
 
