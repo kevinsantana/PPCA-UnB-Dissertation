@@ -1,0 +1,31 @@
+\subsubsection{Ledger Dollars vs. Bitcoin}
+The distributed ledger system based on proof-of-work, as demonstrated by Bitcoin and other cryptocurrencies, involves a
+mining process where miners compete to solve a computational puzzle in order to validate transactions and add them to
+the blockchain. This is accomplished through the use of hash functions, which are designed to be difficult to reverse
+engineer, thereby ensuring the integrity of the distributed ledger \cite{bashir2017mastering}. The proof-of-work
+challenge may involve finding a special number that will make the hash of the block start with 60 zeros. However, in
+practice, this is achieved by systematically changing the number of zeros so that it takes approximately 10 minutes for
+miners to find a new block ~\cite{nakamoto2008bitcoin}.
+
+As a result of this process, a block reward is awarded to the miner who successfully validates a block. Initially, the
+reward was set at 50 Bitcoin per block, but it has since been reduced to 6.25 Bitcoin per block every 210,000 blocks
+~\cite{nakamoto2008bitcoin}. However, miners can also earn transaction fees by including them in the validation process
+of transactions.
+
+%% figure 1.15
+\figuraBib{img/chapter-2/2_2_12_ledger_dollars_vs_bitcoin/15_limited-to-2400.png}{Transactions on a bitcoin blockchain
+is limited}{3blue1brown_limited}{limited}{width=.85\textwidth}%
+
+Considering Bitcoin's objective of approximately one block addition per 10 minutes, its processing capacity is
+constrained to about 4 Bitcoin transactions per second, with some variability. By comparison, Visa handles an average of
+approximately 1,700 transactions per second, with the capability to process over 24,000 per second. The relatively
+slower processing speed of Bitcoin leads to higher transaction fees, as they determine the selection of transactions
+included in new blocks by miners. Moreover, Bitcoin has faced criticism for its significant energy consumption. While
+the proof-of-work concept effectively combats fraud, it necessitates an immense allocation of resources for block
+mining.
+
+According to the Cambridge Bitcoin Electricity Consumption Index, the present annual electricity consumption for Bitcoin
+mining (as of 2021) is estimated at around 115 Terrawatt-Hours. To provide context, this consumption surpasses the
+energy usage of the entire country of Finland. Since 2008, an alternative approach to proof of work, known as "proof of
+stake," has emerged, offering a substantial reduction in energy requirements. Several newer cryptocurrencies have
+embraced this methodology~\cite{CBECS2021}.

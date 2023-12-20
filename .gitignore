@@ -17,12 +17,13 @@
 *.lof
 *.fuse_*
 *.fls
+*.lot
 
 # pdf builded
-dissertation_main.pdf
 dissertation_main.synctex.gz
 
 # folders
 citations
 img/_old-btc
 tex/_old
+.DS_Store

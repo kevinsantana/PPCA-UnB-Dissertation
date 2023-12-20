@@ -20,8 +20,7 @@ clean:
 		   *.brf \
 		   *.glg \
 		   *.gls \
-		   *.fuse_* \
-		   dissertation_main.pdf
+		   *.fuse_*
 
 build:
 	pdflatex dissertation_main.tex
