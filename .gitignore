@@ -28,7 +28,3 @@ citations
 img/_old-btc
 tex/_old
 .DS_Store
-
-# datasets
-*.csv
-*.parquet
