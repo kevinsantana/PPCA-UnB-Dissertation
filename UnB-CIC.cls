@@ -274,7 +274,7 @@
 	{\end{singlespace}\old@endverse}
 
 %novo ambiente definition
-\newcommand{\definitioname}{Defini\c{c}\~ao}
+\newcommand{\definitioname}{Definition}
 \newcounter{definition}
 \newenvironment{definition}
 	{\refstepcounter{definition}%

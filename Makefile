@@ -20,6 +20,7 @@ clean:
 		   *.brf \
 		   *.glg \
 		   *.gls \
+		   *.fdb_latexmk \
 		   *.fuse_*
 
 build:

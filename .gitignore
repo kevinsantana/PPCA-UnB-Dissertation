@@ -18,6 +18,7 @@
 *.fuse_*
 *.fls
 *.lot
+*.fdb_latexmk
 
 # pdf builded
 dissertation_main.synctex.gz

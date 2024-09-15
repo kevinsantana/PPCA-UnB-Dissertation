@@ -1,0 +1,30 @@
+\section{Cryptocurrencies}
+In this section, we present viewers with the definition of cryptocurrency, how does a cryptocurrency transaction work
+and what is an anomaly on this context and the types of anomalies that can raise from cryptocurrency transactions. A
+more in-depth explanation of Bitcoin and its protocol can be found on appendix a --- Bitcoin: A Peer-to-Peer Electronic
+Cash System.
+
+Digital tokens known as cryptocurrencies enable direct online payments between individuals. Unlike national currencies,
+which derive value from legal tender status, cryptocurrencies lack legislated or intrinsic value and are essentially
+valued based on market demand. Bitcoin and Ether are among the most recognized cryptocurrencies, with several others
+existing in the market.
+
+\subsection{How Does a Cryptocurrency Transaction Work?}
+Cryptocurrency transactions involve the transmission of electronic messages across the entire network, containing
+instructions detailing the parties' electronic addresses, the currency quantity for trade, and a time stamp.
+
+If Alice intends to transfer one unit of cryptocurrency to Bob, she initiates the transaction by broadcasting her
+instructions through an electronic message visible to all network users. This transaction joins a queue of recent
+transactions awaiting compilation into a block, which is essentially a group of the most recent transactions. Since the
+system is not instantaneous, the transaction patiently resides with other recent transactions until they are assembled
+into a block.
+
+The information within the block is encrypted into a cryptographic code, prompting miners to engage in a competitive
+process to decipher the code and append the new block of transactions to the blockchain. Upon a miner successfully
+solving the code, other network users verify the solution, reaching a consensus on its validity. Subsequently, the new
+block is seamlessly added to the end of the blockchain, confirming Alice's transaction. This confirmation, however, is
+not immediate, requiring the processing of six blocks of transactions to ensure users' certainty about the success of
+their transactions.
+
+\input{tex/2_definitions_of_terms/2_1_cryptocurrencies/2_1_1_anomalies_and_cryptocurrency_transactions.tex}
+\input{tex/2_definitions_of_terms/2_1_cryptocurrencies/2_1_2_crypto_trading.tex}
