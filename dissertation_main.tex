@@ -8,7 +8,7 @@
 
 % define document type
 % \documentclass[mestrado,mestrado,ppca]{UnB-CIC}
-\documentclass[qualificacao,mestrado,ppca]{UnB-CIC}
+\documentclass[mestrado,mestrado,ppca]{UnB-CIC}
 
 % define preferable language (default is pt-br)
 \selectlanguage{american}\entrue\brfalse
@@ -23,6 +23,7 @@
 \usepackage{booktabs,calc,xcolor}
 \usepackage{hyperref}
 \usepackage{multirow}
+\usepackage{amsthm} % define theorem
 
 % additional commands
 \newcommand{\Heading}[1]{\multicolumn{1}{@{}c@{}}{#1}}
@@ -42,7 +43,7 @@
 
 \autor{Kevin S.}{Araujo}%
 
-\titulo{Exploring Machine Learning Techniques to Identify Fraudulent Cryptocurrency Transactions: A Case Study at Mercado Bitcoin}%
+\titulo{Exploring Anomaly Detection Techniques to Identify Fraudulent Cryptocurrency Transactions: A Case Study at Mercado Bitcoin}%
 
 \palavraschave{criptomoedas, detecção de anomalia, aprendizagem de máquina}%
 \keywords{criptocurrencies, anomaly detection, machine learning}%
@@ -59,5 +60,5 @@
 \capitulo{4_research_methodology/4_research_methodology.tex}{Methodology}%
 
 % \apendice{appendix/appendixes.tex}{Appendix}%
-% \anexo{appendix/appendixes.tex}{Bitcoin: A Peer-to-Peer Electronic Cash System}%
+\anexo{appendix/appendixes.tex}{Appendix}%
 \end{document}%

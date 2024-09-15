@@ -20,5 +20,5 @@ jobs:
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
-          name: Exploring Machine Learning Techniques to Identify Fraudulent Cryptocurrency Transactions: A Case Study at Mercado Bitcoin
+          name: Exploring Anomaly Detection Techniques to Identify Fraudulent Cryptocurrency Transactions: A Case Study at Mercado Bitcoin
           path: dissertation_main.pdf

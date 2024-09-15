@@ -1,0 +1,28 @@
+\subsection{Anomalies and Cryptocurrency Transactions}
+Anomaly detection is the scientific pursuit of identifying patterns within data sets that deviate from anticipated
+behaviors. Such deviant patterns are commonly denoted as anomalies, outliers, discordant observations, exceptions,
+aberrations, surprises, peculiarities, or contaminants across diverse application domains. Within the domain of anomaly
+detection, the terms `anomalies' and `outliers' are frequently employed, at times interchangeably. This scientific
+discipline finds broad applicability in various domains, including but not limited to fraud detection in credit cards,
+insurance, or healthcare, intrusion detection in cyber-security, fault detection in safety-critical systems, and
+military surveillance for the identification of enemy activities \cite{10.1145/1541880.1541882}.
+
+Anomalies can occur at any level of abstraction, from individual data points to entire systems, and can be caused by a
+wide range of factors, including human error, software bugs, hardware failures, and malicious activity. As such, on this
+research we expect to encounter anomalies on the form of fraudulent activities, on purpose or not.
+
+\begin{definition}
+    \textit{An anomaly is an observation or a sequence of observations which deviates remarkably from the general distribution of data. The set of the anomalies form a very small part of the dataset \cite{hawkins1980identification}.}
+\end{definition}
+
+For consistency, we will use the term anomaly throughout this research.
+
+The identification of anomalies in cryptocurrency transactions poses a challenging task, particularly when such
+anomalies arise from malicious activities. Malicious adversaries exhibit adaptability by manipulating anomalous
+observations to mimic normal patterns, thereby introducing complexity to the definition of normal behavior. Another
+obstacle in the realm of anomaly detection in cryptocurrency transactions is the variability in the conceptualization of
+anomalies across different application domains. For instance, within the medical domain, a slight deviation from the
+norm, such as fluctuations in body temperature, may constitute an anomaly. In contrast, analogous deviations in the
+cryptocurrency market domain, such as fluctuations in the value of a specific cryptocurrency, might be considered
+normal. Consequently, the direct application of techniques developed in one domain to another is not a straightforward
+endeavor \cite{10.1145/1541880.1541882}.
