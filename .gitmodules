@@ -1,0 +1,3 @@
+[submodule "models/notebooks/research-aml-elliptic"]
+	path = models/notebooks/research-aml-elliptic
+	url = git@github.com:feedzai/research-aml-elliptic.git
