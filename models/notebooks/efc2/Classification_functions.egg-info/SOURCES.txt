@@ -1,0 +1,8 @@
+README.md
+classification_functions_parallel.c
+setup.py
+Classification_functions.egg-info/PKG-INFO
+Classification_functions.egg-info/SOURCES.txt
+Classification_functions.egg-info/dependency_links.txt
+Classification_functions.egg-info/not-zip-safe
+Classification_functions.egg-info/top_level.txt
