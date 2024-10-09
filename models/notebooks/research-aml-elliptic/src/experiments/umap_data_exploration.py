@@ -5,11 +5,11 @@ ROOT_DIR = os.getcwd()
 sys.path.insert(0, os.path.join(ROOT_DIR, "src"))
 
 from pyod.models.iforest import IForest
-from experiments.general_functions.elliptic_data_preprocessing import load_elliptic_data, setup_train_test_idx, \
+from general_functions.elliptic_data_preprocessing import load_elliptic_data, setup_train_test_idx, \
     train_test_split
 from reaml.models import batch_pyod_per_contamination_level
 import umap
-from experiments.general_functions.plotting import plot_UMAP_projection
+from general_functions.plotting import plot_UMAP_projection
 import pandas as pd
 
 last_train_time_step = 34
@@ -49,10 +49,10 @@ embedding_df['prediction'] = ['Illicit' if pred == 1 else 'Licit' for pred in
 # Plot UMAP projections
 plot_UMAP_projection(embedding_df=embedding_df, hue_on='prediction', fontsize=19, labelsize=22,
                      palette=['cadetblue', 'coral'],
-                     savefig_path=os.path.join(ROOT_DIR, 'output/figure_3_umap_predicted_label.png'))
+                     savefig_path=os.path.join(ROOT_DIR, 'research-aml-elliptic/output/figure_3_umap_predicted_label.png'))
 
 plot_UMAP_projection(embedding_df=embedding_df, hue_on='class', fontsize=19, labelsize=22,
                      palette=['cadetblue', 'coral'],
-                     savefig_path=os.path.join(ROOT_DIR, 'output/figure_4_umap_true_label.png'))
+                     savefig_path=os.path.join(ROOT_DIR, 'research-aml-elliptic/output/figure_4_umap_true_label.png'))
 
 

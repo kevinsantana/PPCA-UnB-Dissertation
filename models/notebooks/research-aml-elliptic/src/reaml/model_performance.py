@@ -27,7 +27,7 @@ def calculate_multiple_model_scores(y_true, y_pred, metric_list):
 
 def metric_per_contamination_level(y_true, model_predictions, metric='f1'):
     columns_ = ['model', 'contamination_level', metric]
-    model_stats_df = pd.DataFrame(columns=columns_)
+    model_stats_df = pd.DataFrame(columns=columns_, dtype=object)
 
     i = 0
     for model_name, predictions in model_predictions.items():

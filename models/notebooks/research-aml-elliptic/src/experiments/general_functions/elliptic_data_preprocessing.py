@@ -1,7 +1,7 @@
 import os
 import sys
 
-ROOT_DIR = os.getcwd()
+ROOT_DIR = os.path.join(os.getcwd(), "research-aml-elliptic")
 sys.path.insert(0, os.path.join(ROOT_DIR, "src"))
 
 if str(ROOT_DIR).split('/')[-1] != 'research-aml-elliptic':

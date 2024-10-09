@@ -5,7 +5,7 @@ ROOT_DIR = os.getcwd()
 sys.path.insert(0, os.path.join(ROOT_DIR, "src"))
 
 import numpy as np
-from experiments.general_functions.elliptic_data_preprocessing import run_elliptic_preprocessing_pipeline
+from general_functions.elliptic_data_preprocessing import run_elliptic_preprocessing_pipeline
 from reaml.models import batch_pyod_per_contamination_level
 from reaml.model_performance import metric_per_contamination_level
 from pyod.models.pca import PCA
@@ -56,4 +56,4 @@ f1_per_contamination_level.columns = np.round(f1_per_contamination_level.columns
 f1_per_contamination_level_reduced = f1_per_contamination_level.iloc[:, 1:5]
 f1_per_contamination_level_reduced.sort_values(0.2, ascending=False)
 
-f1_per_contamination_level_reduced.to_csv(os.path.join(ROOT_DIR, 'output/table_2_illicit_f1_per_contamination_level.csv'))
+f1_per_contamination_level_reduced.to_csv(os.path.join(ROOT_DIR, 'research-aml-elliptic/output/table_2_illicit_f1_per_contamination_level.csv'))

@@ -30,8 +30,8 @@ def main():
     y_predicted, energies = OneClassPredict(np.array(X_test, dtype=np.int64), coupling, h_i, cutoff, Q) # test model
 
     # colect results
-    # print('Single-class results')
-    # print(confusion_matrix(y_test, y_predicted))
+    print('Single-class results')
+    print(confusion_matrix(y_test, y_predicted))
 
 
     '''Usage example of Multi-class EFC'''
