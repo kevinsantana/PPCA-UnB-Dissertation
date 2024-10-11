@@ -7,7 +7,7 @@ import time
 import numpy as np
 cimport numpy as cnp
 
-from dca_functions import *
+from dca_functions import Weights, Sitefreq, Pairfreq, LocalFields, Coupling
 
 
 DTYPE = np.int64

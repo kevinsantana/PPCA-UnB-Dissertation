@@ -10,4 +10,7 @@ efc_np = np.array([[323071], [323000], [323071], [323000], [323361], [323000], [
 Q = np.max(efc_np)
 LAMBDA = 0.5 # pseudocount parameter
 
-coupling, h_i, cutoff, _, _  = OneClassFit(efc_np, Q, LAMBDA)
+
+if __name__ == "__main__":
+    import ipdb; ipdb.set_trace()
+    coupling, h_i, cutoff, _, _  = OneClassFit(efc_np, Q, LAMBDA)
