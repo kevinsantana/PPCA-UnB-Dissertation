@@ -1,7 +1,7 @@
 import concurrent
 import numpy as np
 
-from dca_functions import coupling, local_fields, pair_freq, site_freq
+from efc_python.dca_functions import coupling, local_fields, pair_freq, site_freq
 
 
 def define_cutoff(train_data: np.array, h_i, coupling_matrix, Q: int):
