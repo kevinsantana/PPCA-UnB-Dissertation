@@ -1,7 +1,7 @@
 import os
 import sys
 
-ROOT_DIR = os.path.join(os.getcwd(), "research_aml_elliptic")
+ROOT_DIR = os.path.join("/Users/kevinaraujo/repos/dissertation/PPCA-UnB-Dissertation/models/notebooks", "research_aml_elliptic")
 sys.path.insert(0, os.path.join(ROOT_DIR, "src"))
 
 if str(ROOT_DIR).split("/")[-1] != "research_aml_elliptic":

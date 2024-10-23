@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import spatial
+from tqdm import tqdm
 
 
 def weights(data: np.array, THETA: float):
@@ -12,7 +13,8 @@ def weights(data: np.array, THETA: float):
 def site_freq(data: np.array, Q: int, LAMBDA: float):
     n_attr = data.shape[1]
     sitefreq = np.empty((n_attr, Q), dtype="float")
-    for i in range(n_attr):
+
+    for i in tqdm(range(n_attr)):
         for aa in range(Q):
             sitefreq[i, aa] = np.sum(np.equal(data[:, i], aa))
 
@@ -31,12 +33,19 @@ def pair_freq(data: np.array, sitefreq: np.array, Q: int, LAMBDA: float):
     pair_freq = np.zeros((n_attr, Q, n_attr, Q), dtype="float")
     pair_freq_view = pair_freq
 
-    for i in range(n_attr):
+    for i in tqdm(range(n_attr)):
         for j in range(n_attr):
             c = cantor(data[:, i], data[:, j])
             unique, aaIdx = np.unique(c, True)
             for x, item in enumerate(unique):
-                pair_freq_view[i, data_view[aaIdx[x], i], j, data_view[aaIdx[x], j]] = (
+                data_view_idx = data_view[aaIdx[x], i]
+                data_view_jdx = data_view[aaIdx[x], j]
+                if isinstance(data_view_idx, float or np.float64):
+                    data_view_idx = float_to_integer(data_view[aaIdx[x], i])
+                if isinstance(data_view_jdx, float or np.float64):
+                    data_view_jdx = float_to_integer(data_view[aaIdx[x], j])
+
+                pair_freq_view[i, data_view_idx, j, data_view_jdx] = (
                     np.sum(np.equal(c, item))
                 )
 
@@ -57,7 +66,7 @@ def local_fields(coupling_matrix: np.array, site_freq: np.array, Q: int):
     n_inst = site_freq.shape[0]
     fields = np.empty((n_inst * (Q - 1)), dtype="float")
 
-    for i in range(n_inst):
+    for i in tqdm(range(n_inst)):
         for ai in range(Q - 1):
             fields[i * (Q - 1) + ai] = site_freq[i, ai] / site_freq[i, Q - 1]
             for j in range(n_inst):
@@ -73,7 +82,7 @@ def coupling(site_freq: np.array, pair_freq: np.array, Q: int):
     n_attr = site_freq.shape[0]
     corr_matrix = np.empty(((n_attr) * (Q - 1), (n_attr) * (Q - 1)), dtype="float")
 
-    for i in range(n_attr):
+    for i in tqdm(range(n_attr)):
         for j in range(n_attr):
             for am_i in range(Q - 1):
                 for am_j in range(Q - 1):
@@ -85,3 +94,12 @@ def coupling(site_freq: np.array, pair_freq: np.array, Q: int):
     inv_corr = np.linalg.inv(corr_matrix)
     coupling_matrix = np.exp(np.negative(inv_corr))
     return coupling_matrix
+
+
+def float_to_integer(num: float| np.float64) -> int:
+    try:
+        res = int(num)
+    except Exception as exc_info:
+        print(f'Error to convert num {num} of type {type(num)}')
+
+    return res
