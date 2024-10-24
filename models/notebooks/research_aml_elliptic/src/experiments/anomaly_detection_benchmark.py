@@ -1,15 +1,11 @@
 import os
 import sys
+import warnings
 
 ROOT_DIR = os.getcwd()
 sys.path.insert(0, os.path.join(ROOT_DIR, "src"))
 
 import numpy as np
-from general_functions.elliptic_data_preprocessing import (
-    run_elliptic_preprocessing_pipeline,
-)
-from reaml.models import batch_pyod_per_contamination_level
-from reaml.model_performance import metric_per_contamination_level
 from pyod.models.pca import PCA
 from pyod.models.lof import LOF
 from pyod.models.cblof import CBLOF
@@ -17,9 +13,15 @@ from pyod.models.knn import KNN
 from pyod.models.abod import ABOD
 from pyod.models.ocsvm import OCSVM
 from pyod.models.iforest import IForest
-from reaml.models import supervised_model_per_contamination_level
 from sklearn.ensemble import RandomForestClassifier
-import warnings
+
+from general_functions.elliptic_data_preprocessing import (
+    run_elliptic_preprocessing_pipeline,
+)
+from models.notebooks.efc_python.efc_api import EFC
+from reaml.model_performance import metric_per_contamination_level
+from reaml.models import batch_pyod_per_contamination_level
+from reaml.models import supervised_model_per_contamination_level
 
 warnings.filterwarnings("ignore")
 
@@ -46,6 +48,7 @@ model_dict = {
     "KNN": KNN(),
     "ABOD": ABOD(),
     "OCSVM": OCSVM(),
+    "EFC": EFC(Q=np.int64(X_test_df.values.max()), LAMBDA=0.5),
 }
 
 model_predictions, model_predicted_scores = batch_pyod_per_contamination_level(
