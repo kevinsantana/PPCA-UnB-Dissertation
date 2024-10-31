@@ -1,5 +1,6 @@
 import concurrent
 import numpy as np
+from tqdm import tqdm
 
 from efc_python.dca_functions import coupling, local_fields, pair_freq, site_freq
 
@@ -9,7 +10,7 @@ def define_cutoff(train_data: np.array, h_i, coupling_matrix, Q: int):
     n_attr = train_data.shape[1]
     energies = np.empty(n_inst, dtype=np.double)
 
-    for i in range(n_inst):
+    for i in tqdm(range(n_inst)):
         e = 0
         for j in range(n_attr - 1):
             j_value = train_data[i, j]
@@ -46,7 +47,7 @@ def one_class_predict(test_data, coupling_matrix, h_i, cutoff, Q):
     energies = np.empty(n_inst, dtype=np.double)
     predicted = np.empty(n_inst, dtype="int")
 
-    for i in range(n_inst):
+    for i in tqdm(range(n_inst)):
         e = 0
         for j in range(n_attr - 1):
             j_value = test_data[i, j]
@@ -118,7 +119,7 @@ def predict_subset(
     predicted = np.empty(n_inst, dtype=int)
     predicted_proba = np.empty((n_inst, n_classes), dtype=float)
 
-    for i in range(n_inst):
+    for i in tqdm(range(n_inst)):
         energies = []
         for label in range(n_classes):
             e = 0
