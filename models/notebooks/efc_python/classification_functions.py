@@ -49,10 +49,10 @@ def one_class_predict(test_data, coupling_matrix, h_i, cutoff, Q):
 
     for i in tqdm(range(n_inst)):
         e = 0
-        for j in range(n_attr - 1):
+        for j in tqdm(range(n_attr - 1)):
             j_value = test_data[i, j]
             if j_value != (Q - 1):
-                for k in range(j, n_attr):
+                for k in tqdm(range(j, n_attr)):
                     k_value = test_data[i, k]
                     if k_value != (Q - 1):
                         e -= coupling_matrix[
