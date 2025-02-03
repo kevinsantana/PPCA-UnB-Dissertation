@@ -1,0 +1,22 @@
+\section{How EFC Works}
+EFC was initially developed for Network Intrusion Detection Systems (NIDS) to
+recognize both known and unknown attacks. The classifier is built upon statistical
+physics principles, particularly the Potts model, which estimates probability
+distributions of normal and anomalous network flows. The primary innovation of
+EFC is its ability to generalize well while maintaining computational efficiency,
+making it an attractive option for AML applications where real-time detection of
+suspicious transactions is crucial \cite{souza2022}.
+
+EFC works by analyzing transaction data and giving each transaction a score based
+on how different it is from normal patterns. If a transaction's score is too high,
+it is flagged as suspicious. The system considers two key factors:
+
+\begin{itemize}
+    \item \textbf{Individual Transaction Features:} These help determine whether
+    a transaction follows normal patterns.
+    \item \textbf{Relationships Between Features:} This helps detect complex fraud
+    techniques where multiple factors interact.
+\end{itemize}
+
+When the system detects a transaction that doesn't match any known pattern, it
+marks it as suspicious and sends it for further review.
