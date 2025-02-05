@@ -1,0 +1,47 @@
+\section{How EFC Works}
+EFC was initially developed for Network Intrusion Detection Systems (NIDS) to
+recognize both known and unknown attacks. The classifier is built upon statistical
+physics principles, particularly the Potts model, which estimates probability
+distributions of normal and anomalous network flows. The primary innovation of
+EFC is its ability to generalize well while maintaining computational efficiency,
+making it an attractive option for AML applications where real-time detection of
+suspicious transactions is crucial \cite{souza2022}.
+
+EFC operates by constructing a statistical model that captures the normal behavior
+of transactional flows. It achieves this through the following core principles:
+
+\begin{itemize}
+\item \textbf{Inverse Potts Model}: Inspired by statistical physics, EFC models
+    interactions between different transaction attributes as energy couplings.
+\item \textbf{Hamiltonian Function}: The classifier assigns an energy score to
+    each transaction based on its deviation from expected behavior.
+\item \textbf{Anomaly Detection}: Transactions with high energy values are classified
+    as suspicious, as they deviate significantly from known benign patterns.
+\end{itemize}
+
+Mathematically, EFC defines the energy of a transaction flow as:
+
+\begin{equation}
+    H(a_1, ..., a_N) = - \sum_{i,j | i<j} e_{ij}(a_i, a_j) - \sum_i h_i(a_i)
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $ a_i $ represents a feature of the transaction,
+    \item $ e_{ij} $ is the coupling strength between features $ i $ and $ j $,
+    \item $ h_i(a_i) $ is the local field associated with feature $ a_i $.
+\end{itemize}
+
+The statistical model underlying EFC is inferred using the maximum entropy principle:
+
+\begin{equation}
+    \max_P \left(- \sum_k P(a_1^k, ..., a_N^k) \log P(a_1^k, ..., a_N^k) \right)
+\end{equation}
+
+subject to the empirical frequency constraints:
+
+\begin{equation}
+    \sum_k P(a_i^k) = f_i(a_i), \quad \sum_k P(a_i^k, a_j^k) = f_{ij}(a_i, a_j)
+\end{equation}
+
+for all features $ i, j $, ensuring that the model aligns with the observed distribution.

@@ -1,0 +1,28 @@
+\section{Model Inference}
+The process of training an EFC involves learning the statistical distribution of
+benign transaction flows. This is done by:
+
+\begin{enumerate}
+    \item \textbf{Extracting Features}: Transaction data is represented using
+    attributes such as sender-receiver patterns, transaction amounts, and frequency.
+    \item \textbf{Computing Couplings and Local Fields}: The dependencies between
+    different attributes are quantified using a covariance matrix:
+    \begin{equation}
+        C_{ij}(a_i, a_j) = f_{ij}(a_i, a_j) - f_i(a_i) f_j(a_j)
+    \end{equation}
+    The couplings are then inferred as:
+    \begin{equation}
+        e_{ij}(a_i, a_j) = - (C^{-1}){ij}(a_i, a_j)
+    \end{equation}
+    \item \textbf{Energy Computation}: The energy of a new transaction is calculated
+        using the inferred statistical model:
+    \begin{equation}
+        H(a_1, ..., a_N) = - \sum{i,j | i<j} e_{ij}(a_i, a_j) - \sum_i h_i(a_i)
+    \end{equation}
+    \item \textbf{Thresholding for Anomaly Detection}: A threshold $ T $ is defined
+        based on statistical properties of known benign transactions. Transactions
+        with $ H > T $ are flagged as suspicious.
+    \item \textbf{Model Refinement}: The model is periodically updated by incorporating
+        new benign transaction data, ensuring adaptability to evolving transaction
+        patterns.
+\end{enumerate}

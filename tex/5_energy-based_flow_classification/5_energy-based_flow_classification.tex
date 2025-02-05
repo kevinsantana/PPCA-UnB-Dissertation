@@ -1,7 +1,28 @@
 % chapter 5 - efc
 
-% section 5.1 - energy-based flow classification
-\input{tex/5_energy-based_flow_classification/5_1_efc/5_1_efc.tex}
+Money laundering poses a significant challenge to financial institutions, particularly
+in the cryptocurrency sector, where the pseudonymous nature of transactions provides
+opportunities for illicit financial activities. Traditional anti-money laundering
+(AML) systems rely on rule-based detection methods, which often fail to identify
+novel or evolving fraudulent schemes. To address this issue, machine learning-based
+classifiers have gained prominence in anomaly detection within financial transactions.
+Among these, the Energy-based Flow Classifier (EFC) presents a novel approach to
+detecting both known and unknown fraudulent activities with high accuracy and efficiency.
 
-% section 5.2 - how efc works
-\input{tex/5_energy-based_flow_classification/5_1_2_how_efc_works/5_1_2_how_efc_works.tex}
+The Energy Flow Classifier (EFC) is a probabilistic machine learning framework
+inspired by statistical physics, particularly the Potts model, which historically
+dealt with atomic spins in a lattice. EFC leverages the concept of "flow energy"
+to classify network traffic or other data flows \cite{pontes2021}.
+
+This chapter explores the applicability of EFC in AML on the context of cryptocurrency
+transactions. It introduces the fundamental principles of EFC, its advantages over
+traditional methods, and its potential integration into existing AML frameworks.
+
+% section 5.1 - how efc works
+\input{tex/5_energy-based_flow_classification/5_1_how_efc_works/5_1_how_efc_works.tex}
+
+% section 5.2 - model inference
+\input{tex/5_energy-based_flow_classification/5_2_model_inference/5_2_model_inference.tex}
+
+% section 5.3 - applying efc on elliptic dataset
+\input{tex/5_energy-based_flow_classification/5_3_applying_efc_on_elliptic_dataset/5_3_applying_efc_on_elliptic_dataset.tex}
