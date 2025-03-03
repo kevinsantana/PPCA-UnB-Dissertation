@@ -20,15 +20,12 @@ from sklearn.metrics import (
 )
 
 from efc import EnergyBasedFlowClassifier
+from constants import LAST_TIME_STEP, LAST_TRAIN_TIME_STEP, LABELS_CM
 
 
 ROOT_DIR = os.getcwd()
 sys.path.insert(0, ROOT_DIR)
-
-# Elliptic data set timestep
-last_time_step = 49
-last_train_time_step = 34
-only_labeled = True
+ONLY_LABELED = True
 
 
 def combine_dataframes(df_classes: pd.DataFrame, df_features: pd.DataFrame, only_labeled: bool = True) -> pd.DataFrame:
@@ -386,12 +383,9 @@ def recreate_original_df() -> pd.DataFrame:
         IndexError: If the features DataFrame doesn't have the expected number of columns.
         MergeError: If the merge operation in `combine_dataframes` fails.
     """
-    last_time_step = 49
-    last_train_time_step = 34
-    only_labeled = True
-    X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=last_train_time_step,
-                                                                             last_time_step=last_time_step,
-                                                                             only_labeled=only_labeled)
+    X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=LAST_TRAIN_TIME_STEP,
+                                                                             last_time_step=LAST_TIME_STEP,
+                                                                             only_labeled=ONLY_LABELED)
     df_train = pd.concat([X_train, y_train], axis=1)
     df_test = pd.concat([X_test, y_test], axis=1)
     df = pd.concat([df_train, df_test])
@@ -460,9 +454,9 @@ def drop_agg_features(X_train: pd.DataFrame = None,
             in X_train or X_test, or if they are unexpectedly found in y_train or y_test.
     """
     if not all([X_train, X_test, y_train, y_test]):
-        X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=last_train_time_step,
-                                                                               last_time_step=last_time_step,
-                                                                               only_labeled=only_labeled)
+        X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=LAST_TRAIN_TIME_STEP,
+                                                                               last_time_step=LAST_TIME_STEP,
+                                                                               only_labeled=ONLY_LABELED)
         inplace = False
     if not inplace:
         X_train_new = X_train.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False)
@@ -487,7 +481,7 @@ def save_to_csv(df: pd.DataFrame, file_name: str, sep=',', encoding='utf-8', ind
 ###################################
 
 
-def custom_confusion_matrix(y_test: np.ndarray, y_pred: np.ndarray, technique: str) -> Dict[str, int]:
+def custom_confusion_matrix(technique: str, y_test: np.ndarray, y_pred: np.ndarray) -> Dict[str, int]:
     """Calculates and formats a confusion matrix.
 
     Computes the confusion matrix for the given true labels (`y_test`) and predicted labels (`y_pred`), and returns it as a dictionary
@@ -509,13 +503,13 @@ def custom_confusion_matrix(y_test: np.ndarray, y_pred: np.ndarray, technique: s
     Raises:
         ValueError: If `y_test` or `y_pred` contain values other than 0 or 1.  This function is designed for binary classification.
     """
-    labels_cm = ["True Negative", "False positive", "False Negative", "True Positive"]
     cm = confusion_matrix(y_test, y_pred, labels=[1, 0])
     cm = np.reshape(cm, -1).tolist()
-    return {'Technique': technique} | {label: val for val, label in zip(cm, labels_cm)}
+    return {'Technique': technique} | {label: val for val, label in zip(cm, LABELS_CM)}
 
 
-def get_dataset_size(X_train: np.ndarray,
+def get_dataset_size(technique: str,
+                    X_train: np.ndarray,
                     X_test: np.ndarray,
                     y_train: np.ndarray,
                     y_test: np.ndarray
@@ -550,6 +544,7 @@ def get_dataset_size(X_train: np.ndarray,
         ValueError: If y_train or y_test contains elements that are not either 0 or 1. This assumes binary labels.
     """
     return {
+        "Technique": technique,
         "X Size": len(X_train) + len(X_test),
         "y Size": len(y_train) + len(y_test),
         "X_train Size": len(X_train),
@@ -563,7 +558,8 @@ def get_dataset_size(X_train: np.ndarray,
     }
 
 
-def calculate_model_score(y_true: Union[np.ndarray, pd.Series],
+def calculate_model_score(technique: str,
+                          y_true: Union[np.ndarray, pd.Series],
                           y_pred: Union[np.ndarray, pd.Series]
     ) -> Dict[str, int]:
     """
@@ -589,6 +585,7 @@ def calculate_model_score(y_true: Union[np.ndarray, pd.Series],
         TypeError: if input arguments have an unexpected type or if labels are not in an expected format.
     """
     return {
+        "Technique": technique,
         "accuracy": accuracy_score(y_true, y_pred),
         "f1": f1_score(y_true, y_pred, average="weighted"),
         "f1_micro": f1_score(y_true, y_pred, average="micro"),
