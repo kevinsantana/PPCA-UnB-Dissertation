@@ -422,6 +422,22 @@ def train_test_from_x_y(X: Union[pd.DataFrame, np.ndarray],
     return X_train_df, X_test_df, y_train, y_test
 
 
+def is_dataframe_non_empty(df: pd.DataFrame) -> bool:
+  """
+  Checks if a Pandas DataFrame is non-empty.
+
+  Args:
+      df: The Pandas DataFrame to check.
+
+  Returns:
+      True if the DataFrame is non-empty, False otherwise.
+  """
+  if df.empty:
+    return False
+  else:
+    return True
+
+
 def drop_agg_features(X_train: pd.DataFrame = None,
                       X_test: pd.DataFrame = None,
                       y_train: pd.DataFrame = None,
@@ -453,7 +469,7 @@ def drop_agg_features(X_train: pd.DataFrame = None,
         KeyError: If any of the aggregated feature columns ('agg_feat_0' to 'agg_feat_71') are not found
             in X_train or X_test, or if they are unexpectedly found in y_train or y_test.
     """
-    if not all([X_train, X_test, y_train, y_test]):
+    if not all([X_train, X_test, y_train, y_test]):  # check if any of the dataframes are empty
         X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=LAST_TRAIN_TIME_STEP,
                                                                                last_time_step=LAST_TIME_STEP,
                                                                                only_labeled=ONLY_LABELED)
