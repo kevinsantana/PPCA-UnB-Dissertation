@@ -17,23 +17,26 @@ ONLY_LABELED = True
 def main(save_csv: bool = True):
     try:
         logger.info("Initiating Experiment 5")
-        for i, k in enumerate(K_SIZE):
+        df_efc_sizes = pd.DataFrame(columns=SIZES_COLUMNS)
+        df_efc_metrics = pd.DataFrame(columns=METRICS_COLUMNS)
+        df_efc_confusion_matrix = pd.DataFrame(columns=LABELS_CM)
+
+        for k in K_SIZE:
             logger.info(f"Running with k_size={k}")
             FIG_FOLDER = os.path.join(EXPERIMENT_FOLDER, "1_smote")
-            df_efc_sizes = pd.DataFrame(columns=SIZES_COLUMNS)
-            df_efc_metrics = pd.DataFrame(columns=METRICS_COLUMNS)
-            df_efc_confusion_matrix = pd.DataFrame(columns=LABELS_CM)
             FIG_NAME_k_10 = FIG_NAME.format(technique="1_smote_with_feature_selection_score_function_f_classif_k", k_size=k)
             sizes, metrics, confusion_matrix_values = smote_with_feature_selection(
-            technique=TECHNIQUE.format(k_size=k),
-            fig_folder=FIG_FOLDER,
-            fig_name=FIG_NAME_k_10,
-            k=k,
-            only_labeled=ONLY_LABELED)
-            df_efc_sizes.loc[i] = sizes
-            df_efc_metrics[i] = metrics
-            df_efc_confusion_matrix[i] = confusion_matrix_values
+                technique=TECHNIQUE.format(k_size=k),
+                fig_folder=FIG_FOLDER,
+                fig_name=FIG_NAME_k_10,
+                k=k,
+                only_labeled=ONLY_LABELED
+            )
+            df_efc_sizes.loc[len(df_efc_sizes)] = sizes
+            df_efc_metrics.loc[len(df_efc_metrics)] = metrics
+            df_efc_confusion_matrix.loc[len(df_efc_confusion_matrix)] = confusion_matrix_values
         logger.success("Finished Experiment 5")
+
         if save_csv:
             df_efc_sizes.to_csv(f'{EXPERIMENT_FOLDER}/df_efc_sizes.csv', sep=',', encoding='utf-8', index=False, header=True)
             df_efc_metrics.to_csv(f'{EXPERIMENT_FOLDER}/df_efc_metrics.csv', sep=',', encoding='utf-8', index=False, header=True)
