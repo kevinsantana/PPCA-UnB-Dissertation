@@ -3,29 +3,39 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
+        files: ^results/.*
       - id: end-of-file-fixer
+        files: ^results/.*
       - id: check-builtin-literals
+        files: ^results/.*
       - id: debug-statements
+        files: ^results/.*
       - id: check-yaml
+        files: ^results/.*
       - id: check-added-large-files
+        files: ^results/.*
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
       - id: black
+        files: ^results/.*
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
         name: isort (python)
         args: ['--profile', 'black']
+        files: ^results/.*
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.3.0
     hooks:
       - id: mypy
         args: [--ignore-missing-imports]
+        files: ^results/.*
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
         additional_dependencies:
           - flake8-bugbear==23.3.12
+        files: ^results/.*
