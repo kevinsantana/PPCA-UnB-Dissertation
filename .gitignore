@@ -28,3 +28,10 @@ citations
 img/_old-btc
 tex/_old
 .DS_Store
+
+# python
+*.pyc
+.mypy_cache
+.pytest_cache
+.coverage
+.env
