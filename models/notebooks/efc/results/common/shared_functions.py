@@ -3,36 +3,52 @@
 #################################
 
 import os
-import sys
 from typing import Dict, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-
+from efc import EnergyBasedFlowClassifier
 from matplotlib import pyplot as plt
-from sklearn.model_selection import train_test_split as sklearn_train_test_split
+from results.common.constants import LABELS_CM, LAST_TIME_STEP, LAST_TRAIN_TIME_STEP
 from sklearn.metrics import (
-    f1_score,
     accuracy_score,
+    confusion_matrix,
+    f1_score,
     precision_score,
     recall_score,
-    confusion_matrix
 )
+from sklearn.model_selection import train_test_split as sklearn_train_test_split
 
-from efc import EnergyBasedFlowClassifier
-from results.common.constants import LAST_TIME_STEP, LAST_TRAIN_TIME_STEP, LABELS_CM
-
-
-ROOT_DIR = os.getcwd()
-sys.path.insert(0, ROOT_DIR)
 ONLY_LABELED = True
+
+
+def get_project_root() -> str:
+    """
+    Dynamically determines the project root directory.
+
+    This function traverses up the directory tree from the current file's location
+    until it finds the directory containing the 'models' directory, which is
+    assumed to be a unique marker of the project root.
+
+    Returns:
+        str: The absolute path to the project root directory.
+
+    Raises:
+        RuntimeError: If the project root directory cannot be found.
+    """
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    while current_dir != os.path.sep:  # Stop at the root directory
+        if "models" in os.listdir(current_dir):
+            return current_dir
+        current_dir = os.path.dirname(current_dir)
+    raise RuntimeError("Could not find project root directory.")
 
 
 def combine_dataframes(df_classes: pd.DataFrame, df_features: pd.DataFrame, only_labeled: bool = True) -> pd.DataFrame:
     """
     Combines features and class labels based on transaction IDs.
 
-    Merges the features DataFrame (`df_features`) with the class labels DataFrame (`df_classes`) using a left merge 
+    Merges the features DataFrame (`df_features`) with the class labels DataFrame (`df_classes`) using a left merge
     based on the transaction IDs. Optionally filters out transactions with unknown labels (class 2).
 
     Args:
@@ -129,14 +145,15 @@ def import_elliptic_data_from_csvs() -> Tuple[pd.DataFrame, pd.DataFrame, pd.Dat
         pd.errors.ParserError: If there is an error parsing any of the CSV files (e.g., incorrect format, invalid data).
         OSError: If there are any other operating system errors during file access.
     """
+    project_root = get_project_root()
     df_classes = pd.read_csv(
-        os.path.join(ROOT_DIR, "datasets/elliptic/elliptic_txs_classes.csv")
+        os.path.join(project_root, "models/notebooks/efc/datasets/elliptic/elliptic_txs_classes.csv")
     )
     df_edges = pd.read_csv(
-        os.path.join(ROOT_DIR, "datasets/elliptic/elliptic_txs_edgelist.csv")
+        os.path.join(project_root, "models/notebooks/efc/datasets/elliptic/elliptic_txs_edgelist.csv")
     )
     df_features = pd.read_csv(
-        os.path.join(ROOT_DIR, "datasets/elliptic/elliptic_txs_features.csv"),
+        os.path.join(project_root, "models/notebooks/efc/datasets/elliptic/elliptic_txs_features.csv"),
         header=None,
     )
     return df_classes, df_edges, df_features
@@ -149,16 +166,16 @@ def setup_train_test_idx(
     """
     Creates train/test indices based on the time_step column.
 
-    This function generates training and testing indices for a temporal split of the data.  It uses the 
-    `aggregated_timestamp_column` to determine the split point.  The data is split such that all transactions with a 
-    timestamp less than or equal to `last_train_time_step` are in the training set, and all transactions with a timestamp 
+    This function generates training and testing indices for a temporal split of the data.  It uses the
+    `aggregated_timestamp_column` to determine the split point.  The data is split such that all transactions with a
+    timestamp less than or equal to `last_train_time_step` are in the training set, and all transactions with a timestamp
     greater than `last_train_time_step` and less than or equal to `last_time_step` are in the testing set.
 
     Args:
         X (pd.DataFrame): The input DataFrame containing the data and the timestamp column.
         last_train_time_step (int): The last time step to include in the training set.
         last_time_step (int): The last time step to include in the testing set.
-        aggregated_timestamp_column (str, optional): The name of the column containing the timestamps. 
+        aggregated_timestamp_column (str, optional): The name of the column containing the timestamps.
             Defaults to "time_step".
 
     Returns:
@@ -167,7 +184,7 @@ def setup_train_test_idx(
 
     Raises:
         KeyError: If the `aggregated_timestamp_column` is not found in the DataFrame `X`.
-        TypeError: If the values in the `aggregated_timestamp_column` are not comparable to integers.  The timestamp column 
+        TypeError: If the values in the `aggregated_timestamp_column` are not comparable to integers.  The timestamp column
             should contain numerical data representing discrete time steps.
         ValueError: If `last_train_time_step` is negative or greater than `last_time_step`.
     """
@@ -199,7 +216,7 @@ def train_test_split(X: pd.DataFrame,
     Args:
         X (pd.DataFrame): The input DataFrame containing the features.
         y (pd.Series): The input Series containing the labels.
-        train_test_idx (Dict[str, pd.Index]): A dictionary containing the training and testing indices.  The keys must be 
+        train_test_idx (Dict[str, pd.Index]): A dictionary containing the training and testing indices.  The keys must be
             "train" and "test", and the values should be Pandas Index objects.
 
     Returns:
@@ -211,7 +228,7 @@ def train_test_split(X: pd.DataFrame,
 
     Raises:
         KeyError: If the `train_test_idx` dictionary is missing the "train" or "test" keys.
-        IndexingError: If the indices in `train_test_idx` are out of bounds for `X` or `y`.  This can occur if the indices 
+        IndexingError: If the indices in `train_test_idx` are out of bounds for `X` or `y`.  This can occur if the indices
             were generated from a different DataFrame or if the DataFrames have been modified since the indices were created.
         TypeError: If `X` or `y` are not the expected data types (DataFrame and Series, respectively).
     """
@@ -227,11 +244,11 @@ def load_elliptic_data(only_labeled: bool = True, drop_node_id: bool = True) -> 
     """
     Loads and preprocesses the Elliptic dataset.
 
-    Imports the data from CSV files, renames classes and features, combines the DataFrames, and prepares the data for 
+    Imports the data from CSV files, renames classes and features, combines the DataFrames, and prepares the data for
     machine learning by separating features (X) and labels (y).
 
     Args:
-        only_labeled (bool, optional): Whether to include only transactions with known labels (class 0 or 1). 
+        only_labeled (bool, optional): Whether to include only transactions with known labels (class 0 or 1).
             If False, transactions with unknown labels (class 2) are also included. Defaults to True.
         drop_node_id (bool, optional): Whether to drop the transaction ID ("id") column from the features. Defaults to True.
 
@@ -245,7 +262,7 @@ def load_elliptic_data(only_labeled: bool = True, drop_node_id: bool = True) -> 
         pd.errors.ParserError: If there's an error parsing the CSV files.
         KeyError: If any expected columns ("id", "class", "txId") are missing in the DataFrames.
         IndexError: If the `df_features` DataFrame doesn't have the expected 167 columns after reading from CSV.
-        MergeError: If the merge operation in `combine_dataframes` fails.  This can occur if there are inconsistencies between the data in 
+        MergeError: If the merge operation in `combine_dataframes` fails.  This can occur if there are inconsistencies between the data in
             `df_classes` and `df_features`.
 
 
@@ -267,14 +284,14 @@ def load_elliptic_data(only_labeled: bool = True, drop_node_id: bool = True) -> 
 def run_elliptic_preprocessing_pipeline(
     last_train_time_step: int,
     last_time_step: int,
-    only_labeled: bool = True, 
+    only_labeled: bool = True,
     drop_node_id: bool = True,
     only_x_y: bool = False
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Runs the complete Elliptic dataset preprocessing pipeline.
 
-    Loads the data, renames classes and features, combines DataFrames, performs a temporal train/test split, and returns the 
+    Loads the data, renames classes and features, combines DataFrames, performs a temporal train/test split, and returns the
     training and testing sets.
 
     Args:
@@ -325,8 +342,8 @@ def train_test_from_splitted(X_train: pd.DataFrame,
     """
     Combines split data back into a single DataFrame or numpy arrays.
 
-    This function takes the training and testing sets (X_train, y_train, X_test, y_test) and combines them back into a single 
-    DataFrame if `return_df` is True, or into X and y numpy arrays if `return_df` is False. This is useful if you need to 
+    This function takes the training and testing sets (X_train, y_train, X_test, y_test) and combines them back into a single
+    DataFrame if `return_df` is True, or into X and y numpy arrays if `return_df` is False. This is useful if you need to
     modify the split data (e.g., feature dropping) and then want to work with the full dataset again.
 
     Args:
@@ -337,7 +354,7 @@ def train_test_from_splitted(X_train: pd.DataFrame,
         return_df (bool, optional): If True, returns a single combined DataFrame. If False (default), returns X and y numpy arrays.
 
     Returns:
-        Union[Tuple[pd.DataFrame, pd.Series], pd.DataFrame]: 
+        Union[Tuple[pd.DataFrame, pd.Series], pd.DataFrame]:
             - If `return_df` is True, returns a single combined DataFrame.
             - If `return_df` is False, returns a tuple containing:
                 - X (pd.DataFrame): Combined features DataFrame.
@@ -360,7 +377,7 @@ def train_test_from_splitted(X_train: pd.DataFrame,
         df_new = pd.concat([df_train, df_test])
         return df_new
 
-    return X, y  
+    return X, y
 
 
 def recreate_original_df() -> pd.DataFrame:
@@ -369,11 +386,11 @@ def recreate_original_df() -> pd.DataFrame:
 
     This function uses the preprocessing pipeline with predefined parameters to reconstruct the original Elliptic DataFrame
     as if it was just loaded and preprocessed, including renaming features and classes, and combining dataframes,
-    but *without* performing a train/test split.  It uses a fixed `last_time_step` of 49, 
+    but *without* performing a train/test split.  It uses a fixed `last_time_step` of 49,
     `last_train_time_step` of 34, and includes only labeled transactions (`only_labeled=True`).
 
     Returns:
-        pd.DataFrame: The combined and preprocessed Elliptic DataFrame, similar to what you'd get after loading and preprocessing 
+        pd.DataFrame: The combined and preprocessed Elliptic DataFrame, similar to what you'd get after loading and preprocessing
             but before splitting into train/test sets.
 
     Raises:
@@ -614,8 +631,9 @@ def calculate_model_score(technique: str,
 
 def plot_efc_energies(y_test: pd.Series,
                       y_energies: pd.Series,
-                      results_folder: str,
                       fig_name: str,
+                      fig_folder: str,
+                      show_plot: bool = True,
                       clf: Optional[EnergyBasedFlowClassifier] = None,
                       cutoff: Optional[pd.Series] = None,
     ) -> None:
@@ -628,20 +646,19 @@ def plot_efc_energies(y_test: pd.Series,
         clf (EnergyBasedFlowClassifier): The trained EFC classifier.
         y_test (pd.Series): True labels (0 for benign, 1 for malicious).
         y_energies (pd.Series): Energies assigned by the EFC to each transaction.
-        results_folder (str): Path to the directory where the plot will be saved.
+        fig_folder (str): Path to the directory where the plot will be saved.
         fig_name (str): Filename for the saved plot (e.g., "energy_distribution.png").
 
     Returns:
         None. The function saves the plot to a file.
 
     Raises:
-        FileNotFoundError: If the `results_folder` directory does not exist and cannot be created.
+        FileNotFoundError: If the `fig_folder` directory does not exist and cannot be created.
         ValueError: If `y_test` or `y_energies` have inconsistent shapes, or if `y_test` contains values other than 0 or 1.
         OSError: If there are any issues writing the plot file to disk (e.g., permissions issues).
     """
-    # make experiments results dir if not exists
-    if not os.path.exists(results_folder):
-        os.makedirs(results_folder)
+    if not os.path.exists(fig_folder):
+        os.makedirs(fig_folder)
 
     # ploting energies
     benign = np.where(y_test == 0)[0]
@@ -650,6 +667,7 @@ def plot_efc_energies(y_test: pd.Series,
     benign_energies = y_energies[benign]
     malicious_energies = y_energies[malicious]
     if clf:
+        plt.clf()
         cutoff = clf.estimators_[0].cutoff_
     else:
         cutoff = cutoff
@@ -679,5 +697,6 @@ def plot_efc_energies(y_test: pd.Series,
 
     plt.xlabel("Energy", fontsize=12)
     plt.ylabel("Density", fontsize=12)
-    plt.savefig(f'{results_folder}/{fig_name}')
-
+    plt.savefig(f'{fig_folder}/{fig_name}')
+    if show_plot:
+        plt.show()

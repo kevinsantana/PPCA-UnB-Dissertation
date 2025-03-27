@@ -1,21 +1,16 @@
 from math import ceil
 
 import numpy as np
-
+from constants import EFC_CLF, LAST_TIME_STEP, LAST_TRAIN_TIME_STEP
+from efc_python.classification_functions import one_class_fit, one_class_predict
+from efc_python.generic_discretize import discretize, get_intervals
 from shared_functions import (
+    calculate_model_score,
     custom_confusion_matrix,
     get_dataset_size,
     plot_efc_energies,
     run_elliptic_preprocessing_pipeline,
-    calculate_model_score,
 )
-
-from efc_python.classification_functions import (
-    one_class_fit,
-    one_class_predict,
-)
-from efc_python.generic_discretize import discretize, get_intervals
-from constants import LAST_TIME_STEP, LAST_TRAIN_TIME_STEP, EFC_CLF
 
 
 def efc_custom(technique:str, fig_folder: str, fig_name: str):
@@ -45,7 +40,7 @@ def efc_with_percentage_labeled(technique:str, fig_folder: str, fig_name: str, p
                                                                            only_labeled=True)
     if not isinstance(percentage, int) or percentage < 0 or percentage > 100:
         raise ValueError("Invalid percentage. Should be an integer between 0 and 100.")
-    
+
     interval = (100 - percentage)/100
     slice_size = ceil(len(indices_illicit) * interval)
     intervals = get_intervals(X_train, 10)  # get discretization intervals from train set

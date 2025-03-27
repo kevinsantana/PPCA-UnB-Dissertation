@@ -1,11 +1,8 @@
 import numpy as np
-
-from efc_python.classification_functions import (
-    one_class_fit,
-    one_class_predict,
+from efc_python.classification_functions import one_class_fit, one_class_predict
+from research_aml_elliptic.src.experiments.general_functions.elliptic_data_preprocessing import (
+    run_elliptic_preprocessing_pipeline,
 )
-from research_aml_elliptic.src.experiments.general_functions.elliptic_data_preprocessing import run_elliptic_preprocessing_pipeline
-
 
 # import Elliptic data set and set variables
 last_time_step = 49

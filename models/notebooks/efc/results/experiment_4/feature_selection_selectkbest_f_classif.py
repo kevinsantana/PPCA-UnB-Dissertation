@@ -1,23 +1,25 @@
 from pprint import pprint
 
 import pandas as pd
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import f_classif
-
 from efc import EnergyBasedFlowClassifier
+from results.common.constants import (
+    CUTOFF_QUANTILE,
+    LAST_TIME_STEP,
+    LAST_TRAIN_TIME_STEP,
+    N_BINS,
+    PSEUDOCOUNTS,
+)
 from results.common.shared_functions import (
+    calculate_model_score,
+    custom_confusion_matrix,
     drop_agg_features,
+    get_dataset_size,
+    plot_efc_energies,
     run_elliptic_preprocessing_pipeline,
     train_test_from_splitted,
     train_test_from_x_y,
-    get_dataset_size,
-    plot_efc_energies,
-    calculate_model_score,
-    custom_confusion_matrix
 )
-
-
-from results.common.constants import N_BINS, CUTOFF_QUANTILE, PSEUDOCOUNTS, LAST_TRAIN_TIME_STEP, LAST_TIME_STEP
+from sklearn.feature_selection import SelectKBest, f_classif
 
 
 def make_feature_selection_with_k_best(k: int,
@@ -37,11 +39,8 @@ def make_feature_selection_with_k_best(k: int,
     except ValueError:
         pass
 
-    pprint(f"X shape: {X.shape}", indent=4)
     X_new = SelectKBest(f_classif, k=k).fit_transform(X, y)
-    pprint(f"X_new shape: {X_new.shape}", indent=4)
     X_train, X_test, y_train, y_test = train_test_from_x_y(X_new, y)
-
     if return_x_y:
         return X_new, y
 

@@ -1,12 +1,12 @@
+from constants import EFC_CLF, LAST_TIME_STEP, LAST_TRAIN_TIME_STEP
 from shared_functions import (
+    calculate_model_score,
     custom_confusion_matrix,
+    drop_agg_features,
     get_dataset_size,
     plot_efc_energies,
     run_elliptic_preprocessing_pipeline,
-    calculate_model_score,
-    drop_agg_features
 )
-from constants import LAST_TIME_STEP, LAST_TRAIN_TIME_STEP, EFC_CLF
 
 
 def process_labeled_samples(technique:str, fig_folder: str, fig_name: str, include_agg: bool = True):

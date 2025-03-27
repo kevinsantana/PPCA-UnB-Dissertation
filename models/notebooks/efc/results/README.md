@@ -4,7 +4,7 @@ Each `experiment_x` folder represents one of the experiments executed on researc
 
 ## Running the Experiments
 
-These scripts should be executed from the `efc` directory. 
+These scripts should be executed from the `efc` directory.
 
 PPCA-UnB-Dissertation/
 ├── models/
