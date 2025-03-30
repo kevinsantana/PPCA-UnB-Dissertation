@@ -61,8 +61,9 @@ repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.3.0
     hooks:
-      - id: mypy
-        args: [--ignore-missing-imports, --config-file=mypy.ini]
+        - id: mypy
+          args: [--ignore-missing-imports, --config-file=mypy.ini, --explicit-package-bases]
+
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
