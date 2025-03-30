@@ -5,8 +5,12 @@ from results.experiment_4.feature_selection_selectkbest_f_classif import (
 )
 
 
-def smote_with_feature_selection(technique:str, fig_folder: str, fig_name: str, k: int, only_labeled: bool = True):
-    X, y = make_feature_selection_with_k_best(k=k, fig_folder=fig_folder, fig_name=fig_name, return_x_y=True)
+def smote_with_feature_selection(
+    technique: str, fig_folder: str, fig_name: str, k: int, only_labeled: bool = True
+):
+    X, y = make_feature_selection_with_k_best(
+        k=k, fig_folder=fig_folder, fig_name=fig_name, return_x_y=True
+    )
     X_df = pd.DataFrame(X)
     return smote(
         technique=technique,
@@ -16,5 +20,5 @@ def smote_with_feature_selection(technique:str, fig_folder: str, fig_name: str, 
         X=X_df,
         y=y,
         test_complete_dataset=True,
-        is_resampled=True
+        is_resampled=True,
     )

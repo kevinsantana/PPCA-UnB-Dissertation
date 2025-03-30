@@ -146,7 +146,7 @@ def smote(
         y_test=y_test,
         y_energies=y_energies,
         fig_name=fig_name,
-        fig_folder=fig_folder
+        fig_folder=fig_folder,
     )
     sizes = get_dataset_size(
         technique=technique,

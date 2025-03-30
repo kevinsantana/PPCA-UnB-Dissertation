@@ -23,21 +23,22 @@ from results.common.shared_functions import (
 from sklearn.feature_selection import SelectKBest, f_classif
 
 
-def make_feature_selection_with_k_best(k: int,
-                                       fig_folder: str,
-                                       fig_name: str,
-                                       technique: Optional[str] = None,
-                                       X: pd.DataFrame = None,
-                                       y: pd.Series = None,
-                                       return_x_y: bool = False
-                                       ) -> None:
+def make_feature_selection_with_k_best(
+    k: int,
+    fig_folder: str,
+    fig_name: str,
+    technique: Optional[str] = None,
+    X: pd.DataFrame = None,
+    y: pd.Series = None,
+    return_x_y: bool = False,
+) -> None:
     try:
         if not all([X, y]):
             X, y = run_elliptic_preprocessing_pipeline(
-            last_train_time_step=LAST_TRAIN_TIME_STEP,
-            last_time_step=LAST_TIME_STEP,
-            only_x_y=True
-        )
+                last_train_time_step=LAST_TRAIN_TIME_STEP,
+                last_time_step=LAST_TIME_STEP,
+                only_x_y=True,
+            )
     except ValueError:
         pass
 
@@ -61,7 +62,7 @@ def make_feature_selection_with_k_best(k: int,
         X_train=X_train,
         X_test=X_test,
         y_train=y_train,
-        y_test=y_test
+        y_test=y_test,
     )
     metric_dict = calculate_model_score(
         technique=technique, y_true=y_test.values, y_pred=y_pred
@@ -74,20 +75,12 @@ def make_feature_selection_with_k_best(k: int,
 
 
 def make_feature_selection_with_k_best_no_agg_features(
-        k: int,
-        fig_folder: str,
-        fig_name: str,
-        technique: Optional[str] = None
-    ) -> None:
+    k: int, fig_folder: str, fig_name: str, technique: Optional[str] = None
+) -> None:
     X_train, X_test, y_train, y_test = drop_agg_features()
     X, y = train_test_from_splitted(X_train, y_train, X_test, y_test, return_df=False)
     sizes, model_score, confusion_matrix_values = make_feature_selection_with_k_best(
-        technique=technique,
-        k=k,
-        fig_folder=fig_folder,
-        fig_name=fig_name,
-        X=X,
-        y=y
+        technique=technique, k=k, fig_folder=fig_folder, fig_name=fig_name, X=X, y=y
     )
 
     return sizes, model_score, confusion_matrix_values

@@ -10,9 +10,11 @@ last_train_time_step = 34
 only_labeled = True
 
 
-X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=last_train_time_step,
-                                                                             last_time_step=last_time_step,
-                                                                             only_labeled=only_labeled)
+X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(
+    last_train_time_step=last_train_time_step,
+    last_time_step=last_time_step,
+    only_labeled=only_labeled,
+)
 
 # EFC's hyperparameters
 Q = np.int64(X_test.values.max())

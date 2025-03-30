@@ -44,7 +44,9 @@ def get_project_root() -> str:
     raise RuntimeError("Could not find project root directory.")
 
 
-def combine_dataframes(df_classes: pd.DataFrame, df_features: pd.DataFrame, only_labeled: bool = True) -> pd.DataFrame:
+def combine_dataframes(
+    df_classes: pd.DataFrame, df_features: pd.DataFrame, only_labeled: bool = True
+) -> pd.DataFrame:
     """
     Combines features and class labels based on transaction IDs.
 
@@ -96,7 +98,9 @@ def rename_classes(df_classes: pd.DataFrame, inplace: bool = True) -> pd.DataFra
         df_classes.replace({"class": {"1": 1, "2": 0, "unknown": 2}}, inplace=True)
         return df_classes
     else:
-        new_df = df_classes.replace({"class": {"1": 1, "2": 0, "unknown": 2}}, inplace=True)
+        new_df = df_classes.replace(
+            {"class": {"1": 1, "2": 0, "unknown": 2}}, inplace=True
+        )
         return new_df
 
 
@@ -147,21 +151,32 @@ def import_elliptic_data_from_csvs() -> Tuple[pd.DataFrame, pd.DataFrame, pd.Dat
     """
     project_root = get_project_root()
     df_classes = pd.read_csv(
-        os.path.join(project_root, "models/notebooks/efc/datasets/elliptic/elliptic_txs_classes.csv")
+        os.path.join(
+            project_root,
+            "models/notebooks/efc/datasets/elliptic/elliptic_txs_classes.csv",
+        )
     )
     df_edges = pd.read_csv(
-        os.path.join(project_root, "models/notebooks/efc/datasets/elliptic/elliptic_txs_edgelist.csv")
+        os.path.join(
+            project_root,
+            "models/notebooks/efc/datasets/elliptic/elliptic_txs_edgelist.csv",
+        )
     )
     df_features = pd.read_csv(
-        os.path.join(project_root, "models/notebooks/efc/datasets/elliptic/elliptic_txs_features.csv"),
+        os.path.join(
+            project_root,
+            "models/notebooks/efc/datasets/elliptic/elliptic_txs_features.csv",
+        ),
         header=None,
     )
     return df_classes, df_edges, df_features
 
 
 def setup_train_test_idx(
-    X: pd.DataFrame, last_train_time_step: int, last_time_step: int,
-    aggregated_timestamp_column: Optional[str]="time_step"
+    X: pd.DataFrame,
+    last_train_time_step: int,
+    last_time_step: int,
+    aggregated_timestamp_column: Optional[str] = "time_step",
 ) -> Dict[str, pd.Index]:
     """
     Creates train/test indices based on the time_step column.
@@ -204,10 +219,9 @@ def setup_train_test_idx(
     return train_test_idx
 
 
-def train_test_split(X: pd.DataFrame,
-                     y: pd.Series,
-                     train_test_idx: Dict[str, pd.Index]
-    ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+def train_test_split(
+    X: pd.DataFrame, y: pd.Series, train_test_idx: Dict[str, pd.Index]
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Splits the data into training and testing sets based on pre-calculated indices.
 
@@ -240,7 +254,9 @@ def train_test_split(X: pd.DataFrame,
     return X_train_df, X_test_df, y_train, y_test
 
 
-def load_elliptic_data(only_labeled: bool = True, drop_node_id: bool = True) -> Tuple[pd.DataFrame, pd.Series]:
+def load_elliptic_data(
+    only_labeled: bool = True, drop_node_id: bool = True
+) -> Tuple[pd.DataFrame, pd.Series]:
     """
     Loads and preprocesses the Elliptic dataset.
 
@@ -286,7 +302,7 @@ def run_elliptic_preprocessing_pipeline(
     last_time_step: int,
     only_labeled: bool = True,
     drop_node_id: bool = True,
-    only_x_y: bool = False
+    only_x_y: bool = False,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Runs the complete Elliptic dataset preprocessing pipeline.
@@ -333,12 +349,13 @@ def run_elliptic_preprocessing_pipeline(
     return X_train_df, X_test_df, y_train, y_test
 
 
-def train_test_from_splitted(X_train: pd.DataFrame,
-                             y_train: pd.Series,
-                             X_test: pd.DataFrame,
-                             y_test: pd.Series,
-                             return_df: bool = False
-    ) -> Union[Tuple[pd.DataFrame, pd.Series], pd.DataFrame]:
+def train_test_from_splitted(
+    X_train: pd.DataFrame,
+    y_train: pd.Series,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+    return_df: bool = False,
+) -> Union[Tuple[pd.DataFrame, pd.Series], pd.DataFrame]:
     """
     Combines split data back into a single DataFrame or numpy arrays.
 
@@ -368,8 +385,8 @@ def train_test_from_splitted(X_train: pd.DataFrame,
     df_train = pd.concat([X_train, y_train], axis=1)
     df_test = pd.concat([X_test, y_test], axis=1)
     df = pd.concat([df_train, df_test])
-    X = df.drop(['class'], axis=1)
-    y = df['class']
+    X = df.drop(["class"], axis=1)
+    y = df["class"]
 
     if return_df:
         df_train = pd.concat([X_train, y_train], axis=1)
@@ -400,18 +417,25 @@ def recreate_original_df() -> pd.DataFrame:
         IndexError: If the features DataFrame doesn't have the expected number of columns.
         MergeError: If the merge operation in `combine_dataframes` fails.
     """
-    X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=LAST_TRAIN_TIME_STEP,
-                                                                             last_time_step=LAST_TIME_STEP,
-                                                                             only_labeled=ONLY_LABELED)
+    X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(
+        last_train_time_step=LAST_TRAIN_TIME_STEP,
+        last_time_step=LAST_TIME_STEP,
+        only_labeled=ONLY_LABELED,
+    )
     df_train = pd.concat([X_train, y_train], axis=1)
     df_test = pd.concat([X_test, y_test], axis=1)
     df = pd.concat([df_train, df_test])
     return df
 
 
-def train_test_from_x_y(X: Union[pd.DataFrame, np.ndarray],
-                        y: Union[pd.Series, np.ndarray]
-    ) -> Tuple[Union[pd.DataFrame, np.ndarray], Union[pd.DataFrame, np.ndarray], Union[pd.Series, np.ndarray], Union[pd.Series, np.ndarray]]:
+def train_test_from_x_y(
+    X: Union[pd.DataFrame, np.ndarray], y: Union[pd.Series, np.ndarray]
+) -> Tuple[
+    Union[pd.DataFrame, np.ndarray],
+    Union[pd.DataFrame, np.ndarray],
+    Union[pd.Series, np.ndarray],
+    Union[pd.Series, np.ndarray],
+]:
     """
     Performs a stratified train-test split.
 
@@ -435,32 +459,40 @@ def train_test_from_x_y(X: Union[pd.DataFrame, np.ndarray],
         ValueError: If the input data `X` or labels `y` are not valid data types (DataFrame, Series, or array).
         ValueError: If there are issues with stratification (e.g., not enough samples of a particular class).
     """
-    X_train_df, X_test_df, y_train, y_test = sklearn_train_test_split(X, y, random_state=139, stratify=y, shuffle=True, test_size=0.3)
+    X_train_df, X_test_df, y_train, y_test = sklearn_train_test_split(
+        X, y, random_state=139, stratify=y, shuffle=True, test_size=0.3
+    )
     return X_train_df, X_test_df, y_train, y_test
 
 
 def is_dataframe_non_empty(df: pd.DataFrame) -> bool:
-  """
-  Checks if a Pandas DataFrame is non-empty.
+    """
+    Checks if a Pandas DataFrame is non-empty.
 
-  Args:
-      df: The Pandas DataFrame to check.
+    Args:
+        df: The Pandas DataFrame to check.
 
-  Returns:
-      True if the DataFrame is non-empty, False otherwise.
-  """
-  if df.empty:
-    return False
-  else:
-    return True
+    Returns:
+        True if the DataFrame is non-empty, False otherwise.
+    """
+    if df.empty:
+        return False
+    else:
+        return True
 
 
-def drop_agg_features(X_train: pd.DataFrame = None,
-                      X_test: pd.DataFrame = None,
-                      y_train: pd.DataFrame = None,
-                      y_test: pd.DataFrame = None,
-                      inplace: bool = False
-    ) -> Tuple[Union[pd.DataFrame, np.ndarray], Union[pd.DataFrame, np.ndarray], Union[pd.Series, np.ndarray], Union[pd.Series, np.ndarray]]:
+def drop_agg_features(
+    X_train: pd.DataFrame = None,
+    X_test: pd.DataFrame = None,
+    y_train: pd.DataFrame = None,
+    y_test: pd.DataFrame = None,
+    inplace: bool = False,
+) -> Tuple[
+    Union[pd.DataFrame, np.ndarray],
+    Union[pd.DataFrame, np.ndarray],
+    Union[pd.Series, np.ndarray],
+    Union[pd.Series, np.ndarray],
+]:
     """
     Drops aggregated features from training and testing DataFrames.
 
@@ -486,16 +518,28 @@ def drop_agg_features(X_train: pd.DataFrame = None,
         KeyError: If any of the aggregated feature columns ('agg_feat_0' to 'agg_feat_71') are not found
             in X_train or X_test, or if they are unexpectedly found in y_train or y_test.
     """
-    if not all([X_train, X_test, y_train, y_test]):  # check if any of the dataframes are empty
-        X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(last_train_time_step=LAST_TRAIN_TIME_STEP,
-                                                                               last_time_step=LAST_TIME_STEP,
-                                                                               only_labeled=ONLY_LABELED)
+    if not all(
+        [X_train, X_test, y_train, y_test]
+    ):  # check if any of the dataframes are empty
+        X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(
+            last_train_time_step=LAST_TRAIN_TIME_STEP,
+            last_time_step=LAST_TIME_STEP,
+            only_labeled=ONLY_LABELED,
+        )
         inplace = False
     if not inplace:
-        X_train_new = X_train.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False)
-        X_test_new = X_test.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False)
-        y_train_new = y_train.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False)
-        y_test_new = y_test.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False)
+        X_train_new = X_train.drop(
+            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
+        )
+        X_test_new = X_test.drop(
+            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
+        )
+        y_train_new = y_train.drop(
+            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
+        )
+        y_test_new = y_test.drop(
+            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
+        )
         return X_train_new, X_test_new, y_train_new, y_test_new
     else:
         X_train.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=True)
@@ -504,9 +548,15 @@ def drop_agg_features(X_train: pd.DataFrame = None,
         y_test.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=True)
 
 
-def save_to_csv(df: pd.DataFrame, file_name: str, sep=',', encoding='utf-8', index=False, header=True) -> None:
+def save_to_csv(
+    df: pd.DataFrame,
+    file_name: str,
+    sep=",",
+    encoding="utf-8",
+    index=False,
+    header=True,
+) -> None:
     df.to_csv(file_name, sep=sep, encoding=encoding, index=index, header=header)
-
 
 
 ###################################
@@ -514,7 +564,9 @@ def save_to_csv(df: pd.DataFrame, file_name: str, sep=',', encoding='utf-8', ind
 ###################################
 
 
-def custom_confusion_matrix(technique: str, y_test: np.ndarray, y_pred: np.ndarray) -> Dict[str, int]:
+def custom_confusion_matrix(
+    technique: str, y_test: np.ndarray, y_pred: np.ndarray
+) -> Dict[str, int]:
     """Calculates and formats a confusion matrix.
 
     Computes the confusion matrix for the given true labels (`y_test`) and predicted labels (`y_pred`), and returns it as a dictionary
@@ -538,15 +590,16 @@ def custom_confusion_matrix(technique: str, y_test: np.ndarray, y_pred: np.ndarr
     """
     cm = confusion_matrix(y_test, y_pred, labels=[1, 0])
     cm = np.reshape(cm, -1).tolist()
-    return {'Technique': technique} | {label: val for val, label in zip(cm, LABELS_CM)}
+    return {"Technique": technique} | {label: val for val, label in zip(cm, LABELS_CM)}
 
 
-def get_dataset_size(technique: str,
-                    X_train: np.ndarray,
-                    X_test: np.ndarray,
-                    y_train: np.ndarray,
-                    y_test: np.ndarray
-    ) -> Dict[str, int]:
+def get_dataset_size(
+    technique: str,
+    X_train: np.ndarray,
+    X_test: np.ndarray,
+    y_train: np.ndarray,
+    y_test: np.ndarray,
+) -> Dict[str, int]:
     """
     Calculates and returns the sizes of the training and testing sets.
 
@@ -591,10 +644,11 @@ def get_dataset_size(technique: str,
     }
 
 
-def calculate_model_score(technique: str,
-                          y_true: Union[np.ndarray, pd.Series],
-                          y_pred: Union[np.ndarray, pd.Series]
-    ) -> Dict[str, int]:
+def calculate_model_score(
+    technique: str,
+    y_true: Union[np.ndarray, pd.Series],
+    y_pred: Union[np.ndarray, pd.Series],
+) -> Dict[str, int]:
     """
     Calculates common classification metrics.
 
@@ -628,15 +682,15 @@ def calculate_model_score(technique: str,
     }
 
 
-
-def plot_efc_energies(y_test: pd.Series,
-                      y_energies: pd.Series,
-                      fig_name: str,
-                      fig_folder: str,
-                      show_plot: bool = True,
-                      clf: Optional[EnergyBasedFlowClassifier] = None,
-                      cutoff: Optional[pd.Series] = None,
-    ) -> None:
+def plot_efc_energies(
+    y_test: pd.Series,
+    y_energies: pd.Series,
+    fig_name: str,
+    fig_folder: str,
+    show_plot: bool = True,
+    clf: Optional[EnergyBasedFlowClassifier] = None,
+    cutoff: Optional[pd.Series] = None,
+) -> None:
     """Plots the energy distributions for benign and malicious transactions.
 
     Generates a histogram visualizing the energy distributions of benign and malicious transactions as predicted by an EnergyBasedFlowClassifier (EFC).
@@ -697,6 +751,6 @@ def plot_efc_energies(y_test: pd.Series,
 
     plt.xlabel("Energy", fontsize=12)
     plt.ylabel("Density", fontsize=12)
-    plt.savefig(f'{fig_folder}/{fig_name}')
+    plt.savefig(f"{fig_folder}/{fig_name}")
     if show_plot:
         plt.show()
