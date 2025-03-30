@@ -1,27 +1,6 @@
 current_dir := $(shell pwd)
 clean:
-	rm -rf *.acn \
-	       *.aux \
-		   *.bbl \
-		   *.blg \
-		   *.brf \
-	       *.glo \
-	       *.glsdefs \
-	       *.ist \
-		   *.lof \
-	       *.log \
-		   *.lot \
-	       *.out \
-	       *.toc \
-		   *.acr \
-		   *.alg \
-		   *.bbl \
-		   *.blg \
-		   *.brf \
-		   *.glg \
-		   *.gls \
-		   *.fdb_latexmk \
-		   *.fuse_*
+	./scripts/clean_tex_build_files.sh
 
 build:
 	pdflatex dissertation_main.tex
