@@ -1,0 +1,22 @@
+\section{Aplying EFC on Elliptic Dataset}
+Experiments table
+
+% \begin{landscape}
+    \begin{table}[ht]
+        \centering
+        \caption{Experiments applied with EFC}
+        \label{efc table experiments}
+        \setlength{\tabcolsep}{2pt}
+        \small
+        \begin{tabular}{|c | p{5cm} | p{5cm} | p{5cm} |}
+            \hline
+            \multicolumn{1}{|c|}{\textbf{Experiment}} & \multicolumn{1}{c|}{\textbf{Description}} &
+            \multicolumn{1}{c|}{\textbf{Methods}} & \multicolumn{1}{c|}{\textbf{Best f1 macro and Method}} \\ \hline
+            \centering Experiment 1 & Custom EFC python implementation & Contamination& 10\% contamination with 0.418776 \\ \hline
+                Experiment 2 & Labeled and unbalabeled samples & Including labeled samples, \newline unbalabeled samples, \newline excluding aggregates features & All labeled samples with 0.487943 \\ \hline
+                Experiment 3 & Unbalanced dataset \newline techniques & Unbalanced Dataset, \newline Equally Distributed Classes, \newline Smote, Random Oversampling \newline and Random Undersampling & Smote with 0.908352 \\ \hline
+                Experiment 4 & Feature \newline selection & f\_classif with increasing k size & k=10 with 0.685565 \\ \hline
+                Experiment 5 & Feature selection and \newline unbalanced dataset \newline techniques & f\_classif with increasing k size with smote & smote with k=60 0.8947323 \\ \hline
+        \end{tabular}
+    \end{table}
+% \end{landscape}
