@@ -26,129 +26,47 @@
 \maketitle
 
 \begin{abstract}
-  This meta-paper describes the style to be used in articles and short papers
-  for SBC conferences. For papers in English, you should add just an abstract
-  while for the papers in Portuguese, we also ask for an abstract in
-  Portuguese (``resumo''). In both cases, abstracts should not have more than
-  10 lines and must be in the first page of the paper.
+  This is a work in progress.
 \end{abstract}
-     
-\begin{resumo} 
-  Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
-  resumos de artigos para publicação nos anais das conferências organizadas
-  pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
-  escritos em português. Artigos em inglês deverão apresentar apenas abstract.
-  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
-  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
-  página do artigo.
-\end{resumo}
 
+\section{Introduction} \label{sec:introduction}
 
-\section{General Information}
+In 2008, a global financial crisis in the real estate sector occurred \cite{bordo2008historical}, which was caused by
+the State providing easy credit \cite{murphy2008analysis}. A cryptographic document began circulating on a mailing list
+for cryptographers, signed by the pseudonymous Satoshi Nakamoto, which compiled detailed data and discoveries made
+through cypherpunk innovations. Nakamoto utilized this knowledge to create an electronic transaction system that did not
+require the involvement of a third-party moderator. In essence, Nakamoto's work involved using math, programming, and
+cutting-edge cryptography to publish a map for removing governmental presence from financial transactions. The recent
+collapse of the economy had demonstrated that governments cannot be trusted, and Nakamoto's solution was to create a
+currency that was mathematically impossible to be corrupted --- Bitcoin \cite{nakamoto2008bitcoin}. Although Bitcoin does
+present a solution to the corruptible nature of money, it does possess flaws and is target of more sophisticated frauds.
 
-All full papers and posters (short papers) submitted to some SBC conference,
-including any supporting documents, should be written in English or in
-Portuguese. The format paper should be A4 with single column, 3.5 cm for upper
-margin, 2.5 cm for bottom margin and 3.0 cm for lateral margins, without
-headers or footers. The main font must be Times, 12 point nominal size, with 6
-points of space before each paragraph. Page numbers must be suppressed.
+Detecting such sophisticated frauds requires advanced analytical techniques. Identifying anomalous patterns within complex
+data streams, such as network traffic or financial transactions, remains a
+critical challenge. Traditional methods often struggle with the high dimensionality, evolving nature, and sheer volume
+of modern data. In the domain of Network Intrusion Detection (NID), flow-based analysis offers a valuable abstraction by
+aggregating packet-level information into connection summaries, reducing data complexity while retaining essential
+behavioral characteristics. Within this context, a promising approach grounded in principles from statistical physics
+is the Energy-based Flow Classifier (EFC). Originally proposed using the Inverse Potts model, EFC characterizes the
+probability distribution of normal network flows through an energy function derived from observed data patterns
+\cite{pontes2019}. Configurations representing typical, legitimate flows are assigned low energy values by the model,
+whereas anomalous or potentially malicious flows, deviating from the learned normality, manifest as high-energy states.
+Subsequent research has further explored the capabilities of this energy-based framework, highlighting its potential for
+open-set recognition the challenging task of identifying novel anomalies not encountered during the model's training
+phase \cite{souza2022novelopensetenergybased}. The fundamental principle of assigning an energy score as a measure of typicality provides a
+robust and theoretically grounded mechanism for distinguishing normal system behavior from potentially illicit activities.
 
-Full papers must respect the page limits defined by the conference.
-Conferences that publish just abstracts ask for \textbf{one}-page texts.
+While Bitcoin was designed to circumvent traditional financial system vulnerabilities \cite{nakamoto2008bitcoin}, it is
+not immune to manipulation and anomalous activities, necessitating robust detection mechanisms \cite{zhang2020financial,
+zainal2018review}. Addressing this challenge within the Bitcoin ecosystem, this paper investigates the application of the
+Energy-based Flow Classifier (EFC), a technique adept at identifying deviations from established norms in complex data
+\cite{pontes2019, souza2022novelopensetenergybased}. Leveraging its foundation in statistical physics, EFC quantifies the typicality of
+data points through an energy score, whereby normal, expected transaction patterns correspond to low energy states, and
+significant deviations—potentially indicative of fraud or manipulation—manifest as high-energy anomalies. The central
+objective of this work is, therefore, to explore the efficacy of EFC in identifying such anomalous operations within a
+real-world Bitcoin transaction dataset, assessing its potential as a tool for enhancing the security and integrity of
+cryptocurrency exchanges.
 
-\section{First Page} \label{sec:firstpage}
-
-The first page must display the paper title, the name and address of the
-authors, the abstract in English and ``resumo'' in Portuguese (``resumos'' are
-required only for papers written in Portuguese). The title must be centered
-over the whole page, in 16 point boldface font and with 12 points of space
-before itself. Author names must be centered in 12 point font, bold, all of
-them disposed in the same line, separated by commas and with 12 points of
-space after the title. Addresses must be centered in 12 point font, also with
-12 points of space after the authors' names. E-mail addresses should be
-written using font Courier New, 10 point nominal size, with 6 points of space
-before and 6 points of space after.
-
-The abstract and ``resumo'' (if is the case) must be in 12 point Times font,
-indented 0.8cm on both sides. The word \textbf{Abstract} and \textbf{Resumo},
-should be written in boldface and must precede the text.
-
-\section{CD-ROMs and Printed Proceedings}
-
-In some conferences, the papers are published on CD-ROM while only the
-abstract is published in the printed Proceedings. In this case, authors are
-invited to prepare two final versions of the paper. One, complete, to be
-published on the CD and the other, containing only the first page, with
-abstract and ``resumo'' (for papers in Portuguese).
-
-\section{Sections and Paragraphs}
-
-Section titles must be in boldface, 13pt, flush left. There should be an extra
-12 pt of space before each title. Section numbering is optional. The first
-paragraph of each section should not be indented, while the first lines of
-subsequent paragraphs should be indented by 1.27 cm.
-
-\subsection{Subsections}
-
-The subsection titles must be in boldface, 12pt, flush left.
-
-\section{Figures and Captions}\label{sec:figs}
-
-
-Figure and table captions should be centered if less than one line
-(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
-both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
-be Helvetica, 10 point, boldface, with 6 points of space before and after each
-caption.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.5\textwidth]{figures/fig1.jpg}
-\caption{A typical figure}
-\label{fig:exampleFig1}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.3\textwidth]{figures/fig2.jpg}
-\caption{This figure is an example of a figure caption taking more than one
-  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
-\label{fig:exampleFig2}
-\end{figure}
-
-In tables, try to avoid the use of colored or shaded backgrounds, and avoid
-thick, doubled, or unnecessary framing lines. When reporting empirical data,
-do not use more decimal digits than warranted by their precision and
-reproducibility. Table caption must be placed before the table (see Table 1)
-and the font used must also be Helvetica, 10 point, boldface, with 6 points of
-space before and after each caption.
-
-\begin{table}[ht]
-\centering
-\caption{Variables to be considered on the evaluation of interaction
-  techniques}
-\label{tab:exTable1}
-\includegraphics[width=.7\textwidth]{figures/table.jpg}
-\end{table}
-
-\section{Images}
-
-All images and illustrations should be in black-and-white, or gray tones,
-excepting for the papers that will be electronically available (on CD-ROMs,
-internet, etc.). The image resolution on paper should be about 600 dpi for
-black-and-white images, and 150-300 dpi for grayscale images.  Do not include
-images with excessive resolution, as they may take hours to print, without any
-visible difference in the result. 
-
-\section{References}
-
-Bibliographic references must be unambiguous and uniform.  We recommend giving
-the author names references in brackets, e.g. \cite{knuth:84},
-\cite{boulic:91}, and \cite{smith:99}.
-
-The references must be listed using 12 point font size, with 6 points of space
-before each reference. The first line of each reference should not be
-indented, while the subsequent should be indented by 0.5 cm.
 
 \bibliographystyle{sbc}
 \bibliography{bibliography/sbc-template.bib}
