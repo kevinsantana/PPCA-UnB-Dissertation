@@ -1,26 +1,49 @@
 #!/bin/bash
 
-find . -type f \( \
-    -name "*.acn" -or \
-    -name "*.aux" -or \
-    -name "*.bbl" -or \
-    -name "*.blg" -or \
-    -name "*.brf" -or \
-    -name "*.glo" -or \
-    -name "*.glsdefs" -or \
-    -name "*.ist" -or \
-    -name "*.lof" -or \
-    -name "*.log" -or \
-    -name "*.lot" -or \
-    -name "*.out" -or \
-    -name "*.toc" -or \
-    -name "*.acr" -or \
-    -name "*.alg" -or \
-    -name "*.bbl" -or \
-    -name "*.blg" -or \
-    -name "*.brf" -or \
-    -name "*.glg" -or \
-    -name "*.gls" -or \
-    -name "*.fdb_latexmk" -or \
-    -name "*.fuse_*" \
-\) -print0 | xargs -0 rm -f
+# Script to clean LaTeX auxiliary files from a specified directory.
+
+# Check if the target directory argument is provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <target_directory>"
+  exit 1
+fi
+
+TARGET_DIR="$1"
+
+# Check if the target directory exists
+if [ ! -d "$TARGET_DIR" ]; then
+  echo "Error: Target directory '$TARGET_DIR' not found."
+  exit 1
+fi
+
+echo "Cleaning LaTeX build files in '$TARGET_DIR'..."
+
+# Use find to locate and delete common LaTeX auxiliary files within the target directory.
+# -maxdepth 1 ensures we only delete files directly within TARGET_DIR, not in subdirectories.
+# Add or remove extensions as needed for your specific build process.
+find "$TARGET_DIR" -maxdepth 1 -type f \( \
+  -name '*.aux' -o \
+  -name '*.log' -o \
+  -name '*.toc' -o \
+  -name '*.lof' -o \
+  -name '*.lot' -o \
+  -name '*.out' -o \
+  -name '*.bbl' -o \
+  -name '*.blg' -o \
+  -name '*.glg' -o \
+  -name '*.gls' -o \
+  -name '*.glo' -o \
+  -name '*.ist' -o \
+  -name '*.acn' -o \
+  -name '*.acr' -o \
+  -name '*.alg' -o \
+  -name '*.synctex.gz' -o \
+  -name '*.fls' -o \
+  -name '*.fdb_latexmk' \
+\) -delete
+
+# If you also generate PDF files you want to clean, uncomment the line below:
+# find "$TARGET_DIR" -maxdepth 1 -type f -name '*.pdf' -delete
+
+echo "Cleaning complete in '$TARGET_DIR'."
+exit 0
