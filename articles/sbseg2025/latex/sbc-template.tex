@@ -3,7 +3,7 @@
 \usepackage{styles/sbc-template}
 \usepackage{graphicx,url}
 \usepackage[utf8]{inputenc}
-\usepackage[brazil]{babel}
+\usepackage[american]{babel}
 
      
 \sloppy
@@ -67,6 +67,250 @@ objective of this work is, therefore, to explore the efficacy of EFC in identify
 real-world Bitcoin transaction dataset, assessing its potential as a tool for enhancing the security and integrity of
 cryptocurrency exchanges.
 
+
+\section{Data and Methods} \label{sec:methods}
+This section details the data and methods employed in our study, which builds upon the foundational research presented in
+"Machine learning methods to detect money laundering in the Bitcoin blockchain in the presence of label scarcity"
+\cite{lorenz2021machinelearningmethodsdetect}. That seminal work explored the use of various machine learning classifiers
+(e.g., Random Forest, SVM, MLP) applied to engineered features from the Elliptic dataset to identify illicit Bitcoin transactions,
+specifically tackling the inherent challenge of label scarcity. While demonstrating the potential of standard ML techniques,
+their approach relied on supervised or semi-supervised frameworks requiring at least some labels. Our research, forming
+part of a larger dissertation effort, diverges by investigating the Energy Flow Classifier (EFC), introduced in Section
+\ref{sec:introduction}. EFC provides an alternative approach rooted in statistical physics, designed to model the typical
+'energy' profile of normal transactions. By focusing on identifying high-energy deviations representing anomalies, EFC
+inherently addresses the label scarcity problem from an unsupervised or anomaly detection perspective, offering a framework
+potentially better suited for identifying novel or diverse fraudulent behaviors without relying heavily on pre-existing
+fraud labels. The following subsections detail our specific dataset, preprocessing steps, EFC implementation, evaluation
+task, and computational setup.
+
+\subsection{Dataset Description} \label{subsec:dataset}
+
+This study utilizes the Elliptic dataset, a publicly available graph dataset of Bitcoin transactions introduced by Weber
+et al. \cite{weber2019antimoneylaunderingbitcoinexperimenting} and subsequently used in foundational studies on machine
+learning for Bitcoin money laundering detection, including the work by Lorenz et al. \cite{lorenz2021machinelearningmethodsdetect}
+which highlighted the challenges of label scarcity.
+
+\textbf{Source and Scope:} The dataset represents a temporal subgraph of the public Bitcoin blockchain, focusing on transactions
+involving entities identified by Elliptic Ltd., a company specializing in blockchain analytics and financial crime prevention.
+It captures transaction patterns over 49 distinct time steps, where each step corresponds roughly to a two-week period.
+The full dataset comprises 203,769 transaction nodes and 234,355 directed edges representing the flow of Bitcoin between
+transactions.
+
+\textbf{Features:} Each transaction (node) in the graph is described by a set of 166 anonymized features. One feature
+explicitly denotes the time step (1 to 49). The remaining 165 features are local transactional properties, including
+aggregated information about the transaction's inputs and outputs (e.g., number, amounts, fees) and potentially aggregated
+statistics from its immediate neighborhood in the transaction graph. These features are provided in a normalized or
+standardized form, obscuring raw values but preserving relational patterns crucial for machine learning analysis. The
+graph structure itself, defined by the edges connecting transactions where the output of one becomes the input of another,
+provides crucial contextual information about the flow of funds, although our EFC implementation primarily focuses on the
+node features.
+
+\textbf{Labels:} A key characteristic of the Elliptic dataset, and a central challenge addressed by Lorenz et al.
+\cite{lorenz2021machinelearningmethodsdetect} and relevant to our EFC approach, is the presence of label scarcity. While
+the dataset contains over 200,000 transactions, only a subset is explicitly labeled. Based on the analysis by Weberet al.
+\cite{weber2019antimoneylaunderingbitcoinexperimenting}, approximately 46,564 transactions around 23\% were initially labeled. These labels classify
+transactions into two main categories:
+
+\begin{itemize}
+    \item \textbf{Licit:} Transactions associated with known legitimate entities such as exchanges, miners, wallet providers,
+      and other regulated services (approx. 42,019 instances in the original labeled set).
+    \item \textbf{Illicit:} Transactions linked to known illicit activities, including scams, ransomware, terrorist financing,
+      Ponzi schemes, and dark market operations (approx. 4,545 instances in the original labeled set).
+\end{itemize}
+
+The vast majority of transactions (over 150,000) remain unlabeled. Within the labeled portion, illicit transactions represent
+a small minority approx. 9.8\% of labeled data, or just over 2\% of the total dataset. This significant class imbalance
+and the large volume of unlabeled data make the Elliptic dataset a realistic and challenging benchmark for evaluating fraud
+detection techniques, particularly unsupervised or anomaly-based methods like EFC that do not strictly rely on extensive
+labeling. Table \ref{tab:dataset_summary} provides a summary of the dataset statistics based on the original publication
+\cite{weber2019antimoneylaunderingbitcoinexperimenting}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Summary Statistics of the Elliptic Dataset (based on \cite{weber2019antimoneylaunderingbitcoinexperimenting}).}
+  \label{tab:dataset_summary}
+  \begin{tabular}{lr}
+    \hline
+    Characteristic        & Value \\
+    Total Transactions (Nodes) & 203,769 \\
+    Total Edges           & 234,355 \\
+    Time Steps            & 49 \\
+    Features per Node     & 166 \\
+    Labeled Transactions  & 46,564 (\textasciitilde23\%) \\
+    \quad - Licit         & 42,019 (\textasciitilde90.2\% of labeled) \\
+    \quad - Illicit       & 4,545 (\textasciitilde9.8\% of labeled) \\
+    Unlabeled Transactions & 157,205 (\textasciitilde77\%) \\
+  \end{tabular}
+\end{table}
+
+\subsection{Data Preprocessing} \label{subsec:preprocessing}
+
+Preparing the Elliptic dataset for the Energy Flow Classifier (EFC) involved several key steps focused on handling labels,
+selecting relevant features, scaling the data appropriately, and partitioning it for training and evaluation in a temporally
+meaningful way.
+
+First, addressing the labels described in Section \ref{subsec:dataset}, we filtered the transactions based on their
+classification. Given that EFC operates by learning the characteristics of 'normal' data and identifying deviations,
+transactions labeled as 'Licit' were designated as the normal class for model training. Transactions labeled as 'Illicit'
+were designated as the anomalous class, primarily used during the evaluation phase to assess detection performance. The
+large portion of transactions with 'Unknown' labels were excluded from both training and testing in this study to ensure
+a clear evaluation based on known ground truth. The binary nature of the task (Licit vs. Illicit) required mapping these
+labels to numerical values (e.g., 0 for Licit, 1 for Illicit) for evaluation purposes.
+
+Second, feature selection and transformation were performed. From the 166 features available for each transaction, the
+feature explicitly indicating the time step (ranging from 1 to 49) was separated. This temporal information was crucial
+for partitioning the data but was not used as a direct input feature to the EFC model itself, as the model focuses on the
+intrinsic properties of the transaction rather than its absolute time position. The remaining 165 anonymized features,
+representing transactional and local graph properties, were retained as input for the EFC. Although the original dataset
+description mentions some form of normalization \cite{weber2019antimoneylaunderingbitcoinexperimenting}, to ensure consistency
+and potentially improve the stability of the energy calculations within the EFC framework, these 165 features were scaled
+to the range [0, 1] using Min-Max scaling. This scaling was applied separately to the training and test sets (fitting
+the scaler only on the training data) to prevent data leakage.
+
+Third, a temporal data split was implemented, following common practice for this dataset
+\cite{weber2019antimoneylaunderingbitcoinexperimenting, lorenz2021machinelearningmethodsdetect} to simulate a realistic
+scenario where a model trained on past data is used to detect fraud in future transactions. Transactions belonging to
+time steps 1 through 34 were allocated to the training set. Transactions from the subsequent time steps, 35 through 49,
+constituted the test set.
+
+Crucially, the EFC model was trained *only* on the 'Licit' (normal) transactions within the training time steps (1-34).
+The test set (time steps 35-49) contained both 'Licit' and 'Illicit' transactions, allowing for the evaluation of EFC's
+ability to assign higher energy scores to the unseen illicit transactions compared to the unseen licit ones.
+
+These preprocessing steps are summarized in Table \ref{tab:preprocessing_summary}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Summary of Data Preprocessing Steps for the Elliptic Dataset.}
+  \label{tab:preprocessing_summary}
+  \begin{tabular}{ll}
+    \hline
+    Step                  & Description \\
+    \textbf{Label Handling} & - Selected transactions labeled 'Licit' (Normal) and 'Illicit' (Anomaly). \\
+                          & - Excluded transactions labeled 'Unknown'. \\
+                          & - Mapped Licit to 0, Illicit to 1 for evaluation. \\
+    \textbf{Feature Selection} & - Retained 165 anonymized transactional/local features. \\
+                             & - Excluded the 'Time Step' feature from model input. \\
+    \textbf{Feature Scaling}  & - Applied Min-Max scaling to the 165 features, scaling to range [0, 1]. \\
+                             & - Scaler fitted only on the training data. \\
+    \textbf{Data Splitting}   & - Temporal split: Time steps 1-34 for Training, 35-49 for Testing. \\
+                             & - Training Set Composition: 'Licit' transactions only from steps 1-34. \\
+                             & - Test Set Composition: 'Licit' and 'Illicit' transactions from steps 35-49. \\
+  \end{tabular}
+\end{table}
+
+\subsection{Energy Flow Classifier (EFC) Implementation} \label{subsec:efc_implementation}
+
+For detecting illicit transactions within the Elliptic dataset, we employed the Energy Flow Classifier (EFC), leveraging
+the Python package implementation \cite{efc_package_github} based on the principles described by Ponts et al.
+\cite{pontes2019, souza2022novelopensetenergybased}. EFC operates on the premise that normal system behavior corresponds
+to low 'energy' states, while anomalies or deviations manifest as high-energy states. Our implementation specifically
+utilizes EFC as a one-class anomaly detector, tailored to the label scarcity challenge inherent in the dataset.
+
+\textbf{Model Instantiation and Interface:} We primarily utilized the class-based interface provided by the package,
+specifically the \texttt{EnergyBasedFlowClassifier} class. As indicated in our experimental setup code \cite{reproducibility},
+an EFC instance was configured with specific hyperparameters:
+
+\begin{itemize}
+    \item \texttt{n\_bins}: This parameter controls the discretization of the input features. Each feature's range is
+      divided into \texttt{n\_bins} intervals, forming the basis for calculating the system's state probabilities and
+      energy. Based on our experiments and configuration (`constants.py`), a value of \texttt{N\_BINS = 30} was used.
+    \item \texttt{cutoff\_quantile}: This determines the energy threshold for classifying a sample as anomalous. After
+      fitting the model on normal data, the energy distribution of this training data is computed. The threshold
+      (\texttt{cutoff\_}) is set at the energy value corresponding to the specified quantile
+      (e.g., \texttt{CUTOFF\_QUANTILE = 0.9} in `constants.py`, meaning energies above the 90th percentile of training
+      energies are considered potentially anomalous).
+    \item \texttt{pseudocounts}: To avoid issues with zero probabilities when calculating energies (especially for states 
+      not observed in the training data), a small pseudocount is added. We used a value of \texttt{PSEUDOCOUNTS = 0.1}
+      (`constants.py`).
+\end{itemize}
+
+While some experimental scripts might show usage of the lower-level functional interface
+(\texttt{one\_class\_fit}, \texttt{one\_class\_predict}) with potentially different parameter names (like \texttt{Q}
+possibly relating to bins, and \texttt{LAMBDA} for pseudocounts), the core experiments relied on the
+\texttt{EnergyBasedFlowClassifier} class with the parameters defined above.
+
+\textbf{Training Process:} A key aspect of our implementation, driven by the goal of anomaly detection under label scarcity,
+was the training procedure. Following the data split described in Section \ref{subsec:preprocessing}, the EFC model's
+\texttt{fit} method was called *exclusively* using the 'Licit' (normal) transactions from the training time steps (1-34).
+This aligns with the one-class classification paradigm: the model learns the energy landscape characteristic of normal
+Bitcoin transactions based solely on examples known to be legitimate within the training period. The illicit transactions
+were entirely withheld during this phase.
+
+\textbf{Prediction Process:} During the evaluation phase, the trained EFC model's \texttt{predict} method was applied to
+the test set (transactions from time steps 35-49), which contained both 'Licit' and 'Illicit' instances. For each test
+transaction, EFC calculates an energy score based on its features and the learned probability distributions from the
+training phase. If a transaction's energy score exceeded the pre-determined \texttt{cutoff\_} threshold (derived from
+the \texttt{cutoff\_quantile} applied to the training data energies), it was classified as anomalous (predicted 'Illicit',
+label 1); otherwise, it was classified as normal (predicted 'Licit', label 0). The energy scores themselves
+(\texttt{predict\_energies} method) were also used for evaluation metrics like AUC that rely on ranking rather than a
+hard classification threshold.
+
+\textbf{Comparison to Original EFC Package:} Our usage adheres closely to the standard application of the EFC package for
+one-class classification/anomaly detection. We did not modify the core EFC algorithm (energy calculation, probability
+estimation). The primary "customization" lies in the specific application context:
+
+\begin{enumerate}
+    \item \textbf{Strict One-Class Training:} Explicitly training only on the 'Licit' subset of the temporally defined training data.
+    \item \textbf{Dataset Specificity:} Applying EFC to the high-dimensional, anonymized features of the Elliptic dataset.
+    \item \textbf{Parameter Tuning:} While using standard EFC parameters, the specific values (\texttt{n\_bins=30},
+    \texttt{cutoff\_quantile=0.9}, \texttt{pseudocounts=0.1}) were chosen based on experimentation within this project's
+    context.
+\end{enumerate}
+
+Essentially, we used the EFC package "as intended" for anomaly detection but carefully configured its training data and
+parameters for the specific task of identifying illicit Bitcoin transactions in the Elliptic dataset scenario. The helper
+functions described in \cite{reproducibility} primarily manage the data loading, preprocessing, splitting, evaluation, and visualization
+around the core EFC calls, rather than altering the EFC mechanism itself.
+
+
+\subsection{Task} \label{subsec:task}
+
+The primary task addressed in this study is to evaluate the effectiveness of the Energy Flow Classifier (EFC), implemented
+as described in Section \ref{subsec:efc_implementation}, for identifying illicit (anomalous) transactions within the Elliptic
+Bitcoin dataset. This aligns with the broader goal of exploring alternative methodologies, particularly those suited for
+label scarcity, compared to the supervised approaches examined by Lorenz et al. \cite{lorenz2021machinelearningmethodsdetect}.
+
+Specifically, the task is framed as a **one-class anomaly detection problem**. Having trained the EFC model exclusively
+on 'Licit' transactions from the initial time steps (1-34), the objective is to assess its ability to distinguish between
+'Licit' and 'Illicit' transactions in the subsequent, unseen time steps (35-49) of the test set.
+
+This evaluation involves two main perspectives:
+
+\begin{enumerate}
+    \item \textbf{Classification Performance:} Using the energy threshold derived from the training data (based on the
+      \texttt{cutoff\_quantile}), we assess how well EFC classifies unseen transactions as either 'Licit' (below threshold)
+      or 'Illicit' (above threshold). Performance is measured using standard classification metrics suitable for imbalanced
+      datasets, such as Precision, Recall, F1-Score, and potentially Balanced Accuracy, calculated on the labeled test set.
+    \item \textbf{Ranking Performance:} Independent of a specific threshold, we evaluate EFC's ability to assign consistently
+      higher energy scores to 'Illicit' transactions compared to 'Licit' transactions in the test set. This is primarily
+      assessed using the Area Under the Receiver Operating Characteristic Curve (AUC-ROC), which measures the model's
+      ability to rank anomalies higher than normal instances across all possible thresholds.
+\end{enumerate}
+
+Success in this task would demonstrate EFC's potential as a viable tool for flagging potentially fraudulent or anomalous
+activities in Bitcoin transactions, leveraging its unsupervised, energy-based approach to overcome challenges like label
+scarcity and potentially detect novel deviations from normal behavior. The results will provide insights into how EFC
+performs in this financial forensics context compared to implicitly known benchmarks from related studies using the same
+dataset.
+
+\section{Background and Related Work}
+WIP
+
+\section{Results}
+WIP
+
+\section{Conclusion}
+WIP
+
+\section{Future Work}
+WIP
+
+\section{Reproducibility} \label{subsec:reproducibility}
+WIP
+
+\subsection{Computational Environment}
+WIP
 
 \bibliographystyle{sbc}
 \bibliography{bibliography/sbc-template.bib}
