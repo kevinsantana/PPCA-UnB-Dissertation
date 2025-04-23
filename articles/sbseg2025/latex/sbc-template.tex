@@ -5,7 +5,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
 
-     
 \sloppy
 
 \title{Exploring Energy Flow Classifier to Identify \\ Fraudulent Cryptocurrency Transactions}
@@ -31,15 +30,15 @@
 
 \section{Introduction} \label{sec:introduction}
 
-In 2008, a global financial crisis in the real estate sector occurred \cite{bordo2008historical}, which was caused by
-the State providing easy credit \cite{murphy2008analysis}. A cryptographic document began circulating on a mailing list
+In 2008, a global financial crisis occurred in the real estate sector \cite{bordo2008historical}, which was caused by
+the state providing easy credit \cite{murphy2008analysis}. A cryptographic document began circulating on a mailing list
 for cryptographers, signed by the pseudonymous Satoshi Nakamoto, which compiled detailed data and discoveries made
-through cypherpunk innovations. Nakamoto utilized this knowledge to create an electronic transaction system that did not
+through cypherpunk innovations. Nakamoto used this knowledge to create an electronic transaction system that did not
 require the involvement of a third-party moderator. In essence, Nakamoto's work involved using math, programming, and
-cutting-edge cryptography to publish a map for removing governmental presence from financial transactions. The recent
+cutting-edge cryptography to publish a map to remove the presence of the government from financial transactions. The recent
 collapse of the economy had demonstrated that governments cannot be trusted, and Nakamoto's solution was to create a
-currency that was mathematically impossible to be corrupted --- Bitcoin \cite{nakamoto2008bitcoin}. Although Bitcoin does
-present a solution to the corruptible nature of money, it does possess flaws and is target of more sophisticated frauds.
+currency that was mathematically impossible to corrupt --- Bitcoin \cite{nakamoto2008bitcoin}. Although Bitcoin presents
+a solution to the corruptible nature of money, it does possess flaws and is the target of more sophisticated frauds.
 
 Detecting such sophisticated frauds requires advanced analytical techniques. Identifying anomalous patterns within complex
 data streams, such as network traffic or financial transactions, remains a
@@ -47,25 +46,26 @@ critical challenge. Traditional methods often struggle with the high dimensional
 of modern data. In the domain of Network Intrusion Detection (NID), flow-based analysis offers a valuable abstraction by
 aggregating packet-level information into connection summaries, reducing data complexity while retaining essential
 behavioral characteristics. Within this context, a promising approach grounded in principles from statistical physics
-is the Energy-based Flow Classifier (EFC). Originally proposed using the Inverse Potts model, EFC characterizes the
+is the Energy-based Flow Classifier (EFC). Originally proposed using the Inverse Potts model, the EFC characterizes the
 probability distribution of normal network flows through an energy function derived from observed data patterns
-\cite{pontes2019}. Configurations representing typical, legitimate flows are assigned low energy values by the model,
+\cite{pontes2019}. Configurations representing typical, legitimate flows are assigned low-energy values by the model,
 whereas anomalous or potentially malicious flows, deviating from the learned normality, manifest as high-energy states.
 Subsequent research has further explored the capabilities of this energy-based framework, highlighting its potential for
-open-set recognition the challenging task of identifying novel anomalies not encountered during the model's training
-phase \cite{souza2022novelopensetenergybased}. The fundamental principle of assigning an energy score as a measure of typicality provides a
-robust and theoretically grounded mechanism for distinguishing normal system behavior from potentially illicit activities.
+open-set recognition and the challenging task of identifying novel anomalies not encountered during the model training
+phase \cite{souza2022novelopensetenergybased}. The fundamental principle of assigning an energy score as a measure of
+typicality provides a robust and theoretically grounded mechanism for distinguishing normal system behavior from potentially
+illicit activities.
 
-While Bitcoin was designed to circumvent traditional financial system vulnerabilities \cite{nakamoto2008bitcoin}, it is
-not immune to manipulation and anomalous activities, necessitating robust detection mechanisms \cite{zhang2020financial,
+Although Bitcoin was designed to circumvent vulnerabilities in the traditional financial system \cite{nakamoto2008bitcoin},
+it is not immune to manipulation and anomalous activities, necessitating robust detection mechanisms \cite{zhang2020financial,
 zainal2018review}. Addressing this challenge within the Bitcoin ecosystem, this paper investigates the application of the
 Energy-based Flow Classifier (EFC), a technique adept at identifying deviations from established norms in complex data
-\cite{pontes2019, souza2022novelopensetenergybased}. Leveraging its foundation in statistical physics, EFC quantifies the typicality of
-data points through an energy score, whereby normal, expected transaction patterns correspond to low energy states, and
-significant deviations—potentially indicative of fraud or manipulation—manifest as high-energy anomalies. The central
-objective of this work is, therefore, to explore the efficacy of EFC in identifying such anomalous operations within a
-real-world Bitcoin transaction dataset, assessing its potential as a tool for enhancing the security and integrity of
-cryptocurrency exchanges.
+\cite{pontes2019, souza2022novelopensetenergybased}. Leveraging its foundation in statistical physics, the EFC quantifies
+the typicality of data points through an energy score, whereby normal, expected transaction patterns correspond to low
+energy states, and significant deviations, potentially indicative of fraud or manipulation—manifest as high-energy
+anomalies. The central objective of this work is, therefore, to explore the efficacy of EFC in identifying such anomalous
+operations within a real-world Bitcoin transaction dataset, assessing its potential as a tool for enhancing the security
+and integrity of cryptocurrency exchanges.
 
 
 \section{Data and Methods} \label{sec:methods}
@@ -85,9 +85,9 @@ task, and computational setup.
 
 \subsection{Dataset Description} \label{subsec:dataset}
 
-This study utilizes the Elliptic dataset, a publicly available graph dataset of Bitcoin transactions introduced by Weber
-et al. \cite{weber2019antimoneylaunderingbitcoinexperimenting} and subsequently used in foundational studies on machine
-learning for Bitcoin money laundering detection, including the work by Lorenz et al. \cite{lorenz2021machinelearningmethodsdetect}
+This study utilizes the Elliptic dataset, a publicly available graph dataset of Bitcoin transactions introduced by 
+\cite{weber2019antimoneylaunderingbitcoinexperimenting} and subsequently used in foundational studies on machine
+learning for Bitcoin money laundering detection, including the work by \cite{lorenz2021machinelearningmethodsdetect}
 which highlighted the challenges of label scarcity.
 
 \textbf{Source and Scope:} The dataset represents a temporal subgraph of the public Bitcoin blockchain, focusing on transactions
@@ -105,11 +105,11 @@ graph structure itself, defined by the edges connecting transactions where the o
 provides crucial contextual information about the flow of funds, although our EFC implementation primarily focuses on the
 node features.
 
-\textbf{Labels:} A key characteristic of the Elliptic dataset, and a central challenge addressed by Lorenz et al.
+\textbf{Labels:} A key characteristic of the Elliptic dataset, and a central challenge addressed by 
 \cite{lorenz2021machinelearningmethodsdetect} and relevant to our EFC approach, is the presence of label scarcity. While
-the dataset contains over 200,000 transactions, only a subset is explicitly labeled. Based on the analysis by Weberet al.
-\cite{weber2019antimoneylaunderingbitcoinexperimenting}, approximately 46,564 transactions around 23\% were initially labeled. These labels classify
-transactions into two main categories:
+the dataset contains over 200,000 transactions, only a subset is explicitly labeled. Based on the analysis by 
+\cite{weber2019antimoneylaunderingbitcoinexperimenting}, approximately 46,564 transactions or around 23\% were initially labeled.
+These labels classify transactions into two main categories:
 
 \begin{itemize}
     \item \textbf{Licit:} Transactions associated with known legitimate entities such as exchanges, miners, wallet providers,
@@ -145,20 +145,20 @@ labeling. Table \ref{tab:dataset_summary} provides a summary of the dataset stat
 
 \subsection{Data Preprocessing} \label{subsec:preprocessing}
 
-Preparing the Elliptic dataset for the Energy Flow Classifier (EFC) involved several key steps focused on handling labels,
+Preparing the Elliptic dataset for EFC involved several key steps focused on handling labels,
 selecting relevant features, scaling the data appropriately, and partitioning it for training and evaluation in a temporally
 meaningful way.
 
 First, addressing the labels described in Section \ref{subsec:dataset}, we filtered the transactions based on their
-classification. Given that EFC operates by learning the characteristics of 'normal' data and identifying deviations,
-transactions labeled as 'Licit' were designated as the normal class for model training. Transactions labeled as 'Illicit'
+classification. Given that EFC operates by learning the characteristics of \textit{normal} data and identifying deviations,
+transactions labeled as \textit{Licit} were designated as the normal class for model training. Transactions labeled as \textit{Illicit}
 were designated as the anomalous class, primarily used during the evaluation phase to assess detection performance. The
-large portion of transactions with 'Unknown' labels were excluded from both training and testing in this study to ensure
+large portion of transactions with \textit{Unknown} labels were excluded from both training and testing in this study to ensure
 a clear evaluation based on known ground truth. The binary nature of the task (Licit vs. Illicit) required mapping these
 labels to numerical values (e.g., 0 for Licit, 1 for Illicit) for evaluation purposes.
 
 Second, feature selection and transformation were performed. From the 166 features available for each transaction, the
-feature explicitly indicating the time step (ranging from 1 to 49) was separated. This temporal information was crucial
+feature explicitly indicating the time step (ranging from 1 to 49) was removed. This temporal information was crucial
 for partitioning the data but was not used as a direct input feature to the EFC model itself, as the model focuses on the
 intrinsic properties of the transaction rather than its absolute time position. The remaining 165 anonymized features,
 representing transactional and local graph properties, were retained as input for the EFC. Although the original dataset
@@ -173,8 +173,8 @@ scenario where a model trained on past data is used to detect fraud in future tr
 time steps 1 through 34 were allocated to the training set. Transactions from the subsequent time steps, 35 through 49,
 constituted the test set.
 
-Crucially, the EFC model was trained *only* on the 'Licit' (normal) transactions within the training time steps (1-34).
-The test set (time steps 35-49) contained both 'Licit' and 'Illicit' transactions, allowing for the evaluation of EFC's
+Crucially, the EFC model was trained only on the Licit (normal) transactions within the training time steps (1-34).
+The test set (time steps 35-49) contained both Licit and Illicit transactions, allowing for the evaluation of EFC's
 ability to assign higher energy scores to the unseen illicit transactions compared to the unseen licit ones.
 
 These preprocessing steps are summarized in Table \ref{tab:preprocessing_summary}.
@@ -186,16 +186,16 @@ These preprocessing steps are summarized in Table \ref{tab:preprocessing_summary
   \begin{tabular}{ll}
     \hline
     Step                  & Description \\
-    \textbf{Label Handling} & - Selected transactions labeled 'Licit' (Normal) and 'Illicit' (Anomaly). \\
-                          & - Excluded transactions labeled 'Unknown'. \\
+    \textbf{Label Handling} & - Selected transactions labeled Licit (Normal) and Illicit (Anomaly). \\
+                          & - Excluded transactions labeled Unknown. \\
                           & - Mapped Licit to 0, Illicit to 1 for evaluation. \\
     \textbf{Feature Selection} & - Retained 165 anonymized transactional/local features. \\
-                             & - Excluded the 'Time Step' feature from model input. \\
+                             & - Excluded the Time Step feature from model input. \\
     \textbf{Feature Scaling}  & - Applied Min-Max scaling to the 165 features, scaling to range [0, 1]. \\
                              & - Scaler fitted only on the training data. \\
     \textbf{Data Splitting}   & - Temporal split: Time steps 1-34 for Training, 35-49 for Testing. \\
-                             & - Training Set Composition: 'Licit' transactions only from steps 1-34. \\
-                             & - Test Set Composition: 'Licit' and 'Illicit' transactions from steps 35-49. \\
+                             & - Training Set Composition: Licit transactions only from steps 1-34. \\
+                             & - Test Set Composition: Licit and Illicit transactions from steps 35-49. \\
   \end{tabular}
 \end{table}
 
@@ -204,7 +204,7 @@ These preprocessing steps are summarized in Table \ref{tab:preprocessing_summary
 For detecting illicit transactions within the Elliptic dataset, we employed the Energy Flow Classifier (EFC), leveraging
 the Python package implementation \cite{efc_package_github} based on the principles described by Ponts et al.
 \cite{pontes2019, souza2022novelopensetenergybased}. EFC operates on the premise that normal system behavior corresponds
-to low 'energy' states, while anomalies or deviations manifest as high-energy states. Our implementation specifically
+to low energy states, while anomalies or deviations manifest as high-energy states. Our implementation specifically
 utilizes EFC as a one-class anomaly detector, tailored to the label scarcity challenge inherent in the dataset.
 
 \textbf{Model Instantiation and Interface:} We primarily utilized the class-based interface provided by the package,
@@ -214,44 +214,43 @@ an EFC instance was configured with specific hyperparameters:
 \begin{itemize}
     \item \texttt{n\_bins}: This parameter controls the discretization of the input features. Each feature's range is
       divided into \texttt{n\_bins} intervals, forming the basis for calculating the system's state probabilities and
-      energy. Based on our experiments and configuration (`constants.py`), a value of \texttt{N\_BINS = 30} was used.
+      energy. Based on our experiments and configuration \cite{reproducibility}, a value of \texttt{N\_BINS = 30} was used.
     \item \texttt{cutoff\_quantile}: This determines the energy threshold for classifying a sample as anomalous. After
       fitting the model on normal data, the energy distribution of this training data is computed. The threshold
       (\texttt{cutoff\_}) is set at the energy value corresponding to the specified quantile
-      (e.g., \texttt{CUTOFF\_QUANTILE = 0.9} in `constants.py`, meaning energies above the 90th percentile of training
-      energies are considered potentially anomalous).
-    \item \texttt{pseudocounts}: To avoid issues with zero probabilities when calculating energies (especially for states 
-      not observed in the training data), a small pseudocount is added. We used a value of \texttt{PSEUDOCOUNTS = 0.1}
-      (`constants.py`).
+      e.g., \texttt{CUTOFF\_QUANTILE = 0.9} in `constants.py`, meaning energies above the 90th percentile of training
+      energies are considered potentially anomalous.
+    \item \texttt{pseudocounts}: To avoid issues with zero probabilities when calculating energies, especially for states 
+      not observed in the training data, a small pseudocount is added. We used a value of \texttt{PSEUDOCOUNTS = 0.1}
+      \cite{reproducibility}.
 \end{itemize}
 
 While some experimental scripts might show usage of the lower-level functional interface
-(\texttt{one\_class\_fit}, \texttt{one\_class\_predict}) with potentially different parameter names (like \texttt{Q}
-possibly relating to bins, and \texttt{LAMBDA} for pseudocounts), the core experiments relied on the
+(\texttt{one\_class\_fit}, \texttt{one\_class\_predict}) provided by the EFC package, the core experiments relied on the
 \texttt{EnergyBasedFlowClassifier} class with the parameters defined above.
 
 \textbf{Training Process:} A key aspect of our implementation, driven by the goal of anomaly detection under label scarcity,
 was the training procedure. Following the data split described in Section \ref{subsec:preprocessing}, the EFC model's
-\texttt{fit} method was called *exclusively* using the 'Licit' (normal) transactions from the training time steps (1-34).
+\texttt{fit} method was called exclusively using the Licit (normal) transactions from the training time steps (1-34).
 This aligns with the one-class classification paradigm: the model learns the energy landscape characteristic of normal
 Bitcoin transactions based solely on examples known to be legitimate within the training period. The illicit transactions
 were entirely withheld during this phase.
 
 \textbf{Prediction Process:} During the evaluation phase, the trained EFC model's \texttt{predict} method was applied to
-the test set (transactions from time steps 35-49), which contained both 'Licit' and 'Illicit' instances. For each test
+the test set -- transactions from time steps 35-49, which contained both Licit and Illicit instances. For each test
 transaction, EFC calculates an energy score based on its features and the learned probability distributions from the
 training phase. If a transaction's energy score exceeded the pre-determined \texttt{cutoff\_} threshold (derived from
-the \texttt{cutoff\_quantile} applied to the training data energies), it was classified as anomalous (predicted 'Illicit',
-label 1); otherwise, it was classified as normal (predicted 'Licit', label 0). The energy scores themselves
+the \texttt{cutoff\_quantile} applied to the training data energies), it was classified as anomalous (predicted Illicit,
+label 1); otherwise, it was classified as normal (predicted Licit, label 0). The energy scores themselves
 (\texttt{predict\_energies} method) were also used for evaluation metrics like AUC that rely on ranking rather than a
 hard classification threshold.
 
 \textbf{Comparison to Original EFC Package:} Our usage adheres closely to the standard application of the EFC package for
-one-class classification/anomaly detection. We did not modify the core EFC algorithm (energy calculation, probability
-estimation). The primary "customization" lies in the specific application context:
+one-class classification/anomaly detection. We did not modify the core EFC algorithm: energy calculation, probability
+estimation. The primary customization lies in the specific application context:
 
 \begin{enumerate}
-    \item \textbf{Strict One-Class Training:} Explicitly training only on the 'Licit' subset of the temporally defined training data.
+    \item \textbf{Strict One-Class Training:} Explicitly training only on the Licit subset of the temporally defined training data.
     \item \textbf{Dataset Specificity:} Applying EFC to the high-dimensional, anonymized features of the Elliptic dataset.
     \item \textbf{Parameter Tuning:} While using standard EFC parameters, the specific values (\texttt{n\_bins=30},
     \texttt{cutoff\_quantile=0.9}, \texttt{pseudocounts=0.1}) were chosen based on experimentation within this project's
@@ -260,30 +259,30 @@ estimation). The primary "customization" lies in the specific application contex
 
 Essentially, we used the EFC package "as intended" for anomaly detection but carefully configured its training data and
 parameters for the specific task of identifying illicit Bitcoin transactions in the Elliptic dataset scenario. The helper
-functions described in \cite{reproducibility} primarily manage the data loading, preprocessing, splitting, evaluation, and visualization
-around the core EFC calls, rather than altering the EFC mechanism itself.
+functions described in \cite{reproducibility} primarily manage the data loading, preprocessing, splitting, evaluation,
+and visualization around the core EFC calls, rather than altering the EFC mechanism itself.
 
 
 \subsection{Task} \label{subsec:task}
 
 The primary task addressed in this study is to evaluate the effectiveness of the Energy Flow Classifier (EFC), implemented
-as described in Section \ref{subsec:efc_implementation}, for identifying illicit (anomalous) transactions within the Elliptic
+as described in Section \ref{subsec:efc_implementation}, for identifying illicit transactions within the Elliptic
 Bitcoin dataset. This aligns with the broader goal of exploring alternative methodologies, particularly those suited for
-label scarcity, compared to the supervised approaches examined by Lorenz et al. \cite{lorenz2021machinelearningmethodsdetect}.
+label scarcity, compared to the supervised approaches examined by \cite{lorenz2021machinelearningmethodsdetect}.
 
 Specifically, the task is framed as a **one-class anomaly detection problem**. Having trained the EFC model exclusively
-on 'Licit' transactions from the initial time steps (1-34), the objective is to assess its ability to distinguish between
-'Licit' and 'Illicit' transactions in the subsequent, unseen time steps (35-49) of the test set.
+on Licit transactions from the initial time steps (1-34), the objective is to assess its ability to distinguish between
+Licit and Illicit transactions in the subsequent, unseen time steps (35-49) of the test set.
 
 This evaluation involves two main perspectives:
 
 \begin{enumerate}
-    \item \textbf{Classification Performance:} Using the energy threshold derived from the training data (based on the
-      \texttt{cutoff\_quantile}), we assess how well EFC classifies unseen transactions as either 'Licit' (below threshold)
-      or 'Illicit' (above threshold). Performance is measured using standard classification metrics suitable for imbalanced
+    \item \textbf{Classification Performance:} Using the energy threshold derived from the training data, based on the
+      \texttt{cutoff\_quantile}, we assess how well EFC classifies unseen transactions as either Licit (below threshold)
+      or Illicit (above threshold). Performance is measured using standard classification metrics suitable for imbalanced
       datasets, such as Precision, Recall, F1-Score, and potentially Balanced Accuracy, calculated on the labeled test set.
     \item \textbf{Ranking Performance:} Independent of a specific threshold, we evaluate EFC's ability to assign consistently
-      higher energy scores to 'Illicit' transactions compared to 'Licit' transactions in the test set. This is primarily
+      higher energy scores to Illicit transactions compared to Licit transactions in the test set. This is primarily
       assessed using the Area Under the Receiver Operating Characteristic Curve (AUC-ROC), which measures the model's
       ability to rank anomalies higher than normal instances across all possible thresholds.
 \end{enumerate}
@@ -297,8 +296,156 @@ dataset.
 \section{Background and Related Work}
 WIP
 
-\section{Results}
-WIP
+\section{Results} \label{sec:results}
+
+This section presents the empirical findings from the application of the Energy Flow Classifier (EFC) to the task of
+identifying illicit transactions within the Elliptic Bitcoin dataset. Following the methodology outlined in Section
+\ref{sec:methods}, the EFC was employed primarily as a one-class anomaly detector, trained exclusively on transactions
+labeled as Licit from the initial time steps (1-34). The core objective was to evaluate the model's capability to distinguish
+these known Licit patterns from potentially anomalous Illicit transactions present in the unseen test set (time steps 35-49).
+Performance is assessed based on the EFC's ability to assign distinct energy scores to the two classes and evaluated using
+metrics appropriate for imbalanced anomaly detection scenarios. The subsequent subsections detail the outcomes of specific
+experiments conducted, focusing on the model's baseline performance and sensitivity to key configuration parameters under
+the defined experimental setup.
+
+\subsection{Shared Experimental Setup} \label{subsec:shared_setup}
+
+Unless explicitly stated otherwise in the description of a specific experiment, the following setup, derived from the procedures
+detailed in Section \ref{sec:methods}, was consistently used across the results presented below:
+
+\begin{itemize}
+    \item \textbf{Dataset Split:} The EFC model was trained exclusively on transactions labeled as Licit from time steps
+      1 to 34. Evaluation was performed on the test set containing both Licit and Illicit transactions from time steps
+      35 to 49. Transactions labeled 'Unknown' were excluded from both training and testing.
+    \item \textbf{Feature Set:} The input to the EFC model consisted of the 165 anonymized features described in Section
+      \ref{subsec:dataset}, after removing the time step feature. These features were scaled to the range [0, 1] using
+      Min-Max scaling, with the scaler fitted only on the training data (Licit transactions, steps 1-34).
+    \item \textbf{EFC Configuration:} The core EFC implementation (Section \ref{subsec:efc_implementation}) utilized the
+      following default hyperparameters based on initial tuning and common practice:
+        \begin{itemize}
+            \item Number of bins for feature discretization \texttt{n\_bins=30}
+            \item Cutoff quantile for anomaly threshold \texttt{cutoff\_quantile=0.9} (meaning the energy threshold is set at
+              the 90th percentile of the energy distribution of the Licit training data)
+            \item Pseudocounts \texttt{pseudocounts=0.1} (to handle zero probabilities)
+        \end{itemize}
+        \item \textbf{Evaluation Metrics \& Outputs:} Model performance was assessed using a combination of quantitative metrics and qualitative analysis:
+          \begin{itemize}
+              \item \textbf{F1-Score (Macro Average):} As the primary evaluation metric, we adopted the macro-averaged F1-score,
+                consistent with the benchmark study by \cite{lorenz2021machinelearningmethodsdetect}. This metric calculates the
+                F1-score for each class (Licit and Illicit) independently and then averages them, providing a balanced measure
+                of performance across both classes, which is crucial given the inherent class imbalance.
+              \item \textbf{Class-Specific Metrics (Illicit Class):} While F1-Macro provides an overall view, our primary
+                interest lies in detecting the Illicit class (class 1). Therefore, we also report Precision, Recall, and
+                the F1-Score specifically calculated for the Illicit class based on the classification derived from the
+                \texttt{cutoff\_quantile} threshold. These metrics offer direct insight into the model's effectiveness in identifying
+                illicit transactions and the associated trade-offs (e.g., false positives vs. false negatives).
+              \item \textbf{EFC Energy Distributions:} For each experiment, histograms comparing the distribution of EFC
+                energy scores assigned to Licit versus Illicit transactions in the test set were generated. These plots
+                  provide a visual assessment of the model's separation capability.
+              \item \textbf{Detailed Results Storage:} Key information for each experimental run, including the sizes of
+                the training and testing datasets (and their class distributions), the calculated performance metrics,
+                and the confusion matrix, were systematically collected and saved into individual CSV files for detailed
+                comparison and analysis across experiments.
+          \end{itemize}
+\end{itemize}
+
+The following subsections will now present the results from the specific experiments conducted under this framework, highlighting
+deviations from this shared setup where applicable.
+
+\subsection{Experiment 3: Unbalanced Dataset Techniques} \label{subsec:exp3_results}
+
+Experiment 3 investigates the effect of explicitly addressing the inherent class imbalance of the Elliptic dataset during
+the training phase on the performance of the Energy Flow Classifier (EFC). While the primary approach in this work treats
+EFC as a one-class anomaly detector trained solely on Licit data (as described in Section \ref{subsec:shared_setup}), this
+experiment compares that baseline against several standard techniques designed to handle imbalanced data, applied *before*
+training the EFC. The goal is to determine if these techniques, which expose the model to Illicit samples (or synthetic
+versions thereof) during training, yield better performance compared to the one-class baseline on the unseen test set.
+
+The following configurations were evaluated:
+
+\begin{itemize}
+    \item \textbf{Baseline (One-Class EFC):} This corresponds to the standard setup described in Section \ref{subsec:shared_setup}.
+      The EFC model was trained using only the Licit transactions from the training time steps (1-34), setting
+      \texttt{base\_class=0}. Evaluation was performed on the original, imbalanced test set (time steps 35-49). This serves
+      as the reference point.
+
+    \item \textbf{SMOTE (Synthetic Minority Over-sampling Technique):} The training dataset (Licit and Illicit samples
+      from time steps 1-34) was resampled using SMOTE \cite{YourCitationKeyForSMOTE}. SMOTE synthetically generates new
+      samples of the minority (Illicit) class to balance the class distribution in the training set. The EFC model was
+      then trained on this balanced training set (using \texttt{base\_class=0}, although both classes are now present).
+      Evaluation was performed on the original, imbalanced test set.
+
+    \item \textbf{Random Over-Sampling:} The minority (Illicit) class in the training set (time steps 1-34) was randomly
+      duplicated until its size matched the majority (Licit) class, creating a balanced training set. The EFC model was
+      trained on this over-sampled training set and evaluated on the original, imbalanced test set.
+
+    \item \textbf{Random Under-Sampling:} The majority (Licit) class in the training set (time steps 1-34) was randomly
+      down-sampled until its size matched the minority (Illicit) class, creating a balanced training set. The EFC model was
+      trained on this under-sampled training set and evaluated on the original, imbalanced test set.
+
+    \item \textbf{Artificial Equal Distribution (Subsampling):} A distinct approach was tested where the entire labeled
+      dataset (train + test, time steps 1-49) was pooled. An artificially balanced dataset was created by taking all Illicit
+      samples and an equal number of randomly selected Licit samples from this pool. This balanced pool was then split into
+      new training and testing sets. The EFC was trained and evaluated on these artificially balanced splits. Note that this
+      method involves data leakage from the test set into the balancing process and uses a modified test set, making it less
+      representative of a real-world scenario compared to the other techniques but included for comparative analysis within
+      this specific experiment.
+\end{itemize}
+
+The performance results for the different imbalance handling techniques applied prior to EFC training are summarized in
+Table \ref{tab:exp3_imbalance_metrics}. The table presents the primary F1-Macro score, alongside Precision, Recall, and
+F1-Score calculated specifically for the Illicit class based on the confusion matrices obtained from evaluating on the
+respective test sets.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Performance Metrics for EFC with Different Imbalance Handling Techniques (Experiment 3). Illicit class metrics
+    are calculated from confusion matrices.}
+  \label{tab:exp3_imbalance_metrics}
+  \begin{tabular}{lrrrr}
+    Technique & F1-Macro & Precision (Illicit) & Recall (Illicit) & F1-Score (Illicit) \\
+    Baseline (One-Class)\textsuperscript{a} & 0.488 & 0.934 & 0.970 & 0.952 \\
+    Random Oversampling (ROS)\textsuperscript{a} & 0.533 & 0.938 & \textbf{0.988} & \textbf{0.962} \\
+    Random Undersampling (RUS)\textsuperscript{a} & 0.652 & \textbf{0.971} & 0.885 & 0.926 \\
+    SMOTE\textsuperscript{b} & \textbf{0.908} & 0.953 & 0.859 & 0.904 \\
+    Balanced (Artificial)\textsuperscript{c} & 0.644 & 0.933 & 0.378 & 0.538 \\
+    \multicolumn{5}{p{0.9\textwidth}}{\footnotesize \textsuperscript{a} Evaluated on the original, imbalanced test set (16,670 samples: 1,083 Illicit, 15,587 Licit).} \\
+    \multicolumn{5}{p{0.9\textwidth}}{\footnotesize \textsuperscript{b} Evaluated on a test set modified by SMOTE (25,212 samples, balanced class distribution). Results may not be directly comparable to others.} \\
+    \multicolumn{5}{p{0.9\textwidth}}{\footnotesize \textsuperscript{c} Evaluated on an artificially created balanced test set (2,727 samples: 1,363 Illicit, 1,364 Licit). Results may not be directly comparable to others.} \\
+  \end{tabular}
+\end{table}
+
+The results presented in Table \ref{tab:exp3_imbalance_metrics} highlight the significant impact of data balancing strategies
+on EFC performance evaluation. Focusing first on the techniques evaluated on the original, imbalanced test set (Baseline,
+ROS, RUS), we observe distinct trade-offs. The Baseline (One-Class) approach, despite being trained only on Licit data,
+achieves a high F1-score for the Illicit class (0.952), primarily driven by a very high recall (0.970). However, its F1-Macro
+score is the lowest (0.488), indicating extremely poor performance in classifying the Licit class (as evidenced by only 19
+True Negatives vs. 1064 False Positives in the confusion matrix), suggesting the default 0.9 quantile threshold might be
+too low when trained only on Licit data, leading to excessive flagging of transactions as Illicit.
+
+Comparing the resampling techniques on the original test set, Random Oversampling (ROS) yields the highest Recall (0.988)
+and F1-Score (0.962) for the Illicit class, suggesting it is most effective at capturing the majority of illicit transactions
+among these methods. However, similar to the baseline, its F1-Macro (0.533) is relatively low, indicating struggles with
+the Licit class (only 70 True Negatives). Random Undersampling (RUS) achieves the highest F1-Macro (0.652) among this group
+and the highest Precision (0.971) for the Illicit class, meaning that when it flags a transaction as Illicit, it is highly
+likely to be correct. However, this comes at the cost of lower Recall (0.885), missing more Illicit transactions compared
+to ROS and the Baseline.
+
+The SMOTE technique shows the highest F1-Macro score overall (0.908). However, this result must be interpreted with caution,
+as both the training and testing sets were balanced using SMOTE, as indicated by the test set size (25,212) and confusion
+matrix totals. Evaluating on a balanced test set artificially inflates metrics like F1-Macro compared to evaluation on the
+naturally imbalanced distribution, limiting its direct comparability to a real-world deployment scenario. Similarly, the
+'Balanced (Artificial)' technique, which used subsampling to create balanced train and test sets from the pooled data,
+shows moderate F1-Macro (0.644) but very poor Recall (0.378) for the Illicit class on its specific test set.
+
+In summary, Experiment 3 suggests that while standard resampling techniques applied before EFC training can influence the
+balance between Precision and Recall for the Illicit class and potentially improve F1-Macro scores compared to the one-class
+baseline (particularly RUS), none dramatically outperform the baseline's ability to *recall* Illicit transactions on the
+original test set. However, the baseline's extremely low F1-Macro highlights a significant issue with false positives using
+the default threshold. Techniques like SMOTE appear promising based on F1-Macro, but their evaluation on modified test sets
+makes direct comparison difficult. This underscores the importance of evaluating on the true, imbalanced test distribution
+and suggests that threshold tuning (explored in later experiments) might be crucial for optimizing the practical utility
+of the one-class EFC.
 
 \section{Conclusion}
 WIP
