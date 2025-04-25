@@ -30,78 +30,58 @@
 
 \section{Introduction} \label{sec:introduction}
 
-Bitcoin is an electronic transaction system that operates without the need for a third-party moderator~\cite{nakamoto2008bitcoin}.
-Its architecture relies on mathematics, programming, and advanced cryptography to maintain an immutable ledger of financial
-transactions ---known as the blockchain thus eliminating the need for central authorities to establish trust. 
-Although Bitcoin was designed to circumvent vulnerabilities in the traditional financial system \cite{nakamoto2008bitcoin},
-it is not immune to manipulation and anomalous activities, necessitating robust detection mechanisms~\cite{fang2022cryptocurrency,
-zhang2020financial,zainal2018review}.
+Bitcoin is an electronic transaction system operating without a third-party moderator~\cite{nakamoto2008bitcoin}. It is
+built upon blockchain technology, where an immutable ledger of financial transactions is maintained through mathematics,
+programming, and advanced cryptography. This distributed ledger architecture eliminates the need for central authorities
+to establish trust. Although Bitcoin was designed to circumvent vulnerabilities in the traditional financial system
+\cite{nakamoto2008bitcoin}, it is not immune to manipulation and anomalous activities, necessitating robust detection
+mechanisms \cite{fang2022cryptocurrency, zhang2020financial,zainal2018review}. 
 
-It's crucial to differentiate between cryptocurrency manipulation and traditional currency manipulation. The latter is
-generally a state-level action, often legal but potentially contentious internationally ~\cite{domanski2011currency}.
-Cryptocurrency manipulation, however, refers to deceptive strategies used by various actors to distort the market artificially,
-usually for profit. Common types of such manipulation are:
+Indeed, cryptocurrency-related fraud has emerged as a significant threat, causing substantial financial losses and shaking
+trust in the digital asset ecosystem. In 2023, for instance, illicit addresses received \$24.2 billion in cryptocurrency,
+indicating the scale of financial losses from scams, stolen funds, and other illicit activities \cite{chainalysis2024cryptocrime}.
+These activities not only cause direct monetary damage to individuals and institutions but also have broader implications,
+such as undermining the legitimacy of cryptocurrency markets and hindering the widespread adoption of blockchain technology.
+The need to develop effective methods for detecting and preventing cryptocurrency fraud is crucial to protect participants,
+maintain market integrity, and ensure the sustainable growth of the cryptocurrency industry \cite{scharfman2024, Khiari2025}.
 
-Pump-and-dump fraud is a manipulative tactic where actors coordinate to artificially boost a cryptocurrency's price ('pump').
-This attracts investment before the perpetrators sell their holdings ('dump') at the inflated value, leading to a price
-collapse and losses for subsequent buyers ~\cite{karim2018manipulation}.
+However, detecting anomalous patterns within the intricate data streams of cryptocurrency transactions poses a significant
+challenge. Like many modern datasets, these transactions are characterized by high dimensionality, evolving characteristics,
+and a substantial volume, which complicates the application of traditional anomaly detection methods. In this context, the
+Energy-based Flow Classifier (EFC) presents a promising approach rooted in statistical physics. Originally formulated using
+the Inverse Potts model \cite{pontes2019}, the EFC characterizes the probability distribution of normal data
+flows through an energy function derived from observed data patterns \cite{pontes2019}. Previous research has demonstrated
+the utility of EFC in classifying unusual network traffic, suggesting its potential for adapting to detect fraudulent
+activity within cryptocurrency systems \cite{pontes2019, souza2022novelopensetenergybased}.
 
-Wash trading is a fraudulent practice in cryptocurrency markets where a single entity or colluding group creates artificial
-trading activity by simultaneously or rapidly buying and selling the same asset, effectively trading with themselves. This
-manipulation, often executed using multiple accounts or automated bots, aims to mislead market participants by creating a
-false impression of high trading volume and liquidity. The ultimate goal is to make the cryptocurrency appear more popular
-and active than it truly is, thereby attracting unsuspecting investors, manipulating market sentiment, and potentially
-influencing the asset's price ~\cite{gandal2018price, edelman2018detecting}.
+Building upon the promise of the Energy-based Flow Classifier (EFC) framework, this paper presents a comprehensive empirical
+evaluation of its application to detecting illicit Bitcoin transactions. To this end, we first replicate a previous study
+that employs machine learning algorithms (such as K-Nearest Neighbours, One-Class Support Vector Machine, and Isolation
+Forest for anomaly detection on the Elliptic dataset \footnote{Available at https://www.kaggle.com/ellipticco/elliptic-data-set}.
+We then investigate the use of EFC as a potential alternative to these machine learning approaches, using the same dataset
+for consistency. Our findings confirm the EFC's ability to distinguish between licit and illicit transaction patterns based
+on their energy profiles, showing strong performance in identifying illegal activity even when trained solely on licit data.
+However, the results also highlight a critical sensitivity to specific configuration parameters. In particular, we observe
+significant trade-offs between maximizing the detection rate of illicit transactions (recall) and minimizing false positives
+(precision), especially concerning the energy threshold that defines anomalous behavior.
+In summary, the main contributions of this paper are:
 
-However, identifying anomalous patterns in complex data streams---such as network traffic or financial transactions
----remains a critical challenge, as traditional methods often struggle with the high dimensionality, evolving characteristics,
-and sheer volume of modern data. Within this context, a promising approach grounded in principles from statistical physics
-is the Energy-based Flow Classifier (EFC). Originally proposed using the Inverse Potts model, the EFC characterizes the
-probability distribution of normal network flows through an energy function derived from observed data patterns \cite{pontes2019}.
-In this paper, we investigate the application of the Energy-based Flow Classifier (EFC) for detecting anomalous Bitcoin
-transactions. Previous research has applied EFC to classify unusual network traffic, demonstrating its potential for supporting
-intrusion detection mechanisms~\cite{pontes2019, souza2022novelopensetenergybased}.
+\begin{itemize}
+    \item Novel Application and Empirical Evaluation of EFC for One-Class Bitcoin Anomaly Detection;
+    \item c2
+    \item c3
+\end{itemize}
 
-The EFC framework appears particularly well-suited for detecting anomalous Bitcoin transactions for several key reasons.
-Firstly, its fundamental design as an anomaly detector allows it to learn the characteristics of *normal* (Licit) behavior
-from unlabeled or predominantly normal data. It then identifies anomalies (potentially Illicit transactions) as deviations
-exhibiting high 'energy' relative to this learned norm. This inherent capability to operate in a one-class or unsupervised
-manner directly addresses the significant challenge of label scarcity in financial fraud datasets like Elliptic. Secondly,
-the energy function provides a holistic measure derived from the interplay of multiple features, potentially capturing complex,
-subtle deviations in the high-dimensional feature space of Bitcoin transactions that simpler methods might miss. Finally,
-previous research has successfully applied EFC to classify unusual network traffic \cite{pontes2019, souza2022novelopensetenergybased},
-demonstrating its potential in analogous domains involving the detection of anomalies within complex flow data. Therefore,
-in this paper, we investigate the application of EFC specifically for detecting anomalous Bitcoin transactions, hypothesizing
-that its unique characteristics offer advantages in this challenging domain.
+\section{Background and Related Work} \label{sec:background}
+WIP
 
-Building upon the promise of the EFC framework, this paper presents a comprehensive empirical evaluation of its application
-to the Elliptic dataset. Our investigation confirms EFC's capability to distinguish between licit and illicit transaction
-patterns based on their energy profiles, particularly demonstrating strong potential in identifying illicit activities even
-when trained solely on licit data. However, the results underscore a critical sensitivity to specific configuration choices,
-revealing significant trade-offs between maximizing the detection of illicit transactions (recall) and minimizing false
-alarms (precision), especially concerning the energy threshold defining anomalous behavior. \textbf{Notably, despite these
-sensitivities, optimized approaches combining data preprocessing techniques like SMOTE resampling with feature selection
-achieved the highest F1-Macro score of 0.757 in our experiments, demonstrating the potential for significant performance
-gains with tailored configurations.} The following sections delve into these findings, quantifying the performance under
-the one-class anomaly detection setup, exploring the impact of key hyperparameters like discretization bins and the anomaly
-cutoff threshold, and comparing against baseline data balancing approaches, ultimately providing crucial insights into
-EFC's practical utility and optimization challenges in this complex financial forensics domain.
-
-
-\section{Data and Methods} \label{sec:methods}
-This section details the data and methods employed in our study, which builds upon the foundational research presented in
-"Machine learning methods to detect money laundering in the Bitcoin blockchain in the presence of label scarcity"
-\cite{lorenz2021machinelearningmethodsdetect}. That seminal work explored the use of various machine learning classifiers
+\section{Study Settings} \label{sec:methods}
+This section details the data and methods employed in our study, which builds upon the foundational research presented
+by \cite{lorenz2021machinelearningmethodsdetect}. That work explored the use of various machine learning classifiers
 (e.g., Random Forest, SVM, MLP) applied to engineered features from the Elliptic dataset to identify illicit Bitcoin transactions,
 specifically tackling the inherent challenge of label scarcity. While demonstrating the potential of standard ML techniques,
-their approach relied on supervised or semi-supervised frameworks requiring at least some labels. Our research, forming
-part of a larger dissertation effort, diverges by investigating the Energy Flow Classifier (EFC), introduced in Section
-\ref{sec:introduction}. EFC provides an alternative approach rooted in statistical physics, designed to model the typical
-'energy' profile of normal transactions. By focusing on identifying high-energy deviations representing anomalies, EFC
-inherently addresses the label scarcity problem from an unsupervised or anomaly detection perspective, offering a framework
-potentially better suited for identifying novel or diverse fraudulent behaviors without relying heavily on pre-existing
-fraud labels. The following subsections detail our specific dataset, preprocessing steps, EFC implementation, evaluation
-task, and computational setup.
+their approach relied on supervised or semi-supervised frameworks requiring at least some labels. Our research
+diverges by investigating the Energy Flow Classifier (EFC). 
 
 \subsection{Dataset Description} \label{subsec:dataset}
 
@@ -127,23 +107,18 @@ node features.
 
 \textbf{Labels:} A key characteristic of the Elliptic dataset, and a central challenge addressed by 
 \cite{lorenz2021machinelearningmethodsdetect} and relevant to our EFC approach, is the presence of label scarcity. While
-the dataset contains over 200,000 transactions, only a subset is explicitly labeled. Based on the analysis by 
-\cite{weber2019antimoneylaunderingbitcoinexperimenting}, approximately 46,564 transactions or around 23\% were initially labeled.
+the dataset consists of 203,769 transactions, only a subset is explicitly labeled. Based on the analysis by 
+\cite{weber2019antimoneylaunderingbitcoinexperimenting}, 46,866 transactions or around 23\% were initially labeled.
 These labels classify transactions into two main categories:
 
 \begin{itemize}
     \item \textbf{Licit:} Transactions associated with known legitimate entities such as exchanges, miners, wallet providers,
-      and other regulated services (approx. 42,019 instances in the original labeled set).
+      and other regulated services -- 42,791 instances in the original labeled set.
     \item \textbf{Illicit:} Transactions linked to known illicit activities, including scams, ransomware, terrorist financing,
-      Ponzi schemes, and dark market operations (approx. 4,545 instances in the original labeled set).
+      Ponzi schemes, and dark market operations -- 4,075 instances in the original labeled set.
 \end{itemize}
 
-The vast majority of transactions (over 150,000) remain unlabeled. Within the labeled portion, illicit transactions represent
-a small minority approx. 9.8\% of labeled data, or just over 2\% of the total dataset. This significant class imbalance
-and the large volume of unlabeled data make the Elliptic dataset a realistic and challenging benchmark for evaluating fraud
-detection techniques, particularly unsupervised or anomaly-based methods like EFC that do not strictly rely on extensive
-labeling. Table \ref{tab:dataset_summary} provides a summary of the dataset statistics based on the original publication
-\cite{weber2019antimoneylaunderingbitcoinexperimenting}.
+\subsection{Data Preprocessing} \label{subsec:preprocessing}
 
 \begin{table}[htbp]
   \centering
@@ -163,11 +138,8 @@ labeling. Table \ref{tab:dataset_summary} provides a summary of the dataset stat
   \end{tabular}
 \end{table}
 
-\subsection{Data Preprocessing} \label{subsec:preprocessing}
-
-Preparing the Elliptic dataset for EFC involved several key steps focused on handling labels,
-selecting relevant features, scaling the data appropriately, and partitioning it for training and evaluation in a temporally
-meaningful way.
+Preparing the Elliptic dataset for EFC involved several key steps focused on handling labels, selecting relevant features,
+scaling the data appropriately, and partitioning it for training and evaluation in a temporally meaningful way.
 
 First, addressing the labels described in Section \ref{subsec:dataset}, we filtered the transactions based on their
 classification. Given that EFC operates by learning the characteristics of \textit{normal} data and identifying deviations,
@@ -312,9 +284,6 @@ activities in Bitcoin transactions, leveraging its unsupervised, energy-based ap
 scarcity and potentially detect novel deviations from normal behavior. The results will provide insights into how EFC
 performs in this financial forensics context compared to implicitly known benchmarks from related studies using the same
 dataset.
-
-\section{Background and Related Work}
-WIP
 
 \section{Results} \label{sec:results}
 
