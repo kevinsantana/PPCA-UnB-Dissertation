@@ -73,7 +73,67 @@ In summary, the main contributions of this paper are:
 \end{itemize}
 
 \section{Background and Related Work} \label{sec:background}
-WIP
+
+Financial market manipulation, traditionally associated with actions taken by state-level entities often concerning currency
+exchange rates \cite{domanski2011currency, market_manipulation_detection_2022}, takes on a different character in the realm of cryptocurrencies. Cryptocurrency
+manipulation typically involves deceptive strategies employed by individuals or coordinated groups aiming to artificially
+distort market prices or activity, usually for illicit profit \cite{cryptocurrency_arket_manipulation_2021}. Understanding
+these tactics is crucial for developing effective detection mechanisms.
+
+Among the prevalent forms of cryptocurrency fraud are pump-and-dump schemes and wash trading. \textbf{Pump-and-dump fraud}
+involves orchestrating an artificial inflation of a cryptocurrency's price ("pump") through misleading promotions or coordinated
+buying, attracting unsuspecting investors. The manipulators then sell their holdings ("dump") at the peak price, causing
+a market crash and significant losses for later investors \cite{karim2018manipulation}. \textbf{Wash trading}, conversely,
+creates a false impression of high trading volume and liquidity. This is achieved when an entity or colluding group
+simultaneously buys and sells the same asset, often using multiple accounts or automated bots, effectively trading with
+themselves. The goal is to make the asset appear more active and desirable than it is, thereby manipulating market sentiment
+and potentially influencing its price \cite{gandal2018price, edelman2018detecting}. The decentralized and pseudonymous
+nature of many cryptocurrency platforms can exacerbate the challenges in detecting and preventing such manipulations.
+
+Addressing the challenge of identifying anomalous patterns within complex data streams, such as financial transactions,
+requires robust methodologies. One promising approach, grounded in statistical physics, is the \textbf{Energy-based Flow Classifier (EFC)}.
+Originally proposed using the Inverse Potts model to analyze network traffic data \cite{pontes2019}, EFC operates on the
+principle of assigning an "energy" score to data points or flows. The model is trained to learn the probability distribution
+of normal system behavior, associating typical, expected patterns (e.g., legitimate transactions) with low-energy states.
+Conversely, configurations that deviate significantly from this learned normality, potentially representing anomalies or
+malicious activities, manifest as high-energy states. This energy score provides a quantitative measure of typicality.
+Subsequent research has extended the EFC framework, demonstrating its utility in classifying unusual network traffic for
+intrusion detection and highlighting its potential for open-set recognition—identifying novel anomalies not seen during
+training \cite{pontes2019, souza2022novelopensetenergybased}.
+
+The EFC framework appears particularly well-suited for detecting anomalous Bitcoin transactions for several key reasons.
+Firstly, its fundamental design as an anomaly detector allows it to learn the characteristics of *normal* (Licit) behavior,
+often from unlabeled or predominantly normal data. It then identifies anomalies (potentially Illicit transactions) as
+deviations exhibiting high 'energy' relative to this learned norm. This inherent capability to operate in a one-class or
+unsupervised manner directly addresses the significant challenge of label scarcity common in financial fraud datasets like
+Elliptic \cite{bansal2022systematic}. Secondly, the energy function provides a holistic measure derived from
+the interplay of multiple features, potentially capturing complex, subtle deviations in the high-dimensional feature space
+of Bitcoin transactions that simpler methods might miss \cite{wilson2024future}. Given its prior success in
+analogous domains involving complex flow data \cite{pontes2019, souza2022novelopensetenergybased}, we hypothesize that
+EFC's unique characteristics offer advantages for identifying illicit activities within the Bitcoin blockchain.
+
+Detecting illicit transactions in cryptocurrencies is fundamentally an anomaly detection task. Various approaches have been 
+explored, ranging from rule-based systems identifying known patterns to sophisticated machine learning techniques \cite{samariya2023comprehensive, li2023survey}.
+Traditional anomaly detection methods often face challenges when applied to cryptocurrency data due to its high dimensionality,
+the dynamic and evolving nature of transaction patterns, significant class imbalance (illicit transactions being rare), and
+the sheer volume of data \cite{pallathadka2022cryptocurrency}. Techniques like statistical process control,
+clustering-based methods (e.g., DBSCAN, k-means variations), and distance-based methods (e.g., k-Nearest Neighbors anomaly detection)
+have been applied, each with varying degrees of success and limitations, particularly concerning scalability and the ability
+to capture complex, non-linear relationships \cite{hilal2022financial}.
+
+Building on these general principles, numerous machine learning models have been specifically investigated for identifying
+fraud and money laundering within the Bitcoin ecosystem. Supervised learning approaches, such as Random Forests, Support
+Vector Machines (SVM), Multilayer Perceptrons (MLP), and Gradient Boosting Machines, have shown promise when sufficient
+labeled data is available \cite{lorenz2021machinelearningmethodsdetect, placeholder_supervised_ml_bitcoin}. However,
+their performance heavily relies on the quality and quantity of labeled examples, which is often a bottleneck. Consequently,
+semi-supervised and unsupervised methods, including One-Class SVM (OC-SVM) and Isolation Forests, have gained attention
+as they can leverage unlabeled data or focus solely on modeling normal behavior \cite{lorenz2021machinelearningmethodsdetect, placeholder_unsupervised_ml_bitcoin}.
+More recently, Graph Neural Networks (GNNs) have emerged as a powerful tool, explicitly leveraging the graph structure of
+the blockchain to capture relational information between transactions, which can be crucial for identifying complex illicit
+schemes \cite{weber2019antimoneylaunderingbitcoinexperimenting}. Our work contributes to this
+landscape by evaluating EFC, an alternative physics-inspired one-class approach, assessing its performance against the
+backdrop of these established techniques, particularly focusing on its behavior under label scarcity.
+
 
 \section{Study Settings} \label{sec:methods}
 This section details the data and methods employed in our study, which builds upon the foundational research presented
@@ -413,27 +473,37 @@ compared to using SMOTE on the full feature set (Experiment 1) or using feature 
     Unbalanced Dataset & 15117 & 470 & 1064 & 19 & 0.908 & 0.876 & 0.908 & 0.891 & 0.488 \\
     \hline
     \textbf{Exp 1: Balancing} & & & & & & & & & \\
-    Best Technique (SMOTE) & 10831 & 1775 & 530 & 12076 & 0.909 & 0.913 & 0.909 & 0.908 & \textbf{0.908} \\
+    Best Technique (SMOTE) & 14750 & 837 & 338 & 745 & 0.929 & 0.944 & 0.929 & 0.935 & \textbf{0.760397} \\
     \hline
     \textbf{Exp 2: Feature Selection} & & & & & & & & & \\
-    Best FS (Agg. Excluded, k=10) & [TP?] & [FN?] & [FP?] & [TN?] & 0.865 & 0.893 & 0.865 & 0.877 & \textbf{0.686} \\
-    Best FS (Agg. Included, k=*) & [TP?] & [FN?] & [FP?] & [TN?] & [Acc?] & [Prec?] & [Rec?] & [F1?] & \textbf{[F1-Macro?]} \\
+    Best FS (Agg. Excluded, k=10) & 11317 & 598 & 598 & 766 & 0.865 & 0.893 & 0.865 & 0.877 & \textbf{0.686} \\
+    Best FS (Agg. Included, k=10) & 11254 & 1352 & 560 & 804 & 0.863 & 0.895 & 0.863 & 0.876 & \textbf{0.689} \\
     \hline
     \textbf{Exp 3: FS + Balancing} & & & & & & & & & \\
-    Best FS + SMOTE (k=*) & [TP?] & [FN?] & [FP?] & [TN?] & [Acc?] & [Prec?] & [Rec?] & [F1?] & \textbf{[F1-Macro?]} \\
+    Best FS + SMOTE (k=10) & 11322 & 1284 & 368 & 996 & 0.891 & 0.931 & 0.891 & 0.891 & \textbf{0.770} \\
     \hline
   \end{tabular}
   }
   \par\medskip
   \footnotesize
-  \textit{Note: TP=True Positives, FN=False Negatives, FP=False Positives, TN=True Negatives reported for the test set. For experiments with multiple sub-runs (varying k or balancing method), the row represents the technique yielding the highest F1-Macro score (shown in bold). Metrics are rounded to three decimal places. F1-Score refers to the weighted average unless otherwise specified. *Placeholders `[?]` and `k=*` require data from the corresponding best-performing run's CSV files.*}
+  \textit{Note: TP=True Positives, FN=False Negatives, FP=False Positives, TN=True Negatives reported for the test set.
+    For experiments with multiple sub-runs (varying k or balancing method), the row represents the technique yielding the
+    highest F1-Macro score (shown in bold). Metrics are rounded to three decimal places. F1-Score refers to the weighted
+    average unless otherwise specified.}
 \end{table*}
 
 \section{Conclusion} \label{section:conclusion}
 
 This study evaluated the Energy Flow Classifier (EFC) as a one-class anomaly detection method for identifying illicit Bitcoin
-transactions within the Elliptic dataset, focusing on scenarios with label scarcity. Our empirical results demonstrate that
-EFC offers a viable approach, particularly leveraging its inherent ability to train solely on normal (Licit) data.
+transactions within the Elliptic dataset, focusing on scenarios with label scarcity. In evaluating the performance of the
+different techniques across our experiments, we adopted the \textbf{F1-macro score} as the primary overall metric. This
+choice aligns with the methodology presented by \cite{lorenz2021machinelearningmethodsdetect} in their work
+on detecting money laundering in Bitcoin, particularly relevant given the common challenge of label scarcity in such datasets.
+The F1-macro score is calculated by first determining the F1 score (the harmonic mean of precision and recall) for each
+individual class (e.g., 'licit' and 'illicit' transactions). Then, the unweighted average of these per-class F1 scores is
+taken. This approach ensures that each class contributes equally to the final metric, regardless of its frequency in the
+dataset, providing a balanced assessment of model performance, especially crucial in imbalanced scenarios like fraud detection
+where correctly identifying the minority class is often of high importance.
 
 The primary advantage of EFC lies in its one-class nature, making it suitable for real-world scenarios where illicit
 transaction labels are rare. However, our baseline experiment (Exp 1 - Unbalanced), using default parameters and training
@@ -443,7 +513,7 @@ resulting in a low F1-Macro score of 0.488.
 
 Crucially, Experiment 1 demonstrated that EFC's performance can be substantially improved through standard data preprocessing
 techniques. Applying SMOTE balancing to the training data yielded the best results among the balancing methods tested,
-dramatically increasing the F1-Macro score to 0.908, indicating a much more balanced detection capability across both
+dramatically increasing the F1-Macro score to 0.760, indicating a much more balanced detection capability across both
 Licit and Illicit classes.
 
 Further experiments explored feature selection (Exp 2) and its combination with balancing (Exp 3). Feature selection using
@@ -455,7 +525,7 @@ conclusions about their potential benefits.
 
 In summary, EFC presents a promising tool for detecting anomalous Bitcoin transactions, especially given its one-class
 training capability. Its main drawback is a pronounced sensitivity to class imbalance, which necessitates mitigation strategies
-like SMOTE balancing for effective performance (achieving F1-Macro 0.908). While feature selection is possible, careful
+like SMOTE balancing for effective performance (achieving F1-Macro 0.760). While feature selection is possible, careful
 consideration of trade-offs is required, as dimensionality reduction might impact performance compared to using balanced,
 full-feature data. The effectiveness of EFC in this context is therefore contingent on appropriate data preprocessing and
 potentially hyperparameter tuning, sensitivity to which was noted in Section \ref{sec:introduction} and implied by the
