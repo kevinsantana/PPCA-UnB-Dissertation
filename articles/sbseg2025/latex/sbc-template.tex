@@ -29,13 +29,12 @@
 \end{abstract}
 
 \section{Introduction} \label{sec:introduction}
-
 Bitcoin is an electronic transaction system operating without a third-party moderator~\cite{nakamoto2008bitcoin}. It is
 built upon blockchain technology, where an immutable ledger of financial transactions is maintained through mathematics,
 programming, and advanced cryptography. This distributed ledger architecture eliminates the need for central authorities
 to establish trust. Although Bitcoin was designed to circumvent vulnerabilities in the traditional financial system
 \cite{nakamoto2008bitcoin}, it is not immune to manipulation and anomalous activities, necessitating robust detection
-mechanisms \cite{fang2022cryptocurrency, zhang2020financial,zainal2018review}. 
+mechanisms~\cite{fang2022cryptocurrency, zhang2020financial,zainal2018review}. 
 
 Indeed, cryptocurrency-related fraud has emerged as a significant threat, causing substantial financial losses and shaking
 trust in the digital asset ecosystem. In 2023, for instance, illicit addresses received \$24.2 billion in cryptocurrency,
@@ -49,10 +48,10 @@ However, detecting anomalous patterns within the intricate data streams of crypt
 challenge. Like many modern datasets, these transactions are characterized by high dimensionality, evolving characteristics,
 and a substantial volume, which complicates the application of traditional anomaly detection methods. In this context, the
 Energy-based Flow Classifier (EFC) presents a promising approach rooted in statistical physics. Originally formulated using
-the Inverse Potts model \cite{pontes2019}, the EFC characterizes the probability distribution of normal data
-flows through an energy function derived from observed data patterns \cite{pontes2019}. Previous research has demonstrated
-the utility of EFC in classifying unusual network traffic, suggesting its potential for adapting to detect fraudulent
-activity within cryptocurrency systems \cite{pontes2019, souza2022novelopensetenergybased}.
+the Inverse Potts model \cite{pontes2019}, the EFC characterizes the probability distribution of normal data flows through
+an energy function derived from observed data patterns \cite{pontes2019}. Previous research has demonstrated the utility of
+EFC in classifying unusual network traffic, suggesting its potential for adapting to detect fraudulent activity within
+cryptocurrency systems \cite{pontes2019, souza2022novelopensetenergybased}.
 
 Building upon the promise of the Energy-based Flow Classifier (EFC) framework, this paper presents a comprehensive empirical
 evaluation of its application to detecting illicit Bitcoin transactions. To this end, we first replicate a previous study
@@ -63,7 +62,22 @@ for consistency. Our findings confirm the EFC's ability to distinguish between l
 on their energy profiles, showing strong performance in identifying illegal activity even when trained solely on licit data.
 However, the results also highlight a critical sensitivity to specific configuration parameters. In particular, we observe
 significant trade-offs between maximizing the detection rate of illicit transactions (recall) and minimizing false positives
-(precision), especially concerning the energy threshold that defines anomalous behavior.
+(precision), especially concerning the energy threshold that defines anomalous behavior. Addressing the significant challenge
+of label scarcity inherent in datasets like Elliptic is crucial for developing effective fraud detection systems. Traditional
+supervised machine learning methods often struggle in such scenarios due to the limited availability of labeled illicit
+examples. This motivates the exploration of alternative approaches, particularly those capable of learning from predominantly
+normal data. The Energy-based Flow Classifier (EFC) emerges as a promising candidate in this regard. Originally proposed
+for network intrusion detection \cite{pontes2019, souza2022novelopensetenergybased}, EFC was designed specifically to
+address key limitations of conventional ML classifiers, including the reliance on extensive labeled datasets. A core strength
+highlighted in its foundational work is its ability to function as an anomaly-based classifier, inferring a statistical
+model of normal behavior using only labeled *benign* (or licit, in our context) examples \cite{souza2022novelopensetenergybased}.
+Deviations from this learned norm, characterized by higher 'energy' scores, are then flagged as potential anomalies.
+This one-class learning paradigm directly tackles the label scarcity issue prevalent in the Elliptic dataset, allowing us
+to model legitimate transaction patterns effectively even with few confirmed illicit instances. Furthermore, EFC's
+demonstrated adaptability across different data distributions in network traffic analysis suggests potential robustness
+in the dynamic environment of cryptocurrency transactions. Consequently, this paper evaluates the suitability and performance
+of EFC for identifying illicit Bitcoin transactions by leveraging its capacity to model normality from available licit data.
+
 In summary, the main contributions of this paper are:
 
 \begin{itemize}
