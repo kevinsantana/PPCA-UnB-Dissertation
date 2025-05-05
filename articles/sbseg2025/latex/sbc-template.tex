@@ -89,10 +89,10 @@ In summary, the main contributions of this paper are:
 \section{Background and Related Work} \label{sec:background}
 
 Financial market manipulation, traditionally associated with actions taken by state-level entities often concerning currency
-exchange rates \cite{domanski2011currency, market_manipulation_detection_2022}, takes on a different character in the realm of cryptocurrencies. Cryptocurrency
-manipulation typically involves deceptive strategies employed by individuals or coordinated groups aiming to artificially
-distort market prices or activity, usually for illicit profit \cite{cryptocurrency_arket_manipulation_2021}. Understanding
-these tactics is crucial for developing effective detection mechanisms.
+exchange rates \cite{domanski2011currency, market_manipulation_detection_2022}, takes on a different character in the realm
+of cryptocurrencies. Cryptocurrency manipulation typically involves deceptive strategies employed by individuals or coordinated
+groups aiming to artificially distort market prices or activity, usually for illicit profit \cite{cryptocurrency_arket_manipulation_2021}.
+Understanding these tactics is crucial for developing effective detection mechanisms.
 
 Among the prevalent forms of cryptocurrency fraud are pump-and-dump schemes and wash trading. \textbf{Pump-and-dump fraud}
 involves orchestrating an artificial inflation of a cryptocurrency's price ("pump") through misleading promotions or coordinated
@@ -138,10 +138,11 @@ to capture complex, non-linear relationships \cite{hilal2022financial}.
 Building on these general principles, numerous machine learning models have been specifically investigated for identifying
 fraud and money laundering within the Bitcoin ecosystem. Supervised learning approaches, such as Random Forests, Support
 Vector Machines (SVM), Multilayer Perceptrons (MLP), and Gradient Boosting Machines, have shown promise when sufficient
-labeled data is available \cite{lorenz2021machinelearningmethodsdetect, placeholder_supervised_ml_bitcoin}. However,
+labeled data is available \cite{lorenz2021machinelearningmethodsdetect, chen2021bitcoin}. However,
 their performance heavily relies on the quality and quantity of labeled examples, which is often a bottleneck. Consequently,
 semi-supervised and unsupervised methods, including One-Class SVM (OC-SVM) and Isolation Forests, have gained attention
-as they can leverage unlabeled data or focus solely on modeling normal behavior \cite{lorenz2021machinelearningmethodsdetect, placeholder_unsupervised_ml_bitcoin}.
+as they can leverage unlabeled data or focus solely on modeling normal behavior \cite{lorenz2021machinelearningmethodsdetect,
+kehinde2024machine}.
 More recently, Graph Neural Networks (GNNs) have emerged as a powerful tool, explicitly leveraging the graph structure of
 the blockchain to capture relational information between transactions, which can be crucial for identifying complex illicit
 schemes \cite{weber2019antimoneylaunderingbitcoinexperimenting}. Our work contributes to this
