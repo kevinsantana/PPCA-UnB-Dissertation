@@ -4,6 +4,8 @@
 \usepackage{graphicx,url}
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
+% two images, same frame, side by side
+\usepackage{subfig}
 
 \sloppy
 
@@ -275,13 +277,13 @@ to low energy states, while anomalies or deviations manifest as high-energy stat
 utilizes EFC as a one-class anomaly detector, tailored to the label scarcity challenge inherent in the dataset.
 
 \textbf{Model Instantiation and Interface:} We primarily utilized the class-based interface provided by the package,
-specifically the \texttt{EnergyBasedFlowClassifier} class. As indicated in our experimental setup code \cite{reproducibility},
+specifically the \texttt{EnergyBasedFlowClassifier} class. As indicated in our experimental setup code in Section \ref{sec:reproducibility},
 an EFC instance was configured with specific hyperparameters:
 
 \begin{itemize}
     \item \texttt{n\_bins}: This parameter controls the discretization of the input features. Each feature's range is
       divided into \texttt{n\_bins} intervals, forming the basis for calculating the system's state probabilities and
-      energy. Based on our experiments and configuration \cite{reproducibility}, a value of \texttt{N\_BINS = 30} was used.
+      energy. Based on our experiments and configuration in Section \ref{sec:reproducibility}, a value of \texttt{N\_BINS = 30} was used.
     \item \texttt{cutoff\_quantile}: This determines the energy threshold for classifying a sample as anomalous. After
       fitting the model on normal data, the energy distribution of this training data is computed. The threshold
       (\texttt{cutoff\_}) is set at the energy value corresponding to the specified quantile
@@ -289,7 +291,7 @@ an EFC instance was configured with specific hyperparameters:
       energies are considered potentially anomalous.
     \item \texttt{pseudocounts}: To avoid issues with zero probabilities when calculating energies, especially for states 
       not observed in the training data, a small pseudocount is added. We used a value of \texttt{PSEUDOCOUNTS = 0.1}
-      \cite{reproducibility}.
+      \ref{sec:reproducibility}.
 \end{itemize}
 
 While some experimental scripts might show usage of the lower-level functional interface
@@ -326,7 +328,7 @@ estimation. The primary customization lies in the specific application context:
 
 Essentially, we used the EFC package "as intended" for anomaly detection but carefully configured its training data and
 parameters for the specific task of identifying illicit Bitcoin transactions in the Elliptic dataset scenario. The helper
-functions described in \cite{reproducibility} primarily manage the data loading, preprocessing, splitting, evaluation,
+functions described in Section \cite{sec:reproducibility} primarily manage the data loading, preprocessing, splitting, evaluation,
 and visualization around the core EFC calls, rather than altering the EFC mechanism itself.
 
 
@@ -361,7 +363,6 @@ performs in this financial forensics context compared to implicitly known benchm
 dataset.
 
 \section{Results} \label{sec:results}
-
 This section presents the empirical findings from the application of the Energy Flow Classifier (EFC) to the task of
 identifying illicit transactions within the Elliptic Bitcoin dataset. Following the methodology outlined in Section
 \ref{sec:methods}, the EFC was employed primarily as a one-class anomaly detector, trained exclusively on transactions
@@ -373,7 +374,6 @@ experiments conducted, focusing on the model's baseline performance and sensitiv
 the defined experimental setup.
 
 \subsection{Shared Experimental Setup} \label{subsec:shared_setup}
-
 Unless explicitly stated otherwise in the description of a specific experiment, the following setup, derived from the procedures
 detailed in Section \ref{sec:methods}, was consistently used across the results presented below:
 
@@ -392,7 +392,8 @@ detailed in Section \ref{sec:methods}, was consistently used across the results 
               the 90th percentile of the energy distribution of the Licit training data)
             \item Pseudocounts \texttt{pseudocounts=0.1} (to handle zero probabilities)
         \end{itemize}
-        \item \textbf{Evaluation Metrics \& Outputs:} Model performance was assessed using a combination of quantitative metrics and qualitative analysis:
+        \item \textbf{Evaluation Metrics \& Outputs:} Model performance was assessed using a combination of quantitative
+          metrics and qualitative analysis:
           \begin{itemize}
               \item \textbf{F1-Score (Macro Average):} As the primary evaluation metric, we adopted the macro-averaged F1-score,
                 consistent with the benchmark study by \cite{lorenz2021machinelearningmethodsdetect}. This metric calculates the
@@ -422,17 +423,26 @@ This section details the experimental evaluations conducted to assess the propos
 experiments focusing on data balancing, feature engineering/selection, and model comparison/tuning, respectively. All
 experiments utilized the EFC dataset, preprocessed as described previously, employing a standard train-test split methodology.
 
-\textbf{Experiment 1: Impact of Data Balancing Techniques.} This experiment investigated the effect of various data
-balancing strategies on classification performance for the inherently imbalanced EFC dataset. The baseline performance
-was established using the original, unbalanced dataset. This was compared against four common balancing techniques applied
-to the training dataset and test dataset: creating a balanced subset with equally distributed classes, by undersampling the majority
-class before splitting, Synthetic Minority Over-sampling Technique (SMOTE), Random Oversampling of the minority class, and
-Random Undersampling of the majority class. The test set composition remained consistent across most techniques to
-ensure fair evaluation. Performance was evaluated using Accuracy, Precision, Recall, F1-Score (weighted), Macro F1-Score,
-and confusion matrices. Table~\ref{tab:exp_results_summary} summarizes the dataset characteristics after applying each
-technique and the corresponding classification results.
+\subsection{Experiment 1: Impact of Data Balancing Techniques} \label{subsec:experiment_1}
+This experiment investigated the effect of various data balancing strategies on classification performance for the inherently
+imbalanced EFC dataset. The baseline performance was established using the original, unbalanced dataset. This was compared
+against four common balancing techniques applied to the training dataset and test dataset: creating a balanced subset with
+equally distributed classes, by undersampling the majority class before splitting, Synthetic Minority Over-sampling Technique
+(SMOTE), Random Oversampling of the minority class, and Random Undersampling of the majority class. The test set composition
+remained consistent across most techniques to ensure fair evaluation. Performance was evaluated using Accuracy, Precision,
+Recall, F1-Score (weighted), Macro F1-Score, and confusion matrices. Table~\ref{tab:efc_consolidated_results} summarizes
+the dataset characteristics after applying each technique and the corresponding classification results.
 
-\textbf{Experiment 2: Impact of Feature Selection.} Following the analysis of data balancing, Experiment 4 focused on evaluating 
+\begin{figure}[!tph]
+  \centering
+  \subfloat[Unbalanced Dataset.]{\includegraphics[width=0.4\textwidth]{figures/experiment-1/1_unbalanced_dataset.png}\label{fig1:1_unbalanced_dataset}}
+  \subfloat[Balanced Dataset.]{\includegraphics[width=0.4\textwidth]{figures/experiment-1/2_balaced_dataset.png}\label{fig2:2_balaced_dataset}}
+  \subfloat[SMOTE.]{\includegraphics[width=0.4\textwidth]{figures/experiment-1/3_smote_minority_full_test_dataset.png}\label{fig3:3_smote_minority}}
+  \caption{Experiment 1: Energy Distribution Of Licit and Illicit Transactions.}
+\end{figure}
+
+\subsection{Experiment 2: Impact of Feature Selection} \label{subsec:experiment_2}
+Following the analysis of data balancing, Experiment 4 focused on evaluating 
 the impact of feature selection on classification performance using the Energy-Based Flow Classifier (EFC). We employed
 the \texttt{SelectKBest} algorithm from scikit-learn, utilizing the ANOVA F-value (\texttt{f\_classif}) scoring function
 to rank and select features based on their relevance to the class labels. The experiment systematically varied the number
@@ -458,7 +468,68 @@ using the same metrics as Experiment 3 (Accuracy, Precision, Recall, F1-Score, M
 determine if reducing dimensionality could maintain or improve performance, identify an optimal number of features ($k$),
 and understand the contribution of aggregated features within this selection context.
 
-\textbf{Experiment 3: Combining Feature Selection and Data Balancing.} This experiment investigated the combined effect
+\begin{figure}[!tp]
+  \centering
+  \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=10.png}\label{fig4:fs_no_agg_k_10}}
+  \hfill
+
+  \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=20.png}\label{fig5:fs_no_agg_k_20}}
+  \hfill
+
+  \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=30.png}\label{fig6:fs_no_agg_k_30}}
+  \hfill
+
+  \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=40.png}\label{fig7:fs_no_agg_k_40}}
+  \hfill
+
+  \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=50.png}\label{fig8:fs_no_agg_k_50}}
+  \hfill
+
+  \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=60.png}\label{fig9:fs_no_agg_k_60}}
+
+  \caption{Experiment 2, Technique A: Feature Selection Excluding Aggregate Features, Increasing Value of k, Energy
+  Distribution Of Licit and Illicit Transactions.}
+
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=10.png}\label{fig10:fs_agg_k_10}}
+  \hfill
+
+  \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=20.png}\label{fig11:fs_agg_k_20}}
+  \hfill
+
+  \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=30.png}\label{fig12:fs_agg_k_30}}
+  \hfill
+
+  \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=40.png}\label{fig13:fs_agg_k_40}}
+  \hfill
+
+  \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=50.png}\label{fig14:fs_agg_k_50}}
+  \hfill
+
+  \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=60.png}\label{fig15:fs_agg_k_60}}
+  \hfill
+    
+  \caption{Experiment 2, Technique B: Feature Selection Including Aggregate Features, Increasing Value of k, Energy
+  Distribution Of Licit and Illicit Transactions.}
+
+\end{figure}
+
+\subsection{Experiment 3: Combining Feature Selection and Data Balancing} \label{subsec:experiment_3}
 of feature selection and data balancing on the performance of the EFC classifier, building upon the findings from
 Experiment 1 (data balancing) and Experiment 24 (feature selection). The core idea was to first reduce the dimensionality
 of the dataset using the feature selection technique identified in Experiment 4, and then apply the SMOTE balancing
@@ -473,6 +544,70 @@ the trained EFC model was evaluated on the corresponding unbalanced test set (co
 Performance was assessed using the standard suite of metrics (Accuracy, Precision, Recall, F1-Score, Macro F1-Score) to
 determine if applying dimensionality reduction prior to SMOTE balancing could yield improved classification performance
 compared to using SMOTE on the full feature set (Experiment 1) or using feature selection alone (Experiment 2).
+
+% \begin{figure}[!tbp]
+%   \centering
+%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+%     Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=10.png}\label{fig16:fs_smote_k_10}}
+
+%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=20.png}\label{fig17:fs_smote_k_20}}
+
+%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=30.png}\label{fig18:fs_smote_k_30}}
+
+%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+%     Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=40.png}\label{fig19:fs_smote_k_40}}
+
+%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=50.png}\label{fig20:fs_smote_k_50}}
+
+%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=60.png}\label{fig21:fs_smote_k_60}}
+  
+%     \caption{Experiment 3, Technique A: SMOTE With Feature Selection, Increasing Value of k, Energy Distribution Of Licit
+%       and Illicit Transactions.}
+  
+%     \caption{Experiment 3, Technique A: SMOTE With Feature Selection, Increasing Value of k, Energy Distribution Of Licit
+%       and Illicit Transactions.}
+% \end{figure}
+
+% \begin{figure}[!p]
+%   \centering
+%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+%     Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=10 Full Test Dataset.png}
+%     \label{fig22:fs_smote_full_k_10}}
+
+%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=20 Full Test Dataset.png}
+%   \label{fig23:fs_smote_full_k_10}}
+
+%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=30 Full Test Dataset.png}
+%   \label{fig24:fs_smote_full_k_10}}
+
+%   \centering
+%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+%     Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=40 Full Test Dataset.png}
+%     \label{fig25:fs_smote_full_k_10}}
+%     \hfill
+
+%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=50 Full Test Dataset.png}
+%   \label{fig26:fs_smote_full_k_10}}
+%   \hfill
+
+%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=60 Full Test Dataset.png}
+%   \label{fig27:fs_smote_full_k_10}}
+  
+%   \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
+%   and Illicit Transactions.}
+  
+%     \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
+%       and Illicit Transactions.}
+% \end{figure}
+
 
 \begin{table*}[htbp] % table* for full page width
   \centering
