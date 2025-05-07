@@ -403,6 +403,23 @@ Below, we can find the experiment collected results - the model metrics and the 
   \caption{Experiment 1: Energy Distribution Of Licit and Illicit Transactions.}
 \end{figure}
 
+\paragraph{Discussion of Experiment 1 Results}
+The results from Experiment 1 (Table~\ref{tab:balancing_results}) clearly illustrate the EFC's sensitivity to class imbalance
+and the significant impact of balancing techniques. The baseline "Unbalanced Dataset," when tested on an imbalanced test
+set, yielded a low F1-Macro score of 0.488, confirming the difficulty in detecting the minority illicit class without
+intervention. This was an expected outcome given the nature of one-class classifiers and imbalanced data. Applying SMOTE
+and evaluating on a balanced test set resulted in a striking improvement, with an F1-Macro of 0.908. This suggests that
+EFC can perform exceptionally well if the training data is appropriately balanced and the evaluation scenario also reflects
+a more balanced class distribution. Other techniques applied to the training data but evaluated on an imbalanced test set
+also showed improvements over the baseline: Random Oversampling achieved an F1-Macro of 0.533, and Random Undersampling
+reached 0.652. This indicates that even simpler balancing methods can enhance EFC's performance on imbalanced test data,
+with undersampling being more effective than oversampling in this specific setup. The "Balanced Dataset (Equally Dist.)"
+technique, which involved undersampling the majority class to create a balanced training and test set, achieved an F1-Macro
+of 0.644. While better than the baseline, it did not match SMOTE's performance on a balanced test set, suggesting that
+SMOTE's approach of generating synthetic minority samples is more beneficial for EFC in such conditions. The stark contrast
+in F1-Macro scores, particularly between SMOTE on a balanced test set and other techniques on imbalanced test sets,
+underscores the critical influence of test set composition on this metric.
+
 \subsection{Experiment 2: Impact of Feature Selection} \label{subsec:experiment_2}
 Following the analysis of data balancing, Experiment 4 focused on evaluating 
 the impact of feature selection on classification performance using the Energy-Based Flow Classifier (EFC). We employed
@@ -426,7 +443,7 @@ of which feature types (raw vs. aggregated) are most crucial for classification,
 dimensionality constraints imposed by selecting only the top $k$ features.
 
 Performance for each value of $k$ and for both feature set scenarios (with and without aggregated features) was assessed
-using the same metrics as Experiment 3 (Accuracy, Precision, Recall, F1-Score, Macro F1-Score). The objective was to
+using standard classification metrics (Accuracy, Precision, Recall, F1-Score, and F1-Macro). The objective was to
 determine if reducing dimensionality could maintain or improve performance, identify an optimal number of features ($k$),
 and understand the contribution of aggregated features within this selection context.
 
@@ -545,6 +562,24 @@ Table results and EFC energies histograms can be found below.
 
 \end{figure}
 
+\paragraph{Discussion of Experiment 2 Results}
+Experiment 2 investigated the impact of feature selection on EFC's performance, with results presented in
+Table~\ref{tab:fs_excluded_agg_results} (aggregated features excluded) and Table~\ref{tab:fs_included_agg_results}
+(aggregated features included). A key observation across both scenarios is that EFC can achieve its best performance with
+a significantly reduced feature set. When aggregated features were excluded (Table~\ref{tab:fs_excluded_agg_results}),
+the highest F1-Macro score of 0.686 was obtained with only $k=10$ features. Similarly, when aggregated features were
+included in the selection pool (Table~\ref{tab:fs_included_agg_results}), the peak F1-Macro was 0.689, also at $k=10$.
+This suggests that a small subset of the most relevant features is sufficient for EFC, and including more features beyond
+this optimal $k$ (generally $k>20$) tends to degrade performance, likely due to the introduction of noise or less
+informative features that can adversely affect EFC's energy calculations. This diminishing return with increasing $k$ is
+a common phenomenon in feature selection. The slightly higher F1-Macro obtained when aggregated features were included
+(0.689 vs. 0.686) indicates their strong predictive value, even when only a few are selected. These F1-Macro scores represent
+a notable improvement over the baseline (0.488 from Experiment 1) but are not as high as those achieved with data balancing
+techniques like Random Undersampling (0.652 on an imbalanced test set) or SMOTE (0.908 on a balanced test set). This implies
+that while feature selection is beneficial for dimensionality reduction and can improve upon the baseline, addressing
+class imbalance appears to be a more critical factor for enhancing EFC's F1-Macro score in this dataset. The results were
+largely as expected, confirming that feature selection can be effective but might not be a complete solution without tackling imbalance.
+
 \subsection{Experiment 3: Combining Feature Selection and Data Balancing} \label{subsec:experiment_3}
 of feature selection and data balancing on the performance of the EFC classifier, building upon the findings from
 Experiment 1 (data balancing) and Experiment 24 (feature selection). The core idea was to first reduce the dimensionality
@@ -613,8 +648,6 @@ compared to using SMOTE on the full feature set (Experiment 1) or using feature 
   F1-Score is weighted average. F1-Macro for k=30 is bolded.}
 \end{table*}
 
-
-
 % \begin{figure}[!tbp]
 %   \centering
 %   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
@@ -678,39 +711,28 @@ compared to using SMOTE on the full feature set (Experiment 1) or using feature 
 %       and Illicit Transactions.}
 % \end{figure}
 
-
-\begin{table*}[htbp] % table* for full page width
-  \centering
-  \caption{EFC Performance Summary Across Experiments: Baseline vs. Best Results from Data Balancing, Feature Selection, and Combined Approaches (Selected by F1-Macro).}
-  \label{tab:efc_consolidated_results}
-  \resizebox{\textwidth}{!}{
-  \begin{tabular}{lrrrrrrrrr}
-    \hline
-    \textbf{Experiment / Technique} & \textbf{TP} & \textbf{FN} & \textbf{FP} & \textbf{TN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{F1-Macro} \\
-    & & & & & & & & \textbf{(Weighted)} & \\
-    \hline
-    \textbf{Exp 1: Baseline} & & & & & & & & & \\
-    Unbalanced Dataset & 15117 & 470 & 1064 & 19 & 0.908 & 0.876 & 0.908 & 0.891 & 0.488 \\
-    \hline
-    \textbf{Exp 1: Balancing} & & & & & & & & & \\
-    Best Technique (SMOTE) & 14750 & 837 & 338 & 745 & 0.929 & 0.944 & 0.929 & 0.935 & \textbf{0.760397} \\
-    \hline
-    \textbf{Exp 2: Feature Selection} & & & & & & & & & \\
-    Best FS (Agg. Excluded, k=10) & 11317 & 598 & 598 & 766 & 0.865 & 0.893 & 0.865 & 0.877 & \textbf{0.686} \\
-    Best FS (Agg. Included, k=10) & 11254 & 1352 & 560 & 804 & 0.863 & 0.895 & 0.863 & 0.876 & \textbf{0.689} \\
-    \hline
-    \textbf{Exp 3: FS + Balancing} & & & & & & & & & \\
-    Best FS + SMOTE (k=10) & 11322 & 1284 & 368 & 996 & 0.891 & 0.931 & 0.891 & 0.891 & \textbf{0.770} \\
-    \hline
-  \end{tabular}
-  }
-  \par\medskip
-  \footnotesize
-  \textit{Note: TP=True Positives, FN=False Negatives, FP=False Positives, TN=True Negatives reported for the test set.
-    For experiments with multiple sub-runs (varying k or balancing method), the row represents the technique yielding the
-    highest F1-Macro score (shown in bold). Metrics are rounded to three decimal places. F1-Score refers to the weighted
-    average unless otherwise specified.}
-\end{table*}
+\paragraph{Discussion of Experiment 3 Results}
+Experiment 3 explored the synergistic effect of combining feature selection (using aggregated features in the selection pool)
+with SMOTE data balancing. The results are detailed in Table~\ref{tab:exp3_smote_fs_results} (Experiment 3a, standard unbalanced
+test set) and Table~\ref{tab:exp3_smote_fs_full_test_results} (Experiment 3b, "Full Test Dataset" context, also an unbalanced
+test set). In Experiment 3a, the combination yielded a peak F1-Macro score of 0.808 when $k=30$ features were selected before
+applying SMOTE. This is a substantial improvement compared to using feature selection alone (Experiment 2, best F1-Macro ~0.689)
+and the baseline (0.488). It also surpasses the F1-Macro achieved by Random Undersampling alone (0.652) on a similar imbalanced
+test set. This outcome was anticipated, as combining two effective strategies—dimensionality reduction to focus on salient
+features and SMOTE to address imbalance—was expected to enhance performance. The optimal $k=30$ here is higher than the $k=10$
+found in Experiment 2 (FS alone), suggesting that SMOTE might benefit from a slightly richer, yet still reduced, feature
+set to generate more effective synthetic samples. Experiment 3b, conducted under the "Full Test Dataset" context (which
+also utilized an imbalanced test set as per its note), showed a similar trend, with $k=30$ also yielding the best F1-Macro
+score of 0.770. While this is still a strong result and a significant improvement over the baseline and feature selection
+alone, it is slightly lower than the 0.808 achieved in Experiment 3a. This minor discrepancy, despite both experiments
+testing on imbalanced sets, could be attributed to subtle differences in the exact composition or characteristics of the
+test data partitions used, or slight variations in the feature subsets selected if the "Full Test Dataset" context implied
+any nuanced differences in the overall feature pool available before selection for that specific run.
+Overall, Experiment 3 demonstrates that a combined strategy of feature selection followed by SMOTE balancing is highly
+effective for improving EFC's F1-Macro score on imbalanced test data, outperforming either technique applied in isolation
+(when FS is tested on imbalanced data). However, these scores still do not reach the F1-Macro of 0.908 achieved by SMOTE
+alone when evaluated on an ideally balanced test set (Experiment 1), further highlighting the profound impact of the
+evaluation scenario's balance on the F1-Macro metric.
 
 \section{Conclusion} \label{section:conclusion}
 
