@@ -501,65 +501,52 @@ Table results and EFC energies histograms can be found below.
   as it's the highest.}
 \end{table*}
 
-\begin{figure}[!tp]
+\begin{figure}[!tph]
   \centering
-  \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  \subfloat[k=10.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=10.png}\label{fig4:fs_no_agg_k_10}}
   \hfill
-
-  \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  \subfloat[k=20.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=20.png}\label{fig5:fs_no_agg_k_20}}
   \hfill
-
-  \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  \subfloat[k=30.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=30.png}\label{fig6:fs_no_agg_k_30}}
   \hfill
-
-  \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  \subfloat[k=40.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=40.png}\label{fig7:fs_no_agg_k_40}}
   \hfill
-
-  \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  \subfloat[k=50.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=50.png}\label{fig8:fs_no_agg_k_50}}
   \hfill
-
-  \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+  \subfloat[k=60.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=60.png}\label{fig9:fs_no_agg_k_60}}
-
+  \hfill
   \caption{Experiment 2, Technique A: Feature Selection Excluding Aggregate Features, Increasing Value of k, Energy
   Distribution Of Licit and Illicit Transactions.}
-
 \end{figure}
 
-\begin{figure}[!tbp]
+\begin{figure}[!tph]
   \centering
   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=10.png}\label{fig10:fs_agg_k_10}}
   \hfill
-
   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=20.png}\label{fig11:fs_agg_k_20}}
   \hfill
-
   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=30.png}\label{fig12:fs_agg_k_30}}
   \hfill
-
   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=40.png}\label{fig13:fs_agg_k_40}}
   \hfill
-
   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=50.png}\label{fig14:fs_agg_k_50}}
   \hfill
-
   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=60.png}\label{fig15:fs_agg_k_60}}
   \hfill
-    
   \caption{Experiment 2, Technique B: Feature Selection Including Aggregate Features, Increasing Value of k, Energy
   Distribution Of Licit and Illicit Transactions.}
-
 \end{figure}
 
 \paragraph{Discussion of Experiment 2 Results}
@@ -578,7 +565,8 @@ a notable improvement over the baseline (0.488 from Experiment 1) but are not as
 techniques like Random Undersampling (0.652 on an imbalanced test set) or SMOTE (0.908 on a balanced test set). This implies
 that while feature selection is beneficial for dimensionality reduction and can improve upon the baseline, addressing
 class imbalance appears to be a more critical factor for enhancing EFC's F1-Macro score in this dataset. The results were
-largely as expected, confirming that feature selection can be effective but might not be a complete solution without tackling imbalance.
+largely as expected, confirming that feature selection can be effective but might not be a complete solution without tackling
+imbalance.
 
 \subsection{Experiment 3: Combining Feature Selection and Data Balancing} \label{subsec:experiment_3}
 of feature selection and data balancing on the performance of the EFC classifier, building upon the findings from
@@ -648,68 +636,59 @@ compared to using SMOTE on the full feature set (Experiment 1) or using feature 
   F1-Score is weighted average. F1-Macro for k=30 is bolded.}
 \end{table*}
 
-% \begin{figure}[!tbp]
-%   \centering
-%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%     Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=10.png}\label{fig16:fs_smote_k_10}}
+\begin{figure}[!tph]
+  \centering
+  \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+    Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=10.png}\label{fig16:fs_smote_k_10}}
+  \hfill
+  \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+  Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=20.png}\label{fig17:fs_smote_k_20}}
+  \hfill
+  \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+  Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=30.png}\label{fig18:fs_smote_k_30}}
+  \hfill
+  \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+  Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=40.png}\label{fig19:fs_smote_k_40}}
+  \hfill
+  \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+  Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=50.png}\label{fig20:fs_smote_k_50}}
+  \hfill
+  \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
+  Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=60.png}\label{fig21:fs_smote_k_60}}
+  \hfill
+  \caption{Experiment 3, Technique A: SMOTE With Feature Selection, Increasing Value of k, Energy Distribution Of Licit
+    and Illicit Transactions.}
+\end{figure}
 
-%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=20.png}\label{fig17:fs_smote_k_20}}
-
-%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=30.png}\label{fig18:fs_smote_k_30}}
-
-%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%     Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=40.png}\label{fig19:fs_smote_k_40}}
-
-%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=50.png}\label{fig20:fs_smote_k_50}}
-
-%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=60.png}\label{fig21:fs_smote_k_60}}
-  
-%     \caption{Experiment 3, Technique A: SMOTE With Feature Selection, Increasing Value of k, Energy Distribution Of Licit
-%       and Illicit Transactions.}
-  
-%     \caption{Experiment 3, Technique A: SMOTE With Feature Selection, Increasing Value of k, Energy Distribution Of Licit
-%       and Illicit Transactions.}
-% \end{figure}
-
-% \begin{figure}[!p]
-%   \centering
-%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%     Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=10 Full Test Dataset.png}
-%     \label{fig22:fs_smote_full_k_10}}
-
-%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=20 Full Test Dataset.png}
-%   \label{fig23:fs_smote_full_k_10}}
-
-%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=30 Full Test Dataset.png}
-%   \label{fig24:fs_smote_full_k_10}}
-
-%   \centering
-%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%     Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=40 Full Test Dataset.png}
-%     \label{fig25:fs_smote_full_k_10}}
-%     \hfill
-
-%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=50 Full Test Dataset.png}
-%   \label{fig26:fs_smote_full_k_10}}
-%   \hfill
-
-%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=60 Full Test Dataset.png}
-%   \label{fig27:fs_smote_full_k_10}}
-  
-%   \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
-%   and Illicit Transactions.}
-  
-%     \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
-%       and Illicit Transactions.}
-% \end{figure}
+\begin{figure}[!tph]
+  \centering
+  \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+  Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=10 Full Test Dataset.png}
+  \label{fig22:fs_smote_full_k_10}}
+  \hfill
+  \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+  Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=20 Full Test Dataset.png}
+  \label{fig23:fs_smote_full_k_10}}
+  \hfill
+  \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+  Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=30 Full Test Dataset.png}
+  \label{fig24:fs_smote_full_k_10}}
+  \hfill
+  \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+  Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=40 Full Test Dataset.png}
+  \label{fig25:fs_smote_full_k_10}}
+  \hfill
+  \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+  Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=50 Full Test Dataset.png}
+  \label{fig26:fs_smote_full_k_10}}
+  \hfill
+  \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
+  Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=60 Full Test Dataset.png}
+  \label{fig27:fs_smote_full_k_10}}
+  \hfill
+  \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
+  and Illicit Transactions.}
+\end{figure}
 
 \paragraph{Discussion of Experiment 3 Results}
 Experiment 3 explored the synergistic effect of combining feature selection (using aggregated features in the selection pool)
