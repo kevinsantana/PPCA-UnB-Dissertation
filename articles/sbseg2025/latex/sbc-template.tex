@@ -9,6 +9,7 @@
 \usepackage{booktabs}
 \usepackage{soul}
 \usepackage{xcolor}
+\usepackage{mdframed}
 
 \sloppy
 
@@ -90,8 +91,10 @@ In summary, the main contributions of this paper are:
 
 \begin{itemize}
     \item Novel Application and Empirical Evaluation of EFC for One-Class Bitcoin Anomaly Detection;
-    \item c2
-    \item c3
+    \item In-depth analysis of the impact of data balancing and feature selection techniques on EFC's efficacy for
+    identifying illicit transactions;
+    \item Demonstration of a combined feature selection and data balancing (SMOTE) strategy as a robust approach for enhancing
+    EFC performance on imbalanced cryptocurrency datasets.
 \end{itemize}
 
 \section{Background and Related Work} \label{sec:background}
@@ -646,7 +649,7 @@ pool available before selection for that specific run.
 
 Overall, Experiment 3 shows that a combined strategy of feature selection followed by SMOTE balancing is highly
 effective for improving EFC's F1-Macro score on imbalanced test data, outperforming either technique applied in isolation
-(when \hl{FS} is tested on imbalanced data). However, these scores still do not reach the F1-Macro of 0.908 achieved by SMOTE
+(when FS is tested on imbalanced data). However, these scores still do not reach the F1-Macro of 0.908 achieved by SMOTE
 alone when evaluated on an ideally balanced test set (Experiment 1), further highlighting the profound impact of the
 evaluation scenario's balance on the F1-Macro metric.
 
@@ -753,63 +756,158 @@ evaluation scenario's balance on the F1-Macro metric.
   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=60 Full Test Dataset.png}
   \label{fig27:fs_smote_full_k_10}}
   \hfill
-  \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy
-  Distribution Of Licit and Illicit Transactions.}
+  \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
+  and Illicit Transactions.}
 \end{figure}
 
 \section{Discussion}
-
-In this section, we summarize the results of our three experiments by answering the research questions (Section~\ref{sec:answers})
+\label{sec:discussion}
+In this section, we summarize the results of our three experiments by answering the research questions (Section~\ref{sec:answers}),
 compare them with the results of a previous work that explored active learning on the \hl{Elliptic Dataset}~\cite{}
 (Section~\ref{sec:comparision}), and highlight some threats-to-validity that might compromise the generalization of our
 findings (Section~\ref{sec:threats}).
 
 \subsection{Answers to the Research Questions}\label{sec:answers}
+The primary research question guiding this study was: \emph{How effective is the Energy-Based Flow Classifier (EFC) under
+conditions of label scarcity in identifying illicit transactions in the Elliptic Bitcoin dataset?}
+
+Our experiments demonstrate that EFC can be an effective tool, but its performance is critically dependent on addressing
+the inherent class imbalance typical of fraud detection datasets. When trained solely on Licit transactions and applied to
+the raw, imbalanced dataset, EFC's ability to distinguish the minority Illicit class was limited, yielding a low F1-Macro
+score of 0.488 (Experiment 1, Baseline). This highlights that, in its basic one-class configuration, EFC struggles with severe imbalance.
+
+However, the application of data balancing techniques, particularly SMOTE on the training data, significantly enhanced EFC's effectiveness.
+\begin{itemize}
+    \item When SMOTE was applied to the training set and evaluated on a \textit{balanced test set} (an idealized scenario),
+    EFC achieved an excellent F1-Macro score of 0.908 (Experiment 1). This indicates EFC's high potential if class distributions 
+    are managed in both training and evaluation.
+    \item More realistically, when SMOTE was applied to the training set and evaluated on an \textit{imbalanced test set},
+    the combination of feature selection (top 30 features) and SMOTE yielded the best F1-Macro score of 0.808 (Experiment 3a).
+    This result is substantially better than using EFC on the unbalanced data (0.488) or using feature selection alone
+    (best F1-Macro of 0.689 in Experiment 2b).
+\end{itemize}
+
+This leads to our recommendation regarding the optimal strategy for applying EFC:
+
+\vspace{\medskipamount} % vertical space here
+
+\begin{mdframed}[backgroundcolor=gray!10, roundcorner=5pt, linecolor=black, linewidth=1pt]
+\textbf{Recommendation for EFC Application on Imbalanced Data:}
+
+For practical application on datasets like Elliptic where test data will likely remain imbalanced:
+\begin{enumerate}
+    \item \textbf{Combine Feature Selection and Data Balancing:} The best performance on an imbalanced test set (F1-Macro 0.808)
+    was achieved by first applying feature selection (e.g., \texttt{SelectKBest} with $k \approx 30$ features, including
+    aggregated ones) and then applying SMOTE to the reduced training dataset.
+    \item \textbf{Why not SMOTE alone?} While SMOTE alone yielded a very high F1-Macro (0.908 in Experiment 1), this was
+    under the condition of a \textit{balanced test set}. This scenario is often unrealistic for real-world fraud detection.
+    When SMOTE alone is applied to the training set and tested on an imbalanced set, its performance, while an improvement
+    over no balancing, is surpassed by the combined SMOTE + Feature Selection approach for imbalanced test scenarios.
+    \item \textbf{Rationale for Combined Approach:} Without feature selection, SMOTE might be less effective in high-dimensional
+    spaces or when many features are noisy or irrelevant. This could lead to the generation of suboptimal synthetic samples
+    for the minority class, especially when the model is later evaluated on an imbalanced, high-dimensional test set. Feature
+    selection helps focus SMOTE on the most pertinent information, leading to more effective synthetic samples and better
+    generalization on imbalanced test data.
+\end{enumerate}
+Thus, a strategy combining dimensionality reduction with targeted oversampling of the minority class appears most robust
+for EFC in realistic, imbalanced scenarios.
+\end{mdframed}
+
+The findings confirm EFC's utility as a one-class classifier that can learn from licit-only data, a significant advantage
+under label scarcity. However, its practical success hinges on appropriate data preprocessing, particularly balancing and
+potentially feature selection, to effectively identify the rare illicit instances.
 
 \subsection{Comparison to Previous Work}\label{sec:comparision}
+This study builds upon and diverges from previous research on detecting illicit Bitcoin transactions, notably the work by
+Lorenz et al.~\cite{lorenz2021machinelearningmethodsdetect}, which also utilized the Elliptic dataset and addressed the
+challenge of label scarcity.
+
+Lorenz et al.~\cite{lorenz2021machinelearningmethodsdetect} explored various standard machine learning classifiers, including
+Random Forests, SVMs, and MLPs, employing supervised or semi-supervised learning frameworks. These approaches, while
+demonstrating potential, typically require a certain number of labels for both licit and illicit classes, or sophisticated
+semi-supervised strategies to leverage unlabeled data.
+
+Our research takes a different methodological path by investigating the Energy Flow Classifier (EFC), a physics-inspired
+model rooted in statistical mechanics. The key distinctions and contributions are:
+\begin{itemize}
+    \item \textbf{One-Class Learning Paradigm:} EFC was configured as a one-class anomaly detector, trained \textit{exclusively}
+    on Licit transactions. This directly addresses label scarcity by not requiring any Illicit labels during the training phase,
+    learning a model of "normal" behavior and identifying deviations. This contrasts with the supervised/semi-supervised
+    methods in~\cite{lorenz2021machinelearningmethodsdetect} which generally learn from both classes or use unlabeled data
+    in conjunction with some labels from all classes.
+    \item \textbf{Alternative Anomaly Detection Mechanism:} EFC's energy-based formulation provides a distinct way to quantify
+    anomalousness compared to distance-based, density-based, or boundary-based methods common in other one-class classifiers
+    or the discriminative models used by Lorenz et al.
+    \item \textbf{Focus on Preprocessing for One-Class EFC:} A significant part of our investigation focused on how data
+    preprocessing (balancing, feature selection) impacts EFC's one-class performance, which is crucial given its sensitivity
+    to imbalance as shown in our baseline experiment.
+    \item \textbf{Comparable Evaluation Metric:} We adopted the F1-Macro score as the primary evaluation metric, consistent
+    with~\cite{lorenz2021machinelearningmethodsdetect}, to facilitate a conceptual comparison regarding performance on imbalanced data.
+\end{itemize}
+While Lorenz et al. demonstrated the utility of established ML techniques under label scarcity, our work explores EFC as
+a novel alternative specifically suited for scenarios where only normal data is reliably labeled. The results, particularly
+with SMOTE and feature selection (F1-Macro 0.808 on imbalanced test data), suggest EFC can be competitive. A direct
+quantitative performance benchmark against the specific results of~\cite{lorenz2021machinelearningmethodsdetect} would
+require replicating their exact experimental setup or vice-versa, which was outside the scope of this study. Our contribution
+lies in demonstrating the viability and optimization of this alternative one-class approach.
 
 \subsection{Threats to Validity}\label{sec:threats}
+Several factors could potentially affect the validity and generalizability of our findings. We categorize them as follows:
 
+\textbf{Internal Validity:}
+\begin{itemize}
+    \item \textbf{Hyperparameter Configuration:} The EFC model was configured with default hyperparameters (e.g.,
+    \texttt{n\_bins=30}, \texttt{cutoff\_quantile=0.9}). Performance, particularly the precision-recall trade-off, might
+    be sensitive to these settings. A systematic hyperparameter optimization was not performed.
+    \item \textbf{Stochasticity of SMOTE and Train-Test Split:} Techniques like SMOTE involve randomness. The specific
+    temporal split (time steps 1-34 for training, 35-49 for testing), though standard, is one instance; other splits could
+    yield different quantitative results.
+    \item \textbf{Feature Selection Method:} We used \texttt{SelectKBest} with ANOVA F-value. Other techniques might lead
+    to different feature subsets and performance.
+\end{itemize}
+
+\textbf{Construct Validity:}
+\begin{itemize}
+    \item \textbf{EFC as a Proxy for Illicit Detection:} We measure EFC's ability to assign higher energy to "illicit"
+    transactions as defined by the dataset labels. The "energy" concept is an abstraction.
+    \item \textbf{Label Quality and Definition:} The study relies on the labels provided in the Elliptic dataset. Any
+    noise or bias in labels would affect training and evaluation.
+    \item \textbf{Feature Representation:} The Elliptic dataset provides anonymized features. Lack of semantic meaning
+    limits interpretability and domain-specific feature engineering.
+\end{itemize}
+
+\textbf{External Validity (Generalizability):}
+\begin{itemize}
+    \item \textbf{Dataset Specificity:} Findings are based solely on the Elliptic Bitcoin dataset. Generalization to other
+    cryptocurrency transaction data or fraud domains requires further study.
+    \item \textbf{Temporal Dynamics:} The dynamic nature of fraudulent activities means model performance might degrade
+    over time. The study captures a specific period.
+    \item \textbf{Ignoring Graph Structure (Partially):} While some features are aggregated from local graph neighborhoods,
+    our EFC implementation primarily treated transactions based on node features without explicitly modeling the transaction
+    graph topology in EFC's core calculation.
+    \item \textbf{Scalability:} A formal scalability analysis for significantly larger datasets was not conducted.
+\end{itemize}
+Addressing these threats in future work will be crucial for a more comprehensive understanding of EFC's capabilities.
 
 \section{Conclusion} \label{section:conclusion}
 
-This study evaluated the Energy Flow Classifier (EFC) as a one-class anomaly detection method for identifying illicit Bitcoin
-transactions within the Elliptic dataset, focusing on scenarios with label scarcity. In evaluating the performance of the
-different techniques across our experiments, we adopted the \textbf{F1-macro score} as the primary overall metric. This
-choice aligns with the methodology presented by \cite{lorenz2021machinelearningmethodsdetect} in their work
-on detecting money laundering in Bitcoin, particularly relevant given the common challenge of label scarcity in such datasets.
-The F1-macro score is calculated by first determining the F1 score (the harmonic mean of precision and recall) for each
-individual class (e.g., 'licit' and 'illicit' transactions). Then, the unweighted average of these per-class F1 scores is
-taken. This approach ensures that each class contributes equally to the final metric, regardless of its frequency in the
-dataset, providing a balanced assessment of model performance, especially crucial in imbalanced scenarios like fraud detection
-where correctly identifying the minority class is often of high importance.
+This study investigated the Energy Flow Classifier (EFC) as a one-class anomaly detection method for identifying illicit
+Bitcoin transactions within the Elliptic dataset, particularly addressing the challenge of label scarcity. Our findings
+indicate that EFC, when trained exclusively on Licit transactions, shows promise but is highly sensitive to the inherent
+class imbalance of such datasets.
 
-The primary advantage of EFC lies in its one-class nature, making it suitable for real-world scenarios where illicit
-transaction labels are rare. However, our baseline experiment (Exp 1 - Unbalanced), using default parameters and training
-only on Licit data, revealed a significant disadvantage: high sensitivity to class imbalance. While achieving high overall
-accuracy (0.908) and weighted F1-score (0.891), the model performed poorly in distinguishing the minority Illicit class,
-resulting in a low F1-Macro score of 0.488.
+The baseline performance of EFC on unbalanced data was modest in terms of distinguishing the minority Illicit class
+(F1-Macro 0.488). However, we demonstrated that its effectiveness can be significantly enhanced through data preprocessing.
+Specifically, applying the SMOTE balancing technique to the training data, especially when combined with feature selection
+(reducing to $k \approx 30$ features), substantially improved the F1-Macro score to 0.808 when evaluated on a realistic,
+imbalanced test set. This highlights that EFC can achieve robust performance if the data imbalance is appropriately managed,
+as detailed in Section \ref{sec:discussion}.
 
-Crucially, Experiment 1 demonstrated that EFC's performance can be substantially improved through standard data preprocessing
-techniques. Applying SMOTE balancing to the training data yielded the best results among the balancing methods tested,
-dramatically increasing the F1-Macro score to 0.760, indicating a much more balanced detection capability across both
-Licit and Illicit classes.
-
-Further experiments explored feature selection (Exp 2) and its combination with balancing (Exp 3). Feature selection using
-\texttt{SelectKBest} showed that EFC can operate with reduced dimensionality; for instance, using only the top 10 non-aggregated
-features yielded an F1-Macro of 0.686, outperforming the baseline but not reaching the levels achieved with SMOTE on the full
-feature set. The results for feature selection including aggregated features and the combined feature selection with SMOTE
-approach (currently placeholders in Table \ref{tab:efc_consolidated_results}) require further analysis to draw definitive
-conclusions about their potential benefits.
-
-In summary, EFC presents a promising tool for detecting anomalous Bitcoin transactions, especially given its one-class
-training capability. Its main drawback is a pronounced sensitivity to class imbalance, which necessitates mitigation strategies
-like SMOTE balancing for effective performance (achieving F1-Macro 0.760). While feature selection is possible, careful
-consideration of trade-offs is required, as dimensionality reduction might impact performance compared to using balanced,
-full-feature data. The effectiveness of EFC in this context is therefore contingent on appropriate data preprocessing and
-potentially hyperparameter tuning, sensitivity to which was noted in Section \ref{sec:introduction} and implied by the
-experimental variations, to balance the detection of illicit activities against false alarms.
-
+In summary, EFC offers a valuable approach for one-class anomaly detection in cryptocurrency transactions due to its ability
+to learn from only normal data. Its practical application, however, requires careful consideration of data preprocessing
+strategies, notably class balancing and potentially feature selection, to optimize its detection capabilities for rare illicit
+events. Future work, as outlined in Section \ref{sec:future_work} and informed by the threats to validity discussed in Section
+\ref{sec:threats}, should focus on refining these aspects.
 
 \section{Future Work} \label{sec:future_work}
 
@@ -825,9 +923,8 @@ transactions, particularly when combined with techniques like SMOTE, several ope
     EFC's energy calculation warrants further investigation. Are there other balancing techniques (e.g., ADASYN, Tomek Links,
     Edited Nearest Neighbours) or cost-sensitive learning approaches (adjusting the EFC threshold based on misclassification
     costs) that could yield better or more robust performance, perhaps with fewer synthetic samples or different biases?
-
-    \item \textbf{Exploring Feature Selection Synergies:} Experiments 2 and 3 explored feature selection, showing potential
-    but requiring further analysis \ref{tab:efc_consolidated_results}. Key questions remain: What
+    \item \textbf{Refining Feature Selection Strategies:} While Experiments 2 and 3 showed the benefit of feature selection,
+    further exploration of different algorithms and criteria for selecting $k$ could be beneficial. Key questions remain: What
     is the optimal number of features ($k$) when including aggregated features? Does the combination of FS and SMOTE truly
     outperform SMOTE alone with full features, considering both performance and computational cost?
 
