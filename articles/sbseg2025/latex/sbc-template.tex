@@ -6,21 +6,26 @@
 \usepackage[american]{babel}
 % two images, same frame, side by side
 \usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{soul}
+\usepackage{xcolor}
 
 \sloppy
 
 \title{Exploring Energy Flow Classifier to Identify \\ Fraudulent Cryptocurrency Transactions}
 
-\author{Kevin S. Araujo\inst{1}, Rodrigo Bonifacio de Almeida\inst{1}, 
-  Fabiano Cavalcanti Fernandes\inst{2} }
+\author{anonymous}
+\address{anonymous}
+% \author{Kevin S. Araujo\inst{1}, Rodrigo Bonifacio de Almeida\inst{1}, 
+%   Fabiano Cavalcanti Fernandes\inst{2} }
 
 
-\address{Departamento de Ciências da Computação -- Universidade de Brasília (UnB) \\
-  -- Campus Universitário Darcy Ribeiro, Brasília-DF
-\nextinstitute
-  Instituto Federal de Brasília (IFB) -- Taguating, DF -- Brazil
-  \email{kevin.araujo@aluno.unb.br, rbonifacio@unb.br, fabiano.fernandes@ifb.edu.br}
-}
+% \address{Departamento de Ciências da Computação -- Universidade de Brasília (UnB) \\
+%   -- Campus Universitário Darcy Ribeiro, Brasília-DF
+% \nextinstitute
+%   Instituto Federal de Brasília (IFB) -- Taguating, DF -- Brazil
+%   \email{kevin.araujo@aluno.unb.br, rbonifacio@unb.br, fabiano.fernandes@ifb.edu.br}
+% }
 
 \begin{document} 
 
@@ -192,17 +197,19 @@ The labels classify transactions into two main categories:
   \centering
   \caption{Summary Statistics of the Elliptic Dataset (based on \cite{weber2019antimoneylaunderingbitcoinexperimenting}).}
   \label{tab:dataset_summary}
-  \begin{tabular}{lr}
-    Characteristic        & Value \\
-    Total Transactions (Nodes) & 203,769 \\
-    Total Edges           & 234,355 \\
+  \begin{small}
+  \begin{tabular}{lr}\toprule
+    Characteristic        & Value \\ \midrule
+    Total of Transactions (Nodes) & 203,769 \\
+    Total of Edges           & 234,355 \\
     Time Steps            & 49 \\
     Features per Node     & 166 \\
     Labeled Transactions  & 46,564 (\textasciitilde23\%) \\
     \quad - Licit         & 42,019 (\textasciitilde90.2\% of labeled) \\
     \quad - Illicit       & 4,545 (\textasciitilde9.8\% of labeled) \\
-    Unlabeled Transactions & 157,205 (\textasciitilde77\%) \\
+    Unlabeled Transactions & 157,205 (\textasciitilde77\%) \\ \bottomrule
   \end{tabular}
+  \end{small}
 \end{table}
 
 \subsection{Data Preprocessing} \label{subsec:preprocessing}
@@ -213,8 +220,8 @@ To prepare the dataset (Section~\ref{subsec:dataset}), we filtered transactions 
 EFC model learns patterns from \textit{normal} data to detect anomalies, transactions labeled as \textit{Licit} were used
 as the normal class for training. In contrast, transactions labeled as \textit{Illicit} were treated as anomalies and reserved
 for evaluation. Transactions with \textit{Unknown} labels were excluded from both training and testing to ensure that the
-evaluation relied solely on transactions with a known ground truth. For the binary classification task (\textit{licit} vs. \textit{illicit}),
-labels were mapped to numerical values—0 for licit and 1 for illicit.
+evaluation relied solely on transactions with a known ground truth. For the binary classification task (\textit{licit} vs.
+\textit{illicit}), labels were mapped to numerical values—0 for licit and 1 for illicit.
 
 Second, we performed feature selection and transformation. Of the 166 features available for each transaction, the feature
 explicitly indicating the time step (ranging from 1 to 49) was removed. While this temporal information was essential for
@@ -292,11 +299,26 @@ two main perspectives:
       ability to rank anomalies higher than normal instances across all possible thresholds.
 \end{enumerate}
 
-The outcome of this research may provide insights into the potential of EFC as a viable tool for detecting fraudulent or
+The outcomes of this research provide insights into the potential of the EFC model as a viable tool for detecting fraudulent or
 anomalous Bitcoin transactions. By leveraging its unsupervised, energy-based approach, EFC aims to address challenges such
-as label scarcity and to identify novel deviations from normal transaction behavior.
+as label scarcity and to identify novel deviations from normal transaction behavior. 
+
+Model performance was assessed using a combination of quantitative metrics and visual analysis. We use the \textbf{F1-Score Macro Average}
+as the primary evaluation metric, following the same design decision of \cite{lorenz2021machinelearningmethodsdetect}.
+This metric calculates the F1-score for each class (Licit and Illicit) independently and then averages them, providing a
+balanced measure of performance across both classes, which is crucial given the inherent class imbalance. 
+
+We also leverage \textbf{Specific Metrics for the Illicit Class}, since our primary interest lies in detecting anomalous
+transactions. As such, we also report Precision, Recall, and the F1-Score specifically calculated for the Illicit class
+based on the classification derived from the \texttt{cutoff\_quantile} threshold. These metrics offer direct insight into
+the model's effectiveness in identifying illicit transactions and the associated trade-offs (e.g., false positives vs. false negatives). 
+
+Finally, we highlight the \textbf{EFC Energy Distributions.} For each experiment we detail in the next section, we show
+histograms comparing the distribution of EFC energy scores assigned to Licit versus Illicit transactions in the test set
+that were generated. These plots provide a visual assessment of the model's separation capability.
 
 \section{Results} \label{sec:results}
+
 This section presents the empirical findings from the application of the Energy Flow Classifier (EFC) to the task of
 identifying illicit transactions within the Elliptic Bitcoin dataset. Following the methodology outlined in Section
 \ref{sec:methods}, the EFC was employed primarily as a one-class anomaly detector, trained exclusively on transactions
@@ -305,69 +327,77 @@ these known Licit patterns from potentially anomalous Illicit transactions prese
 Performance is assessed based on the EFC's ability to assign distinct energy scores to the two classes and evaluated using
 metrics appropriate for imbalanced anomaly detection scenarios. The subsequent subsections detail the outcomes of specific
 experiments conducted, focusing on the model's baseline performance and sensitivity to key configuration parameters under
-the defined experimental setup.
+the defined experimental setup. We performed three primary
+experiments focusing on data balancing, feature engineering/selection, and model comparison/tuning, respectively. All experiments
+utilized the Elliptical dataset, preprocessed as described previously, employing a standard train-test split methodology.
 
-\subsection{Shared Experimental Setup} \label{subsec:shared_setup}
-Unless explicitly stated otherwise in the description of a specific experiment, the following setup, derived from the procedures
-detailed in Section \ref{sec:methods}, was consistently used across the results presented below:
+              
+%\subsection{Shared Experimental Setup} \label{subsec:shared_setup}
+% Unless explicitly stated otherwise in the description of a specific experiment, the following setup, derived from the procedures
+% detailed in Section \ref{sec:methods}, was consistently used across the results presented below:
 
-\begin{itemize}
-    \item \textbf{Dataset Split:} The EFC model was trained exclusively on transactions labeled as Licit from time steps
-      1 to 34. Evaluation was performed on the test set containing both Licit and Illicit transactions from time steps
-      35 to 49. Transactions labeled 'Unknown' were excluded from both training and testing.
-    \item \textbf{Feature Set:} The input to the EFC model consisted of the 165 anonymized features described in Section
-      \ref{subsec:dataset}, after removing the time step feature. These features were scaled to the range [0, 1] using
-      Min-Max scaling, with the scaler fitted only on the training data (Licit transactions, steps 1-34).
-    \item \textbf{EFC Configuration:} The core EFC implementation (Section \ref{subsec:efc_implementation}) utilized the
-      following default hyperparameters based on initial tuning and common practice:
-        \begin{itemize}
-            \item Number of bins for feature discretization \texttt{n\_bins=30}
-            \item Cutoff quantile for anomaly threshold \texttt{cutoff\_quantile=0.9} (meaning the energy threshold is set at
-              the 90th percentile of the energy distribution of the Licit training data)
-            \item Pseudocounts \texttt{pseudocounts=0.1} (to handle zero probabilities)
-        \end{itemize}
-        \item \textbf{Evaluation Metrics \& Outputs:} Model performance was assessed using a combination of quantitative
-          metrics and qualitative analysis:
-          \begin{itemize}
-              \item \textbf{F1-Score (Macro Average):} As the primary evaluation metric, we adopted the macro-averaged F1-score,
-                consistent with the benchmark study by \cite{lorenz2021machinelearningmethodsdetect}. This metric calculates the
-                F1-score for each class (Licit and Illicit) independently and then averages them, providing a balanced measure
-                of performance across both classes, which is crucial given the inherent class imbalance.
-              \item \textbf{Class-Specific Metrics (Illicit Class):} While F1-Macro provides an overall view, our primary
-                interest lies in detecting the Illicit class (class 1). Therefore, we also report Precision, Recall, and
-                the F1-Score specifically calculated for the Illicit class based on the classification derived from the
-                \texttt{cutoff\_quantile} threshold. These metrics offer direct insight into the model's effectiveness in
-                identifying illicit transactions and the associated trade-offs (e.g., false positives vs. false negatives).
-              \item \textbf{EFC Energy Distributions:} For each experiment, histograms comparing the distribution of EFC
-                energy scores assigned to Licit versus Illicit transactions in the test set were generated. These plots
-                  provide a visual assessment of the model's separation capability.
-              \item \textbf{Detailed Results Storage:} Key information for each experimental run, including the sizes of
-                the training and testing datasets (and their class distributions), the calculated performance metrics,
-                and the confusion matrix, were systematically collected and saved into individual CSV files for detailed
-                comparison and analysis across experiments.
-          \end{itemize}
-\end{itemize}
+% \begin{itemize}
+%     \item \textbf{Dataset Split:} The EFC model was trained exclusively on transactions labeled as Licit from time steps
+%       1 to 34. Evaluation was performed on the test set containing both Licit and Illicit transactions from time steps
+%       35 to 49. Transactions labeled 'Unknown' were excluded from both training and testing.
+%     \item \textbf{Feature Set:} The input to the EFC model consisted of the 165 anonymized features described in Section
+%       \ref{subsec:dataset}, after removing the time step feature. These features were scaled to the range [0, 1] using
+%       Min-Max scaling, with the scaler fitted only on the training data (Licit transactions, steps 1-34).
+%     \item \textbf{EFC Configuration:} The core EFC implementation (Section \ref{subsec:efc_implementation}) utilized the
+%       following default hyperparameters based on initial tuning and common practice:
+%         \begin{itemize}
+%             \item Number of bins for feature discretization \texttt{n\_bins=30}
+%             \item Cutoff quantile for anomaly threshold \texttt{cutoff\_quantile=0.9} (meaning the energy threshold is set at
+%               the 90th percentile of the energy distribution of the Licit training data)
+%             \item Pseudocounts \texttt{pseudocounts=0.1} (to handle zero probabilities)
+%         \end{itemize}
+%         \item \textbf{Evaluation Metrics \& Outputs:} Model performance was assessed using a combination of quantitative
+%           metrics and qualitative analysis:
+%           \begin{itemize}
+%               \item \textbf{F1-Score (Macro Average):} As the primary evaluation metric, we adopted the macro-averaged F1-score,
+%                 consistent with the benchmark study by \cite{lorenz2021machinelearningmethodsdetect}. This metric calculates the
+%                 F1-score for each class (Licit and Illicit) independently and then averages them, providing a balanced measure
+%                 of performance across both classes, which is crucial given the inherent class imbalance.
+%               \item \textbf{Class-Specific Metrics (Illicit Class):} While F1-Macro provides an overall view, our primary
+%                 interest lies in detecting the Illicit class (class 1). Therefore, we also report Precision, Recall, and
+%                 the F1-Score specifically calculated for the Illicit class based on the classification derived from the
+%                 \texttt{cutoff\_quantile} threshold. These metrics offer direct insight into the model's effectiveness in
+%                 identifying illicit transactions and the associated trade-offs (e.g., false positives vs. false negatives).
+%               \item \textbf{EFC Energy Distributions:} For each experiment, histograms comparing the distribution of EFC
+%                 energy scores assigned to Licit versus Illicit transactions in the test set were generated. These plots
+%                   provide a visual assessment of the model's separation capability.
+%               \item \textbf{Detailed Results Storage:} Key information for each experimental run, including the sizes of
+%                 the training and testing datasets (and their class distributions), the calculated performance metrics,
+%                 and the confusion matrix, were systematically collected and saved into individual CSV files for detailed
+%                 comparison and analysis across experiments.
+%           \end{itemize}
+% \end{itemize}
 
-The following subsections will now present the results from the specific experiments conducted under this framework, highlighting
-deviations from this shared setup where applicable.
+% The following subsections will now present the results from the specific experiments conducted under this framework, highlighting
+% deviations from this shared setup where applicable.
 
-\subsection{Experiments} \label{subsec:experiments}
+%\subsection{Experiments} \label{subsec:experiments}
 
-This section details the experimental evaluations conducted to assess the proposed methodologies. We performed three primary
-experiments focusing on data balancing, feature engineering/selection, and model comparison/tuning, respectively. All
-experiments utilized the EFC dataset, preprocessed as described previously, employing a standard train-test split methodology.
+%This section details the experimental evaluations conducted to assess the proposed methodologies. 
+% We performed three primary
+% experiments focusing on data balancing, feature engineering/selection, and model comparison/tuning, respectively. All
+% experiments utilized the EFC dataset, preprocessed as described previously, employing a standard train-test split methodology.
 
 \subsection{Experiment 1: Impact of Data Balancing Techniques} \label{subsec:experiment_1}
-This experiment investigated the effect of various data balancing strategies on classification performance for the inherently
-imbalanced EFC dataset. The baseline performance was established using the original, unbalanced dataset. This was compared
-against four common balancing techniques applied to the training dataset and test dataset: creating a balanced subset with
-equally distributed classes, by undersampling the majority class before splitting, Synthetic Minority Over-sampling Technique
-(SMOTE), Random Oversampling of the minority class, and Random Undersampling of the majority class. The test set composition
-remained consistent across most techniques to ensure fair evaluation. Performance was evaluated using Accuracy, Precision,
-Recall, F1-Score (weighted), Macro F1-Score, and confusion matrices. Table~\ref{tab:efc_consolidated_results} summarizes
-the dataset characteristics after applying each technique and the corresponding classification results.
 
-Below, we can find the experiment collected results - the model metrics and the EFC energy distributions.
+This experiment examined the impact of different data balancing strategies on classification performance using the inherently
+imbalanced EFC dataset.
+
+Baseline performance was measured using the original, unbalanced dataset. This baseline was then compared against four widely
+adopted balancing techniques, each applied to both the training and test datasets: (a) creating a balanced subset by undersampling
+the majority class prior to the train-test split, (b) applying the Synthetic Minority Over-sampling Technique (SMOTE), (c)
+performing random oversampling of the minority class, and (d) performing random undersampling of the majority class. To
+ensure a fair comparison, the composition of the test set was kept consistent across most techniques.
+
+Model performance was evaluated using Accuracy, Precision, Recall, weighted F1-Score, Macro F1-Score, and confusion matrices.
+Table~\ref{tab:efc_consolidated_results} presents a summary of the dataset characteristics resulting from each balancing
+strategy, along with the corresponding classification outcomes.
+
 
 \begin{table}[htbp]
   \centering
@@ -375,17 +405,17 @@ Below, we can find the experiment collected results - the model metrics and the 
   \label{tab:balancing_results}
   \resizebox{\textwidth}{!}{
     \begin{tabular}{lrrrrrrrrr}
-      \hline
+      \toprule
       \textbf{Configuration} & \textbf{TP} & \textbf{FN} & \textbf{FP} & \textbf{TN} & \textbf{Accuracy} & \textbf{Precision}
       & \textbf{Recall} & \textbf{F1-Score} & \textbf{F1-Macro} \\
       & & & & & & & & \textbf{(Weighted)} & \\
-      \hline
+      \midrule
       Unbalanced Dataset (Baseline)$^{a}$ & 15117 & 470 & 1064 & 19 & 0.908 & 0.876 & 0.908 & 0.891 & 0.488 \\
       Balanced Dataset (Equally Dist.)$^{b}$ & 516 & 848 & 37 & 1326 & 0.675 & 0.772 & 0.675 & 0.644 & 0.644 \\
       SMOTE$^{b}$ & 10831 & 1775 & 530 & 12076 & 0.909 & 0.913 & 0.909 & 0.908 & \textbf{0.908} \\
       Random Oversampling$^{a}$ & 15393 & 194 & 1013 & 70 & 0.928 & 0.895 & 0.928 & 0.907 & 0.533 \\
       Random Undersampling$^{a}$ & 13791 & 1796 & 412 & 671 & 0.868 & 0.926 & 0.868 & 0.890 & 0.652 \\
-      \hline
+      \bottomrule
     \end{tabular}
   }
   \par\medskip
@@ -397,42 +427,47 @@ Below, we can find the experiment collected results - the model metrics and the 
 
 \begin{figure}[!tph]
   \centering
-  \subfloat[Unbalanced Dataset.]{\includegraphics[width=0.4\textwidth]{figures/experiment-1/1_unbalanced_dataset.png}\label{fig1:1_unbalanced_dataset}}
-  \subfloat[Balanced Dataset.]{\includegraphics[width=0.4\textwidth]{figures/experiment-1/2_balaced_dataset.png}\label{fig2:2_balaced_dataset}}
-  \subfloat[SMOTE.]{\includegraphics[width=0.4\textwidth]{figures/experiment-1/3_smote_minority_full_test_dataset.png}\label{fig3:3_smote_minority}}
-  \caption{Experiment 1: Energy Distribution Of Licit and Illicit Transactions.}
+  \subfloat[Unbalanced Dataset.]{\includegraphics[width=0.35\textwidth]{figures/experiment-1/1_unbalanced_dataset.png}\label{fig1:1_unbalanced_dataset}}
+  \subfloat[Balanced Dataset.]{\includegraphics[width=0.35\textwidth]{figures/experiment-1/2_balaced_dataset.png}\label{fig2:2_balaced_dataset}}
+  \subfloat[SMOTE.]{\includegraphics[width=0.35\textwidth]{figures/experiment-1/3_smote_minority_full_test_dataset.png}\label{fig3:3_smote_minority}}
+  \caption{Experiment 1: Energy Distribution of Licit and Illicit Transactions.}
 \end{figure}
 
-\paragraph{Discussion of Experiment 1 Results}
+% \paragraph{Discussion of Experiment 1 Results}
 The results from Experiment 1 (Table~\ref{tab:balancing_results}) clearly illustrate the EFC's sensitivity to class imbalance
-and the significant impact of balancing techniques. The baseline "Unbalanced Dataset," when tested on an imbalanced test
+and the significant impact of balancing techniques. The baseline ``Unbalanced Dataset,'' when tested on an imbalanced test
 set, yielded a low F1-Macro score of 0.488, confirming the difficulty in detecting the minority illicit class without
-intervention. This was an expected outcome given the nature of one-class classifiers and imbalanced data. Applying SMOTE
+intervention. This result is most likely due to the nature of one-class classifiers and imbalanced data. Applying SMOTE
 and evaluating on a balanced test set resulted in a striking improvement, with an F1-Macro of 0.908. This suggests that
 EFC can perform exceptionally well if the training data is appropriately balanced and the evaluation scenario also reflects
-a more balanced class distribution. Other techniques applied to the training data but evaluated on an imbalanced test set
+a more balanced class distribution. 
+
+Other techniques applied to the training data but evaluated on an imbalanced test set
 also showed improvements over the baseline: Random Oversampling achieved an F1-Macro of 0.533, and Random Undersampling
 reached 0.652. This indicates that even simpler balancing methods can enhance EFC's performance on imbalanced test data,
-with undersampling being more effective than oversampling in this specific setup. The "Balanced Dataset (Equally Dist.)"
+with undersampling being more effective than oversampling in this specific setup. The ``Balanced Dataset (Equally Dist.)''
 technique, which involved undersampling the majority class to create a balanced training and test set, achieved an F1-Macro
 of 0.644. While better than the baseline, it did not match SMOTE's performance on a balanced test set, suggesting that
-SMOTE's approach of generating synthetic minority samples is more beneficial for EFC in such conditions. The stark contrast
-in F1-Macro scores, particularly between SMOTE on a balanced test set and other techniques on imbalanced test sets,
-underscores the critical influence of test set composition on this metric.
+SMOTE's approach of generating synthetic minority samples is more beneficial for EFC in such conditions. 
+
+The stark contrast in F1-Macro scores, particularly between SMOTE on a balanced test set and other techniques on imbalanced
+test sets, underscores the critical influence of test set composition on this metric.
 
 \subsection{Experiment 2: Impact of Feature Selection} \label{subsec:experiment_2}
-Following the analysis of data balancing, Experiment 4 focused on evaluating 
-the impact of feature selection on classification performance using the Energy-Based Flow Classifier (EFC). We employed
-the \texttt{SelectKBest} algorithm from scikit-learn, utilizing the ANOVA F-value (\texttt{f\_classif}) scoring function
-to rank and select features based on their relevance to the class labels. The experiment systematically varied the number
-of selected features, testing values of $k \in {10, 20, 30, 40, 50, 60}$. The feature selection process using \texttt{SelectKBest}
-was applied to the features and labels of the original unbalanced dataset \textit{before} the standard train-test split
-was performed on the resulting reduced feature set. Furthermore, we conducted two distinct series of runs: one applying
-feature selection to the complete feature set, including aggregated temporal features, and another applying it only to
-the raw node features after explicitly excluding the aggregated ones. The decision to conduct feature selection in two
-distinct scenarios within Experiment 2---one including the aggregated neighborhood statistics and one explicitly excluding
-them---was driven by the need to understand the specific impact and contribution of these aggregated features. Aggregated
-features, which represent statistical summaries of a node's neighborhood (as described in related financial forensics
+
+Following the analysis of data balancing, our second experiment focused on evaluating the impact of feature selection on
+classification performance using the Energy-Based Flow Classifier (EFC). We employed the \texttt{SelectKBest} algorithm
+from scikit-learn, utilizing the ANOVA F-value (\texttt{f\_classif}) scoring function to rank and select features based
+on their relevance to the class labels. 
+
+In this experiment, we systematically varied the number of selected features ($k$), testing values of $k \in {10, 20, 30,
+40, 50, 60}$. We applied the feature selection process to the features and labels of the original unbalanced dataset
+\textit{before} the standard train-test split was performed on the resulting reduced feature set. Furthermore, we conducted
+two distinct series of runs: one applying feature selection to the complete feature set, including aggregated temporal
+features, and another applying it only to the raw node features after explicitly excluding the aggregated ones. This
+decision was driven by the need to understand the specific impact and contribution of these aggregated features. 
+
+Aggregated features, which represent statistical summaries of a node's neighborhood (as described in related financial forensics
 work, e.g., \cite{weber2019antimoneylaunderingbitcoinexperimenting}), often possess high individual predictive power due
 to the condensed information they carry about local graph structure. Including these potentially dominant features in the
 \texttt{SelectKBest} process (Scenario 1) could lead to them consistently ranking highest, potentially masking the predictive
@@ -446,10 +481,9 @@ Performance for each value of $k$ and for both feature set scenarios (with and w
 using standard classification metrics (Accuracy, Precision, Recall, F1-Score, and F1-Macro). The objective was to
 determine if reducing dimensionality could maintain or improve performance, identify an optimal number of features ($k$),
 and understand the contribution of aggregated features within this selection context.
+We summarize the results in Table~\ref{tab:fs_excluded_agg_results} Table~\ref{tab:fs_included_agg_results}.
 
-Table results and EFC energies histograms can be found below.
-
-\begin{table*}[htbp] % Using table* for potentially wider content
+\begin{table*}[htbp]
   \centering
   \caption{EFC Performance with Feature Selection (Aggregated Features Excluded) for Varying k (Experiment 2a).}
   \label{tab:fs_excluded_agg_results}
@@ -475,7 +509,7 @@ Table results and EFC energies histograms can be found below.
   as it's the highest.}
 \end{table*}
 
-\begin{table*}[htbp] % Using table* for potentially wider content
+\begin{table*}[htbp]
   \centering
   \caption{EFC Performance with Feature Selection (Aggregated Features Included) for Varying k (Experiment 2b).}
   \label{tab:fs_included_agg_results}
@@ -501,88 +535,120 @@ Table results and EFC energies histograms can be found below.
   as it's the highest.}
 \end{table*}
 
-\begin{figure}[!tph]
-  \centering
-  \subfloat[k=10.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=10.png}\label{fig4:fs_no_agg_k_10}}
-  \hfill
-  \subfloat[k=20.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=20.png}\label{fig5:fs_no_agg_k_20}}
-  \hfill
-  \subfloat[k=30.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=30.png}\label{fig6:fs_no_agg_k_30}}
-  \hfill
-  \subfloat[k=40.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=40.png}\label{fig7:fs_no_agg_k_40}}
-  \hfill
-  \subfloat[k=50.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=50.png}\label{fig8:fs_no_agg_k_50}}
-  \hfill
-  \subfloat[k=60.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=60.png}\label{fig9:fs_no_agg_k_60}}
-  \hfill
-  \caption{Experiment 2, Technique A: Feature Selection Excluding Aggregate Features, Increasing Value of k, Energy
-  Distribution Of Licit and Illicit Transactions.}
-\end{figure}
+% \paragraph{Discussion of Experiment 2 Results}
+% Experiment 2 investigated the impact of feature selection on EFC's performance, with results presented in
+% Table~\ref{tab:fs_excluded_agg_results} (aggregated features excluded) and Table~\ref{tab:fs_included_agg_results}
+% (aggregated features included). 
 
-\begin{figure}[!tph]
-  \centering
-  \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=10.png}\label{fig10:fs_agg_k_10}}
-  \hfill
-  \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=20.png}\label{fig11:fs_agg_k_20}}
-  \hfill
-  \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=30.png}\label{fig12:fs_agg_k_30}}
-  \hfill
-  \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=40.png}\label{fig13:fs_agg_k_40}}
-  \hfill
-  \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=50.png}\label{fig14:fs_agg_k_50}}
-  \hfill
-  \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-  Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=60.png}\label{fig15:fs_agg_k_60}}
-  \hfill
-  \caption{Experiment 2, Technique B: Feature Selection Including Aggregate Features, Increasing Value of k, Energy
-  Distribution Of Licit and Illicit Transactions.}
-\end{figure}
+Considering both scenarios, a key observation is that EFC can achieve its best performance with a significantly reduced
+feature set. When aggregated features were excluded (Table~\ref{tab:fs_excluded_agg_results}), the highest F1-Macro score
+of 0.686 was obtained with only $k=10$ features. Similarly, when aggregated features were included in the selection pool
+(Table~\ref{tab:fs_included_agg_results}), the peak F1-Macro was 0.689, also at $k=10$.
 
-\paragraph{Discussion of Experiment 2 Results}
-Experiment 2 investigated the impact of feature selection on EFC's performance, with results presented in
-Table~\ref{tab:fs_excluded_agg_results} (aggregated features excluded) and Table~\ref{tab:fs_included_agg_results}
-(aggregated features included). A key observation across both scenarios is that EFC can achieve its best performance with
-a significantly reduced feature set. When aggregated features were excluded (Table~\ref{tab:fs_excluded_agg_results}),
-the highest F1-Macro score of 0.686 was obtained with only $k=10$ features. Similarly, when aggregated features were
-included in the selection pool (Table~\ref{tab:fs_included_agg_results}), the peak F1-Macro was 0.689, also at $k=10$.
 This suggests that a small subset of the most relevant features is sufficient for EFC, and including more features beyond
 this optimal $k$ (generally $k>20$) tends to degrade performance, likely due to the introduction of noise or less
 informative features that can adversely affect EFC's energy calculations. This diminishing return with increasing $k$ is
 a common phenomenon in feature selection. The slightly higher F1-Macro obtained when aggregated features were included
 (0.689 vs. 0.686) indicates their strong predictive value, even when only a few are selected. These F1-Macro scores represent
-a notable improvement over the baseline (0.488 from Experiment 1) but are not as high as those achieved with data balancing
-techniques like Random Undersampling (0.652 on an imbalanced test set) or SMOTE (0.908 on a balanced test set). This implies
-that while feature selection is beneficial for dimensionality reduction and can improve upon the baseline, addressing
-class imbalance appears to be a more critical factor for enhancing EFC's F1-Macro score in this dataset. The results were
-largely as expected, confirming that feature selection can be effective but might not be a complete solution without tackling
-imbalance.
+an improvement over the baseline (0.488 from Experiment 1) but are not as high as those achieved with data balancing
+techniques like Random Undersampling (0.652 on an imbalanced test set) or SMOTE (0.908 on a balanced test set). 
+
+This implies that while feature selection is beneficial for dimensionality reduction and can improve upon the baseline,
+addressing class imbalance appears to be a more critical factor for enhancing EFC's F1-Macro score in this dataset. The
+results confirm that feature selection can be effective, but might not be a complete solution without tackling imbalance.
+
+% \begin{figure}[!tph]
+%   \centering
+%   \subfloat[k=10.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=10.png}\label{fig4:fs_no_agg_k_10}}
+%   \hfill
+%   \subfloat[k=20.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=20.png}\label{fig5:fs_no_agg_k_20}}
+%   \hfill
+%   \subfloat[k=30.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=30.png}\label{fig6:fs_no_agg_k_30}}
+%   \hfill
+%   \subfloat[k=40.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=40.png}\label{fig7:fs_no_agg_k_40}}
+%   \hfill
+%   \subfloat[k=50.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=50.png}\label{fig8:fs_no_agg_k_50}}
+%   \hfill
+%   \subfloat[k=60.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=60.png}\label{fig9:fs_no_agg_k_60}}
+%   \hfill
+%   \caption{Experiment 2, Technique A: Feature Selection Excluding Aggregate Features, Increasing Value of k, Energy
+%   Distribution Of Licit and Illicit Transactions.}
+% \end{figure}
+
+% \begin{figure}[!tph]
+%   \centering
+%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=10.png}\label{fig10:fs_agg_k_10}}
+%   \hfill
+%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=20.png}\label{fig11:fs_agg_k_20}}
+%   \hfill
+%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=30.png}\label{fig12:fs_agg_k_30}}
+%   \hfill
+%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=40.png}\label{fig13:fs_agg_k_40}}
+%   \hfill
+%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=50.png}\label{fig14:fs_agg_k_50}}
+%   \hfill
+%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
+%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=60.png}\label{fig15:fs_agg_k_60}}
+%   \hfill
+%   \caption{Experiment 2, Technique B: Feature Selection Including Aggregate Features, Increasing Value of k, Energy
+%   Distribution Of Licit and Illicit Transactions.}
+% \end{figure}
+
 
 \subsection{Experiment 3: Combining Feature Selection and Data Balancing} \label{subsec:experiment_3}
-of feature selection and data balancing on the performance of the EFC classifier, building upon the findings from
-Experiment 1 (data balancing) and Experiment 24 (feature selection). The core idea was to first reduce the dimensionality
-of the dataset using the feature selection technique identified in Experiment 4, and then apply the SMOTE balancing
-technique from Experiment 1 to the reduced-feature training data before training the EFC model.
 
-Specifically, for each value of $k \in \{10, 20, 30, 40, 50, 60\}$, we first applied the \texttt{SelectKBest} algorithm
-with the \texttt{f\_classif} scoring function to the original, unbalanced dataset (as performed in the first scenario of
-Experiment 2) to obtain a dataset containing only the top $k$ features. Subsequently, this $k$-feature dataset underwent
-the SMOTE procedure: it was split into training and testing sets, SMOTE was applied \textit{only} to the training portion
-to balance the classes, and the EFC classifier was then trained on this balanced, feature-selected training data. Finally,
-the trained EFC model was evaluated on the corresponding unbalanced test set (containing the same $k$ selected features).
-Performance was assessed using the standard suite of metrics (Accuracy, Precision, Recall, F1-Score, Macro F1-Score) to
-determine if applying dimensionality reduction prior to SMOTE balancing could yield improved classification performance
-compared to using SMOTE on the full feature set (Experiment 1) or using feature selection alone (Experiment 2).
+The goal of this third experiment is to investigate the combined impact of feature selection and data balancing on the
+performance of the EFC classifier. It builds upon the findings of Experiment~1 (data balancing) and Experiment~2
+(feature selection). The central idea is to first reduce the dataset's dimensionality using the feature selection method
+identified in Experiment~2, and then apply the SMOTE balancing technique (from Experiment~1) to the reduced training data
+before training the EFC model.
+
+In more detail, for each value of $k \in \{10, 20, 30, 40, 50, 60\}$, we applied the \texttt{SelectKBest} algorithm with
+the \texttt{f\_classif} scoring function to the original, unbalanced dataset---following the approach used in the first
+scenario of Experiment~2---to retain only the top $k$ features. This $k$-feature dataset was then subjected to the SMOTE
+procedure. Specifically, we first split the dataset into training and test sets. Next, we applied SMOTE to the training
+set to balance the class distribution. The EFC classifier was then trained on this balanced, feature-reduced training data,
+and evaluated on the corresponding unbalanced test set (which contained the same $k$ selected features).
+
+We evaluated the performance using standard classification metrics (again, Accuracy, Precision, Recall, F1-Score, and Macro
+F1-Score). This evaluation aimed to determine whether applying feature selection before SMOTE could lead to improved classification
+performance, compared to using SMOTE on the full feature set (as in Experiment~1) or applying feature selection alone (as in Experiment~2).
+
+We summarize the results in Table~\ref{tab:exp3_smote_fs_results} (Experiment 3a, standard unbalanced test set) and
+Table~\ref{tab:exp3_smote_fs_full_test_results} (Experiment 3b, ``Full Test Dataset'' context, also an unbalanced test set). 
+
+In Experiment 3a, the combination yielded a peak F1-Macro score of 0.808 when $k=30$ features were selected before applying
+SMOTE. This is a substantial improvement compared to using feature selection alone (Experiment 2, best F1-Macro ~0.689)
+and the baseline (0.488). It also surpasses the F1-Macro achieved by Random Undersampling alone (0.652) on a similar imbalanced
+test set. That is, combining two effective strategies---dimensionality reduction to focus on salient features and SMOTE to
+address imbalance---leads to an improvement on the overall performance. The optimal $k=30$ here is higher than the $k=10$
+found in Experiment 2 (FS alone), though, suggesting that SMOTE might benefit from a slightly richer, yet still reduced, feature
+set to generate more effective synthetic samples. 
+
+Experiment 3b, conducted under the ``Full Test Dataset'' context (which also utilized an imbalanced test set as per its
+note), showed a similar trend, with $k=30$ also yielding the best F1-Macro score of 0.770. While this is still a strong
+result and a significant improvement over the baseline and feature selection alone, it is slightly lower than the 0.808
+achieved in Experiment 3a. This minor discrepancy, despite both experiments testing on imbalanced sets, could be attributed
+to subtle differences in the exact composition or characteristics of the test data partitions used, or slight variations
+in the feature subsets selected if the ``Full Test Dataset'' context implied any nuanced differences in the overall feature
+pool available before selection for that specific run.
+
+Overall, Experiment 3 shows that a combined strategy of feature selection followed by SMOTE balancing is highly
+effective for improving EFC's F1-Macro score on imbalanced test data, outperforming either technique applied in isolation
+(when \hl{FS} is tested on imbalanced data). However, these scores still do not reach the F1-Macro of 0.908 achieved by SMOTE
+alone when evaluated on an ideally balanced test set (Experiment 1), further highlighting the profound impact of the
+evaluation scenario's balance on the F1-Macro metric.
 
 \begin{table*}[htbp]
   \centering
@@ -636,6 +702,7 @@ compared to using SMOTE on the full feature set (Experiment 1) or using feature 
   F1-Score is weighted average. F1-Macro for k=30 is bolded.}
 \end{table*}
 
+
 \begin{figure}[!tph]
   \centering
   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
@@ -686,32 +753,23 @@ compared to using SMOTE on the full feature set (Experiment 1) or using feature 
   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=60 Full Test Dataset.png}
   \label{fig27:fs_smote_full_k_10}}
   \hfill
-  \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
-  and Illicit Transactions.}
+  \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy
+  Distribution Of Licit and Illicit Transactions.}
 \end{figure}
 
-\paragraph{Discussion of Experiment 3 Results}
-Experiment 3 explored the synergistic effect of combining feature selection (using aggregated features in the selection pool)
-with SMOTE data balancing. The results are detailed in Table~\ref{tab:exp3_smote_fs_results} (Experiment 3a, standard unbalanced
-test set) and Table~\ref{tab:exp3_smote_fs_full_test_results} (Experiment 3b, "Full Test Dataset" context, also an unbalanced
-test set). In Experiment 3a, the combination yielded a peak F1-Macro score of 0.808 when $k=30$ features were selected before
-applying SMOTE. This is a substantial improvement compared to using feature selection alone (Experiment 2, best F1-Macro ~0.689)
-and the baseline (0.488). It also surpasses the F1-Macro achieved by Random Undersampling alone (0.652) on a similar imbalanced
-test set. This outcome was anticipated, as combining two effective strategies—dimensionality reduction to focus on salient
-features and SMOTE to address imbalance—was expected to enhance performance. The optimal $k=30$ here is higher than the $k=10$
-found in Experiment 2 (FS alone), suggesting that SMOTE might benefit from a slightly richer, yet still reduced, feature
-set to generate more effective synthetic samples. Experiment 3b, conducted under the "Full Test Dataset" context (which
-also utilized an imbalanced test set as per its note), showed a similar trend, with $k=30$ also yielding the best F1-Macro
-score of 0.770. While this is still a strong result and a significant improvement over the baseline and feature selection
-alone, it is slightly lower than the 0.808 achieved in Experiment 3a. This minor discrepancy, despite both experiments
-testing on imbalanced sets, could be attributed to subtle differences in the exact composition or characteristics of the
-test data partitions used, or slight variations in the feature subsets selected if the "Full Test Dataset" context implied
-any nuanced differences in the overall feature pool available before selection for that specific run.
-Overall, Experiment 3 demonstrates that a combined strategy of feature selection followed by SMOTE balancing is highly
-effective for improving EFC's F1-Macro score on imbalanced test data, outperforming either technique applied in isolation
-(when FS is tested on imbalanced data). However, these scores still do not reach the F1-Macro of 0.908 achieved by SMOTE
-alone when evaluated on an ideally balanced test set (Experiment 1), further highlighting the profound impact of the
-evaluation scenario's balance on the F1-Macro metric.
+\section{Discussion}
+
+In this section, we summarize the results of our three experiments by answering the research questions (Section~\ref{sec:answers})
+compare them with the results of a previous work that explored active learning on the \hl{Elliptic Dataset}~\cite{}
+(Section~\ref{sec:comparision}), and highlight some threats-to-validity that might compromise the generalization of our
+findings (Section~\ref{sec:threats}).
+
+\subsection{Answers to the Research Questions}\label{sec:answers}
+
+\subsection{Comparison to Previous Work}\label{sec:comparision}
+
+\subsection{Threats to Validity}\label{sec:threats}
+
 
 \section{Conclusion} \label{section:conclusion}
 
