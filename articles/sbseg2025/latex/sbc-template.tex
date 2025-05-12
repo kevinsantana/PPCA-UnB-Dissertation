@@ -16,8 +16,12 @@
 
 \title{Exploring the Energy Flow Classifier to Identify \\ Fraudulent Cryptocurrency Transactions}
 
-\author{anonymous}
-\address{anonymous}
+\author{Kevin S. Araujo\inst{1}, Rodrigo Bonifacio de Almeida\inst{1}, \\ Fabiano Cavalcanti Fernandes\inst{2}, Joao Jose
+Costa Gondim\inst{1}, Camila Pontes\inst{1}}
+\address{Departamento de Ciências da Computação \\ -- Universidade de Brasília (UnB) \\ Campus Universitário Darcy Ribeiro,
+Brasília-DF \nextinstitute Instituto Federal de Brasília (IFB) -- Taguatinga, DF -- Brazil \email{kevin.araujo@aluno.unb.br, 
+rbonifacio@unb.br, fabiano.fernandes@ifb.edu.br} \email{gondim@unb.br, cftpontes@gmail.com}}
+
 
 \newmdenv[
   backgroundcolor=gray!10,
@@ -34,23 +38,13 @@
   frametitlefont=\bfseries,
   frametitlebackgroundcolor=gray!20
 ]{highlightbox}
-% \author{Kevin S. Araujo\inst{1}, Rodrigo Bonifacio de Almeida\inst{1}, 
-%   Fabiano Cavalcanti Fernandes\inst{2} }
-
-
-% \address{Departamento de Ciências da Computação -- Universidade de Brasília (UnB) \\
-%   -- Campus Universitário Darcy Ribeiro, Brasília-DF
-% \nextinstitute
-%   Instituto Federal de Brasília (IFB) -- Taguating, DF -- Brazil
-%   \email{kevin.araujo@aluno.unb.br, rbonifacio@unb.br, fabiano.fernandes@ifb.edu.br}
-% }
 
 \begin{document} 
 
 \maketitle
 
 \begin{abstract}
-  Fraudulent cryptocurrency transactions represent a significant and escalating threat within the digital asset ecosystem,
+  Fraudulent cryptocurrency transactions represent an ongoing and significant threat within the digital asset ecosystem,
   demanding robust detection mechanisms. Identifying such illicit activities is complicated by the complex nature of transaction
   data and, critically, the prevalent scarcity of labeled illicit examples in available datasets. This paper conducts a
   comprehensive empirical evaluation of the Energy Flow Classifier (EFC), a physics-inspired one-class anomaly detection
@@ -61,48 +55,51 @@
 \end{abstract}
 
 \section{Introduction} \label{sec:introduction}
-Bitcoin is an electronic transaction system operating without a third-party moderator~\cite{nakamoto2008bitcoin}. It is built
-upon blockchain technology, where an immutable ledger of financial transactions is maintained through mathematics, programming,
-and advanced cryptography. This distributed ledger architecture eliminates the need for central authorities to establish trust.
-Although Bitcoin was designed to circumvent vulnerabilities in the traditional financial system \cite{nakamoto2008bitcoin},
-it is not immune to manipulation and anomalous activities, necessitating robust detection mechanisms~\cite{fang2022cryptocurrency,
-zhang2020financial,zainal2018review}. 
+Bitcoin is an electronic transaction system that operates without a third-party moderator~\cite{nakamoto2008bitcoin}. It is
+built on blockchain technology, where an immutable ledger of financial transactions is maintained through mathematics,
+programming, and advanced cryptography. This distributed ledger architecture eliminates the need for central authorities
+to establish trust. Although Bitcoin was designed to circumvent vulnerabilities in the traditional financial system
+\cite{nakamoto2008bitcoin}, it is not immune to manipulation and anomalous activities and demands a robust detection
+mechanisms~\cite{fang2022cryptocurrency, zhang2020financial,zainal2018review}. 
 
-Indeed, cryptocurrency-related fraud has emerged as a significant threat, causing substantial financial losses and shaking
-trust in the digital asset ecosystem. In 2023, for instance, illicit addresses received \$24.2 billion in cryptocurrency,
+In fact, crypto-related fraud has become a significant threat, causing substantial financial losses and destroying
+trust in the digital asset ecosystem. In 2023, for example, illicit addresses received \$24.2 billion in cryptocurrency,
 indicating the scale of financial losses from scams, stolen funds, and other illicit activities \cite{chainalysis2024cryptocrime}.
-These activities not only cause direct monetary damage to individuals and institutions but also have broader implications,
+These activities not only cause direct monetary damage to individuals and institutions, but also have broader implications,
 such as undermining the legitimacy of cryptocurrency markets and hindering the widespread adoption of blockchain technology.
 The need to develop effective methods for detecting and preventing cryptocurrency fraud is crucial to protect participants,
-maintain market integrity, and ensure the sustainable growth of the cryptocurrency industry \cite{scharfman2024, Khiari2025}.
+maintain market integrity, and ensure sustainable growth of the cryptocurrency industry \cite{scharfman2024, Khiari2025}.
 
 However, detecting anomalous patterns within the intricate data streams of cryptocurrency transactions poses a significant
 challenge. Like many modern datasets, these transactions are characterized by high dimensionality, evolving characteristics,
-and a substantial volume, which complicates the application of traditional anomaly detection methods. In this context, the
-Energy-based Flow Classifier (EFC) presents a promising approach rooted in statistical physics. Originally formulated using
+and substantial volume, which complicates the application of traditional anomaly detection methods. In this context, the
+Energy-Based Flow Classifier (EFC) presents a promising approach rooted in statistical physics. Originally formulated using
 the Inverse Potts model \cite{pontes2019}, the EFC characterizes the probability distribution of normal data flows through
 an energy function derived from observed data patterns \cite{pontes2019}. Previous research has demonstrated the utility
-of EFC in classifying unusual network traffic, suggesting its potential for adapting to detect fraudulent activity within
-cryptocurrency systems \cite{pontes2019, souza2022novelopensetenergybased}.
+of EFC in classifying unusual network traffic, suggesting its potential to adapt to detect fraudulent activity within cryptocurrency
+systems \cite{pontes2019, souza2022novelopensetenergybased}. Its selection for this study is further motivated by its relatively
+low computational complexity during both training and inference phases, rendering it a suitable candidate for real-time detection
+applications where swift identification of illicit activities is paramount.
 
-Building upon the promise of the Energy-based Flow Classifier (EFC) framework, this paper presents a comprehensive empirical
-evaluation of its application to detecting illicit Bitcoin transactions. To this end, we first replicate a previous study
-that employs machine learning algorithms such as K-Nearest Neighbors, One-Class Support Vector Machine, and Isolation Forest
-for anomaly detection on the Elliptic dataset \footnote{Available at https://www.kaggle.com/ellipticco/elliptic-data-set}.
-We then investigate the use of EFC as a potential alternative to these machine learning approaches, using the same dataset
+Building upon the promise of the Energy-Based Flow Classifier (EFC) framework, this paper presents a comprehensive empirical
+evaluation of its application to the detection of illicit Bitcoin transactions. To this end, we first replicate a previous
+study that employs machine learning algorithms such as K-Nearest Neighbors, One-Class Support Vector Machine, and Isolation
+Forest for anomaly detection on the Elliptic dataset \footnote{Available at https://www.kaggle.com/ellipticco/elliptic-data-set}.
+We then investigated the use of EFC as a potential alternative to these machine learning approaches, using the same data set
 for consistency. Our findings confirm the EFC's ability to distinguish between licit and illicit transaction patterns based
 on their energy profiles, showing strong performance in identifying illegal activity even when trained solely on licit data.
 However, the results also highlight the critical sensitivity to specific configuration parameters. In particular, we observe
 significant trade-offs between maximizing the detection rate of illicit transactions (recall) and minimizing false positives
-(precision), especially concerning the energy threshold that defines anomalous behavior. Addressing the significant challenge
-of label scarcity inherent in datasets like Elliptic is crucial for developing effective fraud detection systems.
-Traditional supervised machine learning methods often struggle in such scenarios due to the limited availability of
-labeled illicit examples. This motivates the exploration of alternative approaches, particularly those capable of learning
-from predominantly normal data. The Energy-based Flow Classifier (EFC) emerges as a promising candidate in this regard.
-Originally proposed for network intrusion detection \cite{pontes2019, souza2022novelopensetenergybased}, EFC was designed
-specifically to address key limitations of conventional ML classifiers, including the reliance on extensive labeled datasets.
-A core strength highlighted in its foundational work is its ability to function as an anomaly-based classifier, inferring
-a statistical model of normal behavior using only labeled *benign* (or licit, in our context) examples
+(precision), especially concerning the energy threshold that defines anomalous behavior. 
+
+Addressing the significant challenge of label scarcity inherent in datasets like Elliptic is crucial for developing effective
+fraud detection systems. Traditional supervised machine learning methods often struggle in such scenarios due to the limited
+availability of labeled illicit examples. This motivates the exploration of alternative approaches, particularly those capable
+of learning from predominantly normal data. The Energy-based Flow Classifier (EFC) also emerges as a promising candidate
+in this regard. Originally proposed for network intrusion detection \cite{pontes2019, souza2022novelopensetenergybased},
+EFC was designed specifically to address key limitations of conventional ML classifiers, including the reliance on extensive
+labeled datasets. A core strength highlighted in its foundational work is its ability to function as an anomaly-based classifier,
+inferring a statistical model of normal behavior using only labeled *benign* (or licit, in our context) examples
 \cite{souza2022novelopensetenergybased}. Deviations from this learned norm, characterized by higher 'energy' scores, are
 then flagged as potential anomalies. This one-class learning paradigm directly tackles the label scarcity issue prevalent
 in the Elliptic dataset, allowing us to model legitimate transaction patterns effectively even with few confirmed illicit
@@ -138,34 +135,23 @@ normal or unlabeled data, thereby addressing the common challenge of label scarc
 potentially capturing complex, subtle deviations that simpler methods might miss \cite{wilson2024future}, and its prior
 success in analogous domains suggests its utility for Bitcoin \cite{pontes2019, souza2022novelopensetenergybased}.
 
-Detecting illicit cryptocurrency transactions is fundamentally an anomaly detection task, facing challenges such as high
-dimensionality, dynamic patterns, class imbalance, and data volume \cite{samariya2023comprehensive, li2023survey,
-pallathadka2022cryptocurrency}. While various machine learning models have been investigated, including supervised approache
-like Random Forests and SVMs (which require sufficient labeled data \cite{lorenz2021machinelearningmethodsdetect,
-chen2021bitcoin}), the scarcity of labeled illicit examples has driven interest in semi-supervised and unsupervised methods
-like One-Class SVM and Isolation Forests \cite{lorenz2021machinelearningmethodsdetect, kehinde2024machine}. More recently,
-Graph Neural Networks (GNNs) have leveraged blockchain's graph structure for enhanced detection
-\cite{weber2019antimoneylaunderingbitcoinexperimenting}. Our work contributes by evaluating EFC, an alternative
-physics-inspired one-class approach, assessing its performance against these established techniques, particularly focusing
-on its behavior under conditions of label scarcity.
-
 \section{Study Settings} \label{sec:methods}
 This section details the data and methods employed in our study, which builds upon the foundational research presented
-by \cite{lorenz2021machinelearningmethodsdetect}. That work explored the use of various machine learning classifiers
-(e.g., Random Forest, SVM, MLP) applied to engineered features from the Elliptic dataset to identify illicit Bitcoin
-transactions, specifically tackling the inherent challenge of label scarcity. While demonstrating the potential of standard
-ML techniques, their approach relied on supervised or semi-supervised algorithms requiring at least some labels. Our research
+by \cite{lorenz2021machinelearningmethodsdetect}. That work explored the use of various machine learning classifiers (e.g.,
+Random Forest, SVM, MLP) applied to engineered features from the Elliptic dataset to identify illicit Bitcoin transactions,
+specifically tackling the inherent challenge of label scarcity. While demonstrating the potential of standard ML techniques,
+their approach relied on supervised or semi-supervised algorithms requiring at least some labels. Our research
 diverges by investigating the Energy Flow Classifier (EFC). 
 
 \subsection{Dataset Description} \label{subsec:dataset}
-This study utilizes the Elliptic dataset, a publicly available graph dataset of Bitcoin transactions introduced by 
+This study uses the Elliptic dataset, a publicly available graph dataset of Bitcoin transactions introduced by 
 \cite{weber2019antimoneylaunderingbitcoinexperimenting} and subsequently used in foundational studies on machine
 learning for Bitcoin money laundering detection, including the work by~\cite{lorenz2021machinelearningmethodsdetect}
-which highlighted the challenges of label scarcity in the Elliptic dataset. The dataset represents a temporal subgraph
-of the public Bitcoin blockchain, focusing on transactions involving entities identified by Elliptic Ltd., a company
-specializing in blockchain analytics and financial crime prevention. It captures transaction patterns over 49 distinct
-time steps, where each step corresponds roughly to a two-week period. The full dataset comprises 203,769 transaction nodes
-and 234,355 directed edges representing the flow of Bitcoin between transactions.
+which highlighted the challenges of label scarcity in the Elliptic dataset. The dataset represents a temporal subgraph of
+the public Bitcoin blockchain, focusing on transactions involving entities identified by Elliptic Ltd., a company specializing
+in blockchain analytics and financial crime prevention. It captures transaction patterns over 49 distinct time steps, where
+each step corresponds roughly to a two-week period. The full dataset comprises 203,769 transaction nodes and 234,355 directed edges
+representing the flow of Bitcoin between transactions.
 
 Each transaction (node) in the graph is described by a set of 166 anonymized features. One feature explicitly denotes the
 time step (1 to 49). The remaining 165 features are local transactional properties, including aggregated information about
@@ -174,20 +160,14 @@ neighborhood in the transaction graph. These features are provided in a normaliz
 values but preserving relational patterns crucial for machine learning analysis. The graph structure itself, defined by
 the edges connecting transactions where the output of one becomes the input of another, provides contextual information
 about the flow of funds---although our EFC implementation primarily focuses on the node features. A key characteristic of
-the Elliptic dataset is its label scarcity---while the entire dataset contains over 200,000 transactions, only a subset
-of 46,564 transactions is explicitly labeled. This represents a central challenge addressed by  \cite{lorenz2021machinelearningmethodsdetect}
-and serves as a motivation for exploring EFC in this domain.   The labels classify transactions into two main categories:
-(a) {\bf Licit Transactions} are those associated with known legitimate entities such as exchanges, miners, wallet providers,
-and other regulated services (42,019 instances in the original labeled set); and (b) {\bf Illicit Transactions} are linked
-to known illicit activities, including scams, ransomware, terrorist financing, ponzi schemes, and dark market operations
-(4,545 instances in the original labeled set). Table~\ref{tab:dataset_summary} summarizes the Elliptic dataset.
-
-% \begin{description}
-%     \item [Licit Transactions:] Transactions associated with known legitimate entities such as exchanges, miners, wallet providers,
-%       and other regulated services (42,019 instances in the original labeled set).
-%     \item [Illicit Transaction:] Transactions linked to known illicit activities, including scams, ransomware, terrorist financing,
-%       Ponzi schemes, and dark market operations (4,545 instances in the original labeled set).
-% \end{description}
+the Elliptic dataset is its label scarcity---while the entire dataset contains over 200,000 transactions, only a subset of
+46,564 transactions is explicitly labeled. This represents a central challenge addressed by \cite{lorenz2021machinelearningmethodsdetect}
+and serves as a motivation for exploring EFC in this domain.  
+The labels classify transactions into two main categories: (a) {\bf Licit Transactions} are those associated with known
+legitimate entities such as exchanges, miners, wallet providers, and other regulated services (42,019 instances in the
+original labeled set); and (b) {\bf Illicit Transactions} are linked to known illicit activities, including scams, ransomware,
+terrorist financing, ponzi schemes, and dark market operations (4,545 instances in the original labeled set). Table~\ref{tab:dataset_summary}
+summarizes the Elliptic dataset.
 
 \begin{table}[htbp]
   \centering
@@ -214,9 +194,9 @@ scaling the data appropriately, and partitioning it for training and evaluation 
 
 To prepare the Elliptic dataset, we filtered transactions based on their assigned labels. Since the
 EFC model learns patterns from \textit{normal} data to detect anomalies, transactions labeled as \textit{Licit} were used
-as the normal class for training. In contrast, transactions labeled as \textit{Illicit} were treated as anomalies and
-reserved for evaluation. Transactions with \textit{Unknown} labels were excluded from both training and testing to ensure
-that the evaluation relied solely on transactions with a known ground truth. For the binary classification task (\textit{licit} vs.
+as the normal class for training. In contrast, transactions labeled as \textit{Illicit} were treated as anomalies and reserved
+for evaluation. Transactions with \textit{Unknown} labels were excluded from both training and testing to ensure that the
+evaluation relied solely on transactions with a known ground truth. For the binary classification task (\textit{licit} vs.
 \textit{illicit}), labels were mapped to numerical values---that is, value 0 for licit and value 1 for illicit.
 
 We also performed feature selection and transformation. Of the 166 features available for each transaction, the feature
@@ -250,9 +230,9 @@ by overriding the \texttt{EnergyBasedFlowClassifier} class to tailor its behavio
 we configured three key EFC hyperparameters: \texttt{n\_bins}, \texttt{cutoff\_quantile}, and \texttt{pseudocounts}.
 The \texttt{n\_bins} parameter controls the discretization of input features, dividing each feature's range into a specified
 number of bins. These bins form the basis for estimating state probabilities and computing energy values. Based on preliminary
-experiments, we used \texttt{n\_bins = 30}. The \texttt{cutoff\_quantile} parameter sets the anomaly threshold by determining
-the energy value corresponding to a quantile of the training data's energy distribution. For instance, a setting of
-\texttt{cutoff\_quantile = 0.90} classifies any sample with an energy score above the 90th percentile as anomalous.
+experiments, we used \texttt{n\_bins = 30}. The \texttt{cutoff\_quantile} parameter sets the anomaly
+threshold by determining the energy value corresponding to a quantile of the training data's energy distribution. For instance,
+a setting of \texttt{cutoff\_quantile = 0.90} classifies any sample with an energy score above the 90th percentile as anomalous.
 Finally, \texttt{pseudocounts} addresses the issue of zero probabilities when encountering states not seen in the training
 data. We used a small \texttt{pseudocounts} of \texttt{0.10} to ensure numerical stability during energy computation.
 
@@ -280,9 +260,9 @@ label scarcity, compared to the supervised approaches examined by \cite{lorenz20
 is to answer the following research question: \emph{How effective is the Energy-Based Flow Classifier (EFC) under conditions
 of label scarcity in identifying illicit transactions in the Elliptic Bitcoin dataset?}
 
-Specifically, our research is thus framed as a \emph{one-class anomaly detection problem}. Having trained the EFC model
-exclusively on Licit transactions from the initial time steps (1-34), the objective is to assess its ability to distinguish
-between licit and illicit transactions in the subsequent, unseen time steps (35-49) of the test set. This evaluation involves
+Specifically, our research is thus framed as a \emph{one-class anomaly detection problem}. Having trained the EFC model exclusively
+on Licit transactions from the initial time steps (1-34), the objective is to assess its ability to distinguish between
+licit and illicit transactions in the subsequent, unseen time steps (35-49) of the test set. This evaluation involves
 two main perspectives:
 
 \begin{enumerate}
@@ -298,11 +278,13 @@ two main perspectives:
 \end{enumerate}
 
 The outcomes of this research provide insights into the potential of the EFC model as a viable tool for detecting fraudulent or
-anomalous Bitcoin transactions. By leveraging its unsupervised, energy-based approach, EFC aims to address challenges such
-as label scarcity and to identify novel deviations from normal transaction behavior. 
+anomalous Bitcoin transactions. Its energy-based methodology is employed by primarily training on transactions labeled as
+'licit'—those implicitly defined as normal due to the absence of reported fraud to establish a baseline of typical behavior
+within a one-class learning framework. This approach allows EFC to address the scarcity of explicitly labeled illicit
+examples and to identify novel deviations indicative of fraudulent activity.
 
-Model performance was assessed using a combination of quantitative metrics and visual analysis. We use the \textbf{F1-Score Macro Average}
-as the primary evaluation metric, following the same design decision of \cite{lorenz2021machinelearningmethodsdetect}.
+Model performance was assessed using a combination of quantitative metrics and visual analysis. We use the \textbf{F1-Score
+Macro Average} as the primary evaluation metric, following the same design decision of \cite{lorenz2021machinelearningmethodsdetect}.
 This metric calculates the F1-score for each class (Licit and Illicit) independently and then averages them, providing a
 balanced measure of performance across both classes, which is crucial given the inherent class imbalance. 
 We also leverage \textbf{Specific Metrics for the Illicit Class}, since our primary interest lies in detecting anomalous
@@ -315,78 +297,27 @@ transactions in the test set that were generated. These plots provide a visual a
 
 \section{Results} \label{sec:results}
 
-This section presents the results from the application of the Energy Flow Classifier (EFC) to the task of classifying illicit
-transactions within the Elliptic dataset. Following the settings outlined in Section \ref{sec:methods}, we explore the EFC
-classifier primarily as a one-class anomaly detector, trained exclusively on transactions labeled as Licit from the initial
-time steps (1-34). The core objective was to evaluate the model's capability to distinguish these known Licit patterns from
-potentially anomalous Illicit transactions present in the unseen test set (time steps 35-49). We evaluate performance based
-on the EFC's ability to assign distinct energy scores to the two classes, using metrics appropriate for imbalanced anomaly
-detection scenarios. The following subsections detail the outcomes of three specific experiments we conducted, focusing on
-data balancing, feature engineering/selection, and model comparison/tuning, respectively. All experiments utilized the
-Elliptic dataset, preprocessed as described previously, employing a standard train-test split methodology.
-              
-%\subsection{Shared Experimental Setup} \label{subsec:shared_setup}
-% Unless explicitly stated otherwise in the description of a specific experiment, the following setup, derived from the procedures
-% detailed in Section \ref{sec:methods}, was consistently used across the results presented below:
-
-% \begin{itemize}
-%     \item \textbf{Dataset Split:} The EFC model was trained exclusively on transactions labeled as Licit from time steps
-%       1 to 34. Evaluation was performed on the test set containing both Licit and Illicit transactions from time steps
-%       35 to 49. Transactions labeled 'Unknown' were excluded from both training and testing.
-%     \item \textbf{Feature Set:} The input to the EFC model consisted of the 165 anonymized features described in Section
-%       \ref{subsec:dataset}, after removing the time step feature. These features were scaled to the range [0, 1] using
-%       Min-Max scaling, with the scaler fitted only on the training data (Licit transactions, steps 1-34).
-%     \item \textbf{EFC Configuration:} The core EFC implementation (Section \ref{subsec:efc_implementation}) utilized the
-%       following default hyperparameters based on initial tuning and common practice:
-%         \begin{itemize}
-%             \item Number of bins for feature discretization \texttt{n\_bins=30}
-%             \item Cutoff quantile for anomaly threshold \texttt{cutoff\_quantile=0.9} (meaning the energy threshold is set at
-%               the 90th percentile of the energy distribution of the Licit training data)
-%             \item Pseudocounts \texttt{pseudocounts=0.1} (to handle zero probabilities)
-%         \end{itemize}
-%         \item \textbf{Evaluation Metrics \& Outputs:} Model performance was assessed using a combination of quantitative
-%           metrics and qualitative analysis:
-%           \begin{itemize}
-%               \item \textbf{F1-Score (Macro Average):} As the primary evaluation metric, we adopted the macro-averaged F1-score,
-%                 consistent with the benchmark study by \cite{lorenz2021machinelearningmethodsdetect}. This metric calculates the
-%                 F1-score for each class (Licit and Illicit) independently and then averages them, providing a balanced measure
-%                 of performance across both classes, which is crucial given the inherent class imbalance.
-%               \item \textbf{Class-Specific Metrics (Illicit Class):} While F1-Macro provides an overall view, our primary
-%                 interest lies in detecting the Illicit class (class 1). Therefore, we also report Precision, Recall, and
-%                 the F1-Score specifically calculated for the Illicit class based on the classification derived from the
-%                 \texttt{cutoff\_quantile} threshold. These metrics offer direct insight into the model's effectiveness in
-%                 identifying illicit transactions and the associated trade-offs (e.g., false positives vs. false negatives).
-%               \item \textbf{EFC Energy Distributions:} For each experiment, histograms comparing the distribution of EFC
-%                 energy scores assigned to Licit versus Illicit transactions in the test set were generated. These plots
-%                   provide a visual assessment of the model's separation capability.
-%               \item \textbf{Detailed Results Storage:} Key information for each experimental run, including the sizes of
-%                 the training and testing datasets (and their class distributions), the calculated performance metrics,
-%                 and the confusion matrix, were systematically collected and saved into individual CSV files for detailed
-%                 comparison and analysis across experiments.
-%           \end{itemize}
-% \end{itemize}
-
-% The following subsections will now present the results from the specific experiments conducted under this framework, highlighting
-% deviations from this shared setup where applicable.
-
-%\subsection{Experiments} \label{subsec:experiments}
-
-%This section details the experimental evaluations conducted to assess the proposed methodologies. 
-% We performed three primary
-% experiments focusing on data balancing, feature engineering/selection, and model comparison/tuning, respectively. All
-% experiments utilized the EFC dataset, preprocessed as described previously, employing a standard train-test split methodology.
+This section presents the results from the application of the Energy Flow Classifier (EFC) to the task of
+classifying illicit transactions within the Elliptic dataset. Following the settings outlined in Section
+\ref{sec:methods}, we explore the EFC classifier primarily as a one-class anomaly detector, trained exclusively on transactions
+labeled as Licit from the initial time steps (1-34). The core objective was to evaluate the model's capability to distinguish
+these known Licit patterns from potentially anomalous Illicit transactions present in the unseen test set (time steps 35-49).
+We evaluate performance based on the EFC's ability to assign distinct energy scores to the two classes, using
+metrics appropriate for imbalanced anomaly detection scenarios. The following subsections detail the outcomes of three specific
+experiments we conducted, focusing on data balancing, feature engineering/selection, and model comparison/tuning, respectively.
+All experiments utilized the Elliptic dataset, preprocessed as described previously, employing a standard train-test split methodology.
 
 \subsection{Experiment 1: Impact of Data Balancing Techniques} \label{subsec:experiment_1}
 
 This experiment examined the impact of different data balancing strategies on classification performance using the inherently
-imbalanced EFC dataset. We estimate the \emph{baseline performance} using the original, unbalanced dataset.  This baseline
-was then compared against four widely adopted balancing techniques, each applied to both the training and test datasets:
-(a) creating a balanced subset by undersampling the majority class prior to the train-test split, (b) applying the Synthetic
-Minority Over-sampling Technique (SMOTE), (c) performing random oversampling of the minority class, and (d) performing
-random undersampling of the majority class. To ensure a fair comparison, the composition of the test set was kept consistent
-across most techniques. We evaluate model performance using Accuracy, Precision, Recall, weighted F1-Score, Macro F1-Score,
-and confusion matrices. Table~\ref{tab:balancing_results} and Figure~\ref{fig:histexp1} present a summary of the classification outcomes.
-
+imbalanced EFC dataset. We estimate the \emph{baseline performance} using the original, unbalanced dataset. 
+This baseline was then compared against four widely
+adopted balancing techniques, each applied to both the training and test datasets: (a) creating a balanced subset by undersampling
+the majority class prior to the train-test split, (b) applying the Synthetic Minority Over-sampling Technique (SMOTE), (c)
+performing random oversampling of the minority class, and (d) performing random undersampling of the majority class. To ensure
+a fair comparison, the composition of the test set was kept consistent across most techniques. We evaluate model performance
+using Accuracy, Precision, Recall, weighted F1-Score, Macro F1-Score, and confusion matrices. Table~\ref{tab:balancing_results}
+and Figure~\ref{fig:histexp1} present a summary of the classification outcomes.
 
 \begin{table}[htbp]
   \centering
@@ -454,30 +385,30 @@ select features based on their relevance to the class labels.
 
 In this experiment, we systematically varied the number of selected features ($k$), testing values of $k \in \{10, 20, 30,
 40, 50, 60\}$. We applied the feature selection process to the features and labels of the original unbalanced dataset
-\textit{before} the standard train-test split was performed on the resulting (and smaller) feature set. Furthermore, we
-conducted two distinct series of runs: one applying feature selection to the complete feature set, including aggregated
-temporal features, and another applying it only to the raw node features after explicitly excluding the aggregated ones.
-This decision was driven by the need to understand the specific impact and contribution of these aggregated features. 
+\textit{before} the standard train-test split was performed on the resulting (and smaller) feature set. Furthermore, we conducted
+two distinct series of runs: one applying feature selection to the complete feature set, including aggregated temporal
+features, and another applying it only to the raw node features after explicitly excluding the aggregated ones. This
+decision was driven by the need to understand the specific impact and contribution of these aggregated features. 
 
-Aggregated features, which represent statistical summaries of a node's neighborhood (as described in related financial
-forensics work, e.g., \cite{weber2019antimoneylaunderingbitcoinexperimenting}), often possess high individual predictive
+Aggregated features, which represent statistical summaries of a node's neighborhood, often possess high individual predictive
 power due to the condensed information they carry about local graph structure. Including these potentially dominant features
-in the \texttt{SelectKBest} algorithm ({\bf Scenario 1}) \hl{could lead to them consistently ranking highest, potentimasking
-the predictive contribution of the node's intrinsic}, raw features. By running a separate scenario ({\bf Scenario 2}) where
-these aggregaally ted features were removed \textit{before} applying \texttt{SelectKBest}, we aimed to isolate and evaluate
-the predictive capability derived solely from the raw node characteristics. This allows for a clearer comparison and a
-better understanding of which feature types (raw vs. aggregated) are most crucial for classification, especially when
-operating under the dimensionality constraints imposed by selecting only the top $k$ features.
+in the \texttt{SelectKBest} algorithm ({\bf Scenario 1}) could lead to them consistently ranking highest, potentially masking
+the predictive contribution of the node's intrinsic \cite{weber2019antimoneylaunderingbitcoinexperimenting}, raw features.
+By running a separate scenario ({\bf Scenario 2}) where these aggregated features were removed \textit{before} applying
+\texttt{SelectKBest}, we aimed to isolate and evaluate the predictive capability derived solely from the raw node characteristics.
+This allows for a clearer comparison and a better understanding of which feature types (raw vs. aggregated) are most crucial
+for classification, especially when operating under the dimensionality constraints imposed by selecting only the top $k$ features.
 
 Performance for each value of $k$ and for both feature set scenarios (with and without aggregated features) was assessed
-using standard classification metrics (Accuracy, Precision, Recall, F1-Score, and F1-Macro). The objective was to determine
-if reducing dimensionality could maintain or improve the EFC performance on correctly classifying illicit transactions,
-identify an optimal number of features ($k$), and understand the contribution of aggregated features within this selection
-context. We summarize the results in Table~\ref{tab:fs_excluded_agg_results} (Scenario 1) Table~\ref{tab:fs_included_agg_results}
-(Scenario 2). Considering both scenarios, a key observation is that EFC can achieve its best performance with a significantly reduced
+using standard classification metrics (Accuracy, Precision, Recall, F1-Score, and F1-Macro). The objective was to
+determine if reducing dimensionality could maintain or improve the EFC performance on correctly classifying illicit transactions,
+identify an optimal number of features ($k$), and understand the contribution of aggregated features within this selection context.
+We summarize the results in Table~\ref{tab:fs_excluded_agg_results} (Scenario 1) Table~\ref{tab:fs_included_agg_results} (Scenario 2).
+Considering both scenarios, a key observation is that EFC can achieve its best performance with a significantly reduced
 feature set. When aggregated features were excluded (Table~\ref{tab:fs_excluded_agg_results}), the highest F1-Macro score
 of 0.686 was obtained with only $k=10$ features. Similarly, when aggregated features were included in the selection pool
 (Table~\ref{tab:fs_included_agg_results}), the peak F1-Macro was 0.689, also at $k=10$.
+
 
 \begin{table}[htb]
   \centering
@@ -504,11 +435,6 @@ of 0.686 was obtained with only $k=10$ features. Similarly, when aggregated feat
   TN=True Negatives. Metrics rounded to three decimal places. F1-Score is weighted average. F1-Macro for k=10 is bolded
   as it's the highest.}
 \end{table}
-
-% \paragraph{Discussion of Experiment 2 Results}
-% Experiment 2 investigated the impact of feature selection on EFC's performance, with results presented in
-% Table~\ref{tab:fs_excluded_agg_results} (aggregated features excluded) and Table~\ref{tab:fs_included_agg_results}
-% (aggregated features included). 
 
 \begin{table}[htb]
   \centering
@@ -549,55 +475,6 @@ addressing class imbalance appears to be a more critical factor for enhancing EF
 Still, the results confirm that feature selection can be effective, but might not be a complete solution without tackling imbalance.
 \end{highlightbox}
 
-% \begin{figure}[!tph]
-%   \centering
-%   \subfloat[k=10.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=10.png}\label{fig4:fs_no_agg_k_10}}
-%   \hfill
-%   \subfloat[k=20.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=20.png}\label{fig5:fs_no_agg_k_20}}
-%   \hfill
-%   \subfloat[k=30.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=30.png}\label{fig6:fs_no_agg_k_30}}
-%   \hfill
-%   \subfloat[k=40.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=40.png}\label{fig7:fs_no_agg_k_40}}
-%   \hfill
-%   \subfloat[k=50.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=50.png}\label{fig8:fs_no_agg_k_50}}
-%   \hfill
-%   \subfloat[k=60.]{\includegraphics[width=0.3\textwidth]{figures/experiment-2/1-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection Excluding Aggregate Features, Increasing Value of k=60.png}\label{fig9:fs_no_agg_k_60}}
-%   \hfill
-%   \caption{Experiment 2, Technique A: Feature Selection Excluding Aggregate Features, Increasing Value of k, Energy
-%   Distribution Of Licit and Illicit Transactions.}
-% \end{figure}
-
-% \begin{figure}[!tph]
-%   \centering
-%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=10.png}\label{fig10:fs_agg_k_10}}
-%   \hfill
-%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=20.png}\label{fig11:fs_agg_k_20}}
-%   \hfill
-%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=30.png}\label{fig12:fs_agg_k_30}}
-%   \hfill
-%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=40.png}\label{fig13:fs_agg_k_40}}
-%   \hfill
-%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=50.png}\label{fig14:fs_agg_k_50}}
-%   \hfill
-%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-2/2-Feature Selection Excluding Aggregate Features,
-%   Increasing Value of k={k_size}/Feature Selection, Increasing Value of k=60.png}\label{fig15:fs_agg_k_60}}
-%   \hfill
-%   \caption{Experiment 2, Technique B: Feature Selection Including Aggregate Features, Increasing Value of k, Energy
-%   Distribution Of Licit and Illicit Transactions.}
-% \end{figure}
-
-
 \subsection{Experiment 3: Combining Feature Selection and Data Balancing} \label{subsec:experiment_3}
 
 The goal of this third experiment is to investigate the combined impact of feature selection and data balancing on the
@@ -613,8 +490,9 @@ procedure. Specifically, we first split the dataset into training and test sets.
 set to balance the class distribution. The EFC classifier was then trained on this balanced, feature-reduced training data,
 and evaluated on the corresponding unbalanced test set (which contained the same $k$ selected features).
 We evaluated the performance using standard classification metrics (again, Accuracy, Precision, Recall, F1-Score, and Macro
-F1-Score). This evaluation aimed to determine whether applying feature selection before SMOTE could lead to improved classification
-performance, compared to using SMOTE on the full feature set (as in Experiment~1) or applying feature selection alone (as in Experiment~2).
+F1-Score). This evaluation aimed to determine whether applying feature selection before SMOTE could lead to improved
+classification performance, compared to using SMOTE on the full feature set (as in Experiment~1) or applying feature
+selection alone (as in Experiment~2).
 
 We summarize the results in Table~\ref{tab:exp3_smote_fs_results} (Experiment 3a, standard unbalanced test set) and
 Table~\ref{tab:exp3_smote_fs_full_test_results} (Experiment 3b, ``Full Test Dataset'' context, also using an unbalanced test set). 
@@ -629,16 +507,16 @@ set to generate more effective synthetic samples.
 Experiment 3b, conducted under the ``Full Test Dataset'' context (which also utilized an imbalanced test set as per its
 note), showed a similar trend, with $k=30$ also yielding the best F1-Macro score of 0.770. While this is still a significant
 improvement over the baseline and feature selection alone, it is slightly lower than the 0.808 achieved in Experiment 3a.
-This discrepancy, despite both experiments testing on imbalanced sets, could be attributed to subtle differences in the exact
-composition or characteristics of the test data partitions used, or slight variations in the feature subsets selected if
-the ``Full Test Dataset'' context implied any nuanced differences in the overall feature pool available before selection
-for that specific run. Overall, Experiment 3 shows that a combined strategy of feature selection followed by SMOTE balancing
-is highly effective for improving EFC's F1-Macro score on imbalanced test data, outperforming either technique applied in
-isolation (when FS is tested on imbalanced data). 
+This discrepancy, despite both experiments testing on imbalanced sets, could be attributed to subtle differences in the
+exact composition or characteristics of the test data partitions used, or slight variations in the feature subsets selected
+if the ``Full Test Dataset'' context implied any nuanced differences in the overall feature pool available before selection
+for that specific run. Overall, Experiment 3 shows that a combined strategy of feature selection followed by SMOTE balancing is highly
+effective for improving EFC's F1-Macro score on imbalanced test data, outperforming either technique applied in isolation
+(when FS is tested on imbalanced data). 
 
 \begin{highlightbox}
-Even when combining feature selection with SMOTE, the F1-Macro score remains below the 0.908 achieved by SMOTE alone on a
-balanced test set---underscoring the dominant influence of test set composition on this metric.
+Even when combining feature selection with SMOTE, the F1-Macro score remains below the 0.908 achieved by SMOTE alone on
+a balanced test set---underscoring the dominant influence of test set composition on this metric.
 \end{highlightbox}
 
 
@@ -694,64 +572,10 @@ balanced test set---underscoring the dominant influence of test set composition 
   F1-Score is weighted average. F1-Macro for k=30 is bolded.}
 \end{table*}
 
-% \begin{figure}[!tph]
-%   \centering
-%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%     Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=10.png}\label{fig16:fs_smote_k_10}}
-%   \hfill
-%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=20.png}\label{fig17:fs_smote_k_20}}
-%   \hfill
-%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=30.png}\label{fig18:fs_smote_k_30}}
-%   \hfill
-%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=40.png}\label{fig19:fs_smote_k_40}}
-%   \hfill
-%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=50.png}\label{fig20:fs_smote_k_50}}
-%   \hfill
-%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/1-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size}/SMOTE With Feature Selection, Increasing Value of k=60.png}\label{fig21:fs_smote_k_60}}
-%   \hfill
-%   \caption{Experiment 3, Technique A: SMOTE With Feature Selection, Increasing Value of k, Energy Distribution Of Licit
-%     and Illicit Transactions.}
-% \end{figure}
-
-% \begin{figure}[!tph]
-%   \centering
-%   \subfloat[k=10.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=10 Full Test Dataset.png}
-%   \label{fig22:fs_smote_full_k_10}}
-%   \hfill
-%   \subfloat[k=20.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=20 Full Test Dataset.png}
-%   \label{fig23:fs_smote_full_k_10}}
-%   \hfill
-%   \subfloat[k=30.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=30 Full Test Dataset.png}
-%   \label{fig24:fs_smote_full_k_10}}
-%   \hfill
-%   \subfloat[k=40.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=40 Full Test Dataset.png}
-%   \label{fig25:fs_smote_full_k_10}}
-%   \hfill
-%   \subfloat[k=50.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=50 Full Test Dataset.png}
-%   \label{fig26:fs_smote_full_k_10}}
-%   \hfill
-%   \subfloat[k=60.]{\includegraphics[width=0.30\textwidth]{figures/experiment-3/2-SMOTE With Feature Selection, Increasing
-%   Value of k={k_size} Full Test Dataset/SMOTE With Feature Selection, Increasing Value of k=60 Full Test Dataset.png}
-%   \label{fig27:fs_smote_full_k_10}}
-%   \hfill
-%   \caption{Experiment 3, Technique B: SMOTE With Feature Selection, Increasing Value of k Full Test Dataset, Energy Distribution Of Licit
-%   and Illicit Transactions.}
-% \end{figure}
-
 \section{Discussion}
 \label{sec:discussion}
-In this section, we summarize the results of our three experiments by answering our research question (Section~\ref{sec:answers}),
-comparing them with the results of a previous work that explored active learning on the \hl{Elliptic Dataset}~\cite{}
+In this section, we summarize the results of our three experiments by answering our research question Section~\ref{sec:answers}),
+comparing them with the results of a previous work that explored active learning on the Elliptic Dataset~\cite{elliptic_dataset_kaggle}
 (Section~\ref{sec:comparision}), and highlight some threats to validity that might compromise the generalization of our
 findings (Section~\ref{sec:threats}).
 
@@ -761,26 +585,25 @@ The primary research question guiding this study was: \emph{How effective is the
 conditions of label scarcity in identifying illicit transactions in the Elliptic Bitcoin dataset?} Our experiments demonstrate
 that EFC can be an effective algorithm, but its performance is critically dependent on addressing the inherent class imbalance
 typical of fraud detection datasets. When trained solely on Licit transactions and applied to the raw, imbalanced dataset,
-EFC's ability to distinguish the minority Illicit class was limited, yielding a low F1-Macro score of 0.488 (Experiment 1, Baseline).
-This highlights that, in its basic one-class configuration, EFC struggles with severe imbalance.
+EFC's ability to distinguish the minority Illicit class was limited, yielding a low F1-Macro score of 0.488 (Experiment 1,
+Baseline). This highlights that, in its basic one-class configuration, EFC struggles with severe imbalance.
 
 For practical application on datasets (like the Elliptic dataset) where test data will likely remain imbalanced, we still
 recommend researchers and pratitioners to combine Feature Selection and Data Balancing. In our settings, the best performance
 on an imbalanced test set (F1-Macro 0.808) was achieved by first applying feature selection (e.g., \texttt{SelectKBest}
-with $k \approx 30$ features, including aggregated ones) and then applying SMOTE to the reduced training dataset. While
-SMOTE alone yielded a very high F1-Macro (0.908 in Experiment 1), this was under the condition of a
-\textit{balanced test set}---a scenario that is often unrealistic for real-world fraud detection. When SMOTE alone is
-applied to the training set and tested on an imbalanced set, its performance, while an improvement over no balancing, is
-surpassed by the combined SMOTE and Feature Selection approach for imbalanced test scenarios.
+with $k \approx 30$ features, including aggregated ones) and then applying SMOTE to the reduced training dataset.
+While SMOTE alone yielded a very high F1-Macro (0.908 in Experiment 1), this was under the condition of a \textit{balanced
+test set}---a scenario that is often unrealistic for real-world fraud detection. When SMOTE alone is applied to the training
+set and tested on an imbalanced set, its performance, while an improvement over no balancing, is surpassed by the combined
+SMOTE and Feature Selection approach for imbalanced test scenarios.
 
-
-\subsection{Comparison to Previous Work}\label{sec:comparision}
+\subsection{Comparison With Previous Work}\label{sec:comparision}
 This study builds upon and diverges from previous research on detecting illicit Bitcoin transactions, in particular the
-work by Lorenz et al.~\cite{lorenz2021machinelearningmethodsdetect}, which also utilized the Elliptic dataset and addressed
-the challenge of label scarcity. Lorenz et al.~\cite{lorenz2021machinelearningmethodsdetect} explored various standard
-machine learning classifiers, including Random Forests, SVMs, and MLPs, employing supervised or semi-supervised learning
-frameworks. These approaches, while demonstrating potential, typically require a certain number of labels for both licit
-and illicit classes, or sophisticated semi-supervised strategies to leverage unlabeled data.
+work by Lorenz et al.~\cite{lorenz2021machinelearningmethodsdetect}, which also utilized the Elliptic dataset and addressed the
+challenge of label scarcity. Lorenz et al.~\cite{lorenz2021machinelearningmethodsdetect} explored various standard machine
+learning classifiers, including Random Forests, SVMs, and MLPs, employing supervised or semi-supervised learning frameworks.
+These approaches, while demonstrating potential, typically require a certain number of labels for both licit and illicit
+classes, or sophisticated semi-supervised strategies to leverage unlabeled data.
 
 Our research takes a different methodological path by investigating the Energy Flow Classifier (EFC), a physics-inspired
 model rooted in statistical mechanics. Here we leverage the  \emph{One-Class Learning Paradigm}, since we trained the EFC
@@ -797,11 +620,12 @@ Several factors may affect the validity and generalizability of our findings. Fi
 optimization of EFC, which may have limited its performance in some experiments. Second, while our temporal split (time
 steps 1-34 for training, 35-49 for testing) follows a standard approach, it is only one possible strategy; alternative
 splits could lead to different results. Similarly, our use of \texttt{SelectKBest} with the ANOVA F-value for feature
-selection is just one technique---others may produce different feature subsets and outcomes. Our analysis also depends on
-the quality of the labels provided in the Elliptic dataset; any label noise or bias could impact both training and evaluation.
-Furthermore, the Elliptic dataset only includes anonymized features, which limits interpretability and hinders domain-specific
-feature engineering. Finally, our conclusions are drawn exclusively from the Elliptic dataset, and generalizing to other
-cryptocurrency transaction datasets or fraud detection scenarios warrants further investigation.
+selection is just one technique---others may produce different feature subsets and outcomes.
+Our analysis also depends on the quality of the labels provided in the Elliptic dataset; any label noise or bias could
+impact both training and evaluation. Furthermore, the Elliptic dataset only includes anonymized features, which limits
+interpretability and hinders domain-specific feature engineering. Finally, our conclusions are drawn exclusively from
+the Elliptic dataset, and generalizing to other cryptocurrency transaction datasets or fraud detection scenarios warrants
+further investigation.
 
 \section{Conclusion} \label{section:conclusion}
 
@@ -810,66 +634,6 @@ Bitcoin transactions within the Elliptic dataset, particularly addressing the ch
 indicate that EFC, when trained exclusively on Licit transactions, shows promise but is highly sensitive to the inherent
 class imbalance of such datasets. We will share all code, configuration files, and scripts used for the experiments in a
 replication package. 
-
-% To ensure the reproducibility of our findings, 
-% in this paper are made publicly available in a dedicated repository: \textbf{https://github.com/kevinsantana/PPCA-UnB-Dissertation}.
-
-% The baseline performance of EFC on unbalanced data was modest in terms of distinguishing the minority Illicit class
-% (F1-Macro 0.488). However, we demonstrated that its effectiveness can be significantly enhanced through data preprocessing.
-% Specifically, applying the SMOTE balancing technique to the training data, especially when combined with feature selection
-% (reducing to $k \approx 30$ features), substantially improved the F1-Macro score to 0.808 when evaluated on a realistic,
-% imbalanced test set. This highlights that EFC can achieve robust performance if the data imbalance is appropriately managed,
-% as detailed in Section \ref{sec:discussion}.
-
-% In summary, EFC offers a valuable approach for one-class anomaly detection in cryptocurrency transactions due to its ability
-% to learn from only normal data. Its practical application, however, requires careful consideration of data preprocessing
-% strategies, notably class balancing and potentially feature selection, to optimize its detection capabilities for rare illicit
-% events. Future work, as outlined in Section \ref{sec:future_work} and informed by the threats to validity discussed in Section
-% \ref{sec:threats}, should focus on refining these aspects.
-
-% \section{Future Work} \label{sec:future_work}
-
-% While this study demonstrated the viability of the Energy Flow Classifier (EFC) for one-class anomaly detection in Bitcoin
-% transactions, particularly when combined with techniques like SMOTE, several open questions and avenues for future research emerge:
-
-% \begin{itemize}
-%     \item \textbf{Systematic Hyperparameter Optimization:} The current work used fixed default parameters (\texttt{n\_bins=30},
-%     \texttt{cutoff\_quantile=0.9}). An open question is how sensitive EFC's performance, especially the precision-recall
-%     trade-off for the Illicit class, is to these parameters.
-
-%     \item \textbf{Advanced Balancing and Cost-Sensitive Learning:} SMOTE proved effective (Exp 1), but its interaction with
-%     EFC's energy calculation warrants further investigation. Are there other balancing techniques (e.g., ADASYN, Tomek Links,
-%     Edited Nearest Neighbours) or cost-sensitive learning approaches (adjusting the EFC threshold based on misclassification
-%     costs) that could yield better or more robust performance, perhaps with fewer synthetic samples or different biases?
-%     \item \textbf{Refining Feature Selection Strategies:} While Experiments 2 and 3 showed the benefit of feature selection,
-%     further exploration of different algorithms and criteria for selecting $k$ could be beneficial. Key questions remain: What
-%     is the optimal number of features ($k$) when including aggregated features? Does the combination of FS and SMOTE truly
-%     outperform SMOTE alone with full features, considering both performance and computational cost?
-
-%     \item \textbf{Integration of Graph Structure:} The current EFC implementation primarily leverages node features,
-%     largely ignoring the rich topological information in the Elliptic graph dataset. Can explicitly incorporating transaction
-%     linkage improve detection?
-
-%     \item \textbf{Scalability Analysis:} How does the computational cost (training time, memory usage, prediction latency)
-%     of EFC scale with the number of transactions and features, especially compared to other methods?
-% \end{itemize}
-
-% Addressing these questions would further solidify the understanding of EFC's strengths and weaknesses in the financial
-% forensics domain and guide its potential practical application.
-
-
-% \section{Reproducibility} \label{sec:reproducibility}
-% To ensure the reproducibility of our findings, all code, configuration files, and scripts used for the experiments described
-% in this paper are made publicly available in a dedicated repository: \textbf{https://github.com/kevinsantana/PPCA-UnB-Dissertation}.
-
-% \subsection{Computational Environment} \label{subsection:environment}
-% The experiments were conducted on a system with the following specifications:
-% \begin{itemize}
-%     \item \textbf{Operating System:} macOS 14.5 23F79 arm64
-%     \item \textbf{Processor:} Apple M1 Pro
-%     \item \textbf{GPU:} Apple M1 Pro
-%     \item \textbf{Memory (RAM):} 32 GB
-% \end{itemize}
 
 \bibliographystyle{sbc}
 \bibliography{bibliography/sbc-template.bib}
