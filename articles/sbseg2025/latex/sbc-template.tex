@@ -630,10 +630,26 @@ further investigation.
 \section{Conclusion} \label{section:conclusion}
 
 This study investigated the Energy Flow Classifier (EFC) as a one-class anomaly detection method for identifying illicit
-Bitcoin transactions within the Elliptic dataset, particularly addressing the challenge of label scarcity. Our findings
-indicate that EFC, when trained exclusively on Licit transactions, shows promise but is highly sensitive to the inherent
-class imbalance of such datasets. We will share all code, configuration files, and scripts used for the experiments in a
-replication package. 
+Bitcoin transactions within the Elliptic dataset, focusing on scenarios with label scarcity. In evaluating the performance of the
+different techniques across our experiments, we adopted the \textbf{F1-macro score} as the primary overall metric. This
+choice aligns with the methodology presented by \cite{lorenz2021machinelearningmethodsdetect} in their work on detecting
+money laundering in Bitcoin, particularly relevant given the common challenge of label scarcity in such datasets.
+The F1-macro score is calculated by first determining the F1 score (the harmonic mean of precision and recall) for each
+individual class. Then, the unweighted average of these per-class F1 scores is taken. This approach ensures that each class
+contributes equally to the final metric, regardless of its frequency in the dataset, providing a balanced assessment of
+model performance, especially crucial in imbalanced scenarios like fraud detection where correctly identifying the minority
+class is often of high importance.
+
+The baseline performance of EFC on unbalanced data was modest in terms of distinguishing the minority Illicit class
+(F1-Macro 0.488). However, we demonstrated that its effectiveness can be significantly enhanced through data preprocessing.
+Specifically, applying the SMOTE balancing technique to the training data, especially when combined with feature selection
+(reducing to $k \approx 30$ features), substantially improved the F1-Macro score to 0.808 when evaluated on a realistic,
+imbalanced test set. This highlights that EFC can achieve robust performance if the data imbalance is appropriately managed.
+
+In summary, EFC offers a valuable approach for one-class anomaly detection in cryptocurrency transactions due to its ability
+to learn from only normal data. Its practical application, however, requires careful consideration of data preprocessing
+strategies, notably class balancing and potentially feature selection, to optimize its detection capabilities for rare illicit
+events.
 
 \bibliographystyle{sbc}
 \bibliography{bibliography/sbc-template.bib}
