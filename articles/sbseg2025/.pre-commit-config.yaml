@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+        files: ^\.pre-commit-config\.yaml$
+  - repo: local
+    hooks:
+      - id: build-tex-references
+        name: build tex references
+        entry: |
+          bash -c 'cd latex && pdflatex sbc-template.tex && bibtex sbc-template && makeglossaries sbc-template && pdflatex sbc-template.tex'
+        language: system
+        files: ^latex/.*\.(tex|bib)$
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: build-tex-file
+        name: build tex files
+        entry: |
+          bash -c 'cd latex && pdflatex sbc-template.tex'
+        language: system
+        files: ^latex/.*\.(tex|bib)$
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: clean-build-files
+        name: clean build files
+        entry: ../../../scripts/clean_tex_build_files.sh latex/
+        language: system
+        files: ^latex/.*\.(tex|bib)$
+        pass_filenames: false

@@ -19,6 +19,8 @@
 *.fls
 *.lot
 *.fdb_latexmk
+*.bst
+*.dvi
 
 # pdf builded
 dissertation_main.synctex.gz
