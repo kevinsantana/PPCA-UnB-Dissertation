@@ -40,3 +40,7 @@ tex/_old
 
 eliiptic2
 models/notebooks/efc/datasets/elliptic2/*
+
+DGraphFin dataset
+models/datasets/DGraphFin/dgraphfin.npz
+models/datasets/DGraphFin.zip
