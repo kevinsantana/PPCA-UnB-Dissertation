@@ -1,0 +1,3 @@
+# Bitcoin Address Behavior Dataset (BABD-13)
+
+The Bitcoin address behavior dataset (BABD), using for blockchain transaction analysis, includes 13 types of Bitcoin addresses that are blackmail, cyber-security service, darknet market, centralized exchange, P2P financial infrastructure service, P2P financial service, gambling, government criminal blacklist, money laundering, Ponzi scheme, mining pool, tumbler, and individual wallet (respectively corresponding to labels 0~12 in order). The specific definitions of each Bitcoin address type can be found in our paper. Furthermore, the specific construction process and other details of BABD can also be viewed in our paper.
