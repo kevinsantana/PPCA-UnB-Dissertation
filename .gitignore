@@ -37,3 +37,6 @@ tex/_old
 .pytest_cache
 .coverage
 .env
+
+elliptic2 dataset
+models/notebooks/efc/datasets/elliptic2

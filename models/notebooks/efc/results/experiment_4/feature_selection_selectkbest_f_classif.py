@@ -1,15 +1,7 @@
 from typing import Optional
 
 import pandas as pd
-from efc import EnergyBasedFlowClassifier
-from results.common.constants import (
-    CUTOFF_QUANTILE,
-    EFC_CLF,
-    LAST_TIME_STEP,
-    LAST_TRAIN_TIME_STEP,
-    N_BINS,
-    PSEUDOCOUNTS,
-)
+from results.common.constants import EFC_CLF, LAST_TIME_STEP, LAST_TRAIN_TIME_STEP
 from results.common.shared_functions import (
     calculate_model_score,
     custom_confusion_matrix,
