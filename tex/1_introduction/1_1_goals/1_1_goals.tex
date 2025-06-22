@@ -1,0 +1,24 @@
+\section{Goals}
+\textit{\textbf{Research Question:} To what extent is the Energy-based Flow Classifier (EFC) a viable and effective alternative
+to conventional machine learning models for detecting illicit Bitcoin transactions given the real-world challenge of label scarcity?}
+
+\begin{itemize}
+    \item \textbf{Main Objective }{To empirically evaluate the effectiveness of the Energy Flow Classifier (EFC), a one-class anomaly
+    detection model, for identifying illicit Bitcoin transactions in the Elliptic dataset, particularly under the real-world
+    constraint of label scarcity.}
+    \item[] \textbf{Specific Objectives:}
+    \begin{itemize}
+        \item To adapt and apply the Energy Flow Classifier (EFC), a model originally from network intrusion detection,
+        to the domain of cryptocurrency fraud, training it exclusively on licit transaction data to establish a baseline
+        performance on the raw, imbalanced Elliptic dataset.
+        \item To systematically investigate the impact of various data balancing techniques including undersampling, oversampling,
+        and the Synthetic Minority Over-sampling Technique (SMOTE) on the EFC's ability to classify illicit transactions.
+        \item To analyze the effect of dimensionality reduction on EFC's performance by applying feature selection (SelectKBest)
+        to identify an optimal subset of features for distinguishing between licit and illicit activity.
+        \item To assess the performance of a combined strategy that integrates feature selection with data balancing (SMOTE)
+        to determine if this synergistic approach yields superior classification results on a realistic, imbalanced test set.
+        \item To compare the performance of the optimized EFC configuration against established methodologies from previous
+        work, providing a conclusive answer on its viability as a practical tool for fraud detection in label-scarce cryptocurrency
+        environments.
+    \end{itemize}
+\end{itemize}
