@@ -83,5 +83,22 @@ suggests potential robustness in the dynamic environment of cryptocurrency trans
 the suitability and performance of EFC for identifying illicit Bitcoin transactions by leveraging its capacity to model
 normality from available licit data.
 
+Our findings demonstrate that the Energy Flow Classifier (EFC) is a highly effective tool for this problem, especially when
+its application is thoughtfully combined with data preprocessing strategies. We achieved a notable F1-Macro score of 0.770
+by integrating the SelectKBest feature selection method with the SMOTE data balancing technique. The F1-Macro score was
+chosen as the primary evaluation metric, following the precedent set by previous research on this dataset , and because
+its methodology of averaging the F1-score for each class independently provides a balanced assessment that is crucial for
+imbalanced datasets. This result highlights EFC's efficiency, suggesting it can be competitive with other sophisticated
+approaches like active learning, by leveraging a one-class learning paradigm that is naturally suited for the core challenge
+of label scarcity.
+
+This dissertation is structured as follows to guide the reader through our investigation. Chapter 1 introduces the problem
+of fraudulent cryptocurrency transactions, the research justification, and the context of our work. Chapter 2 provides the
+necessary background on key machine learning techniques, the Energy Flow Classifier's mechanics, the cryptocurrency ecosystem,
+and the Elliptic dataset. Chapter 3 reviews related work in the field. Chapter 4 details our study settings, including the
+specific EFC configuration, data preprocessing steps, and the setup for our three main experiments. Chapter 5 presents the
+empirical results of these experiments. Finally, Chapter 6 concludes the dissertation with a discussion of the findings,
+a comparison of our work with previous studies, an acknowledgment of the threats to validity, and suggestions for future research.
+
 % section 1.1 - goals
 \input{tex/1_introduction/1_1_goals/1_1_goals.tex}
