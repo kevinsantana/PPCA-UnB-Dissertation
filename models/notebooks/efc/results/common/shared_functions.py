@@ -255,7 +255,7 @@ def train_test_split(
 
 
 def load_elliptic_data(
-    only_labeled: bool = True, drop_node_id: bool = True
+    only_labeled: bool = True, drop_node_id: bool = True, only_benign: bool = False
 ) -> Tuple[pd.DataFrame, pd.Series]:
     """
     Loads and preprocesses the Elliptic dataset.
@@ -288,6 +288,9 @@ def load_elliptic_data(
     df_classes = rename_classes(df_classes)
     df_combined = combine_dataframes(df_classes, df_features, only_labeled)
 
+    if only_benign:
+        df_combined = df_combined[df_combined["class"] != 1].reset_index(drop=True)
+
     if drop_node_id == True:
         X = df_combined.drop(columns=["id", "class"])
     else:
@@ -303,6 +306,7 @@ def run_elliptic_preprocessing_pipeline(
     only_labeled: bool = True,
     drop_node_id: bool = True,
     only_x_y: bool = False,
+    only_benign: bool = False,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Runs the complete Elliptic dataset preprocessing pipeline.
@@ -339,7 +343,7 @@ def run_elliptic_preprocessing_pipeline(
         TypeError: If the time_step column cannot be compared to integers.
         ValueError: if last_train_time_step is negative or greater than last_time_step.
     """
-    X, y = load_elliptic_data(only_labeled, drop_node_id)
+    X, y = load_elliptic_data(only_labeled, drop_node_id, only_benign)
     if only_x_y:
         return X, y
 
@@ -486,7 +490,7 @@ def drop_agg_features(
     X_test: pd.DataFrame = None,
     y_train: pd.DataFrame = None,
     y_test: pd.DataFrame = None,
-    inplace: bool = False,
+    only_benign: bool = False,
 ) -> Tuple[
     Union[pd.DataFrame, np.ndarray],
     Union[pd.DataFrame, np.ndarray],
@@ -494,58 +498,42 @@ def drop_agg_features(
     Union[pd.Series, np.ndarray],
 ]:
     """
-    Drops aggregated features from training and testing DataFrames.
+    Drops aggregated features from training and testing feature DataFrames.
 
     Removes the columns corresponding to aggregated features ('agg_feat_0' to 'agg_feat_71') from the input DataFrames.
-    This implementation has issues with inplace modification and unnecessary operations on y_train and y_test.
 
     Args:
         X_train (pd.DataFrame): Training features DataFrame.
         X_test (pd.DataFrame): Testing features DataFrame.
-        y_train (pd.DataFrame): Training labels (should not contain aggregated features).
-        y_test (pd.DataFrame): Testing labels (should not contain aggregated features).
-        inplace (bool, optional): If True, supposedly modifies DataFrames in place, but the inner drop calls always use inplace=True,
-            leading to incorrect behavior. Defaults to False.
+        y_train (pd.Series): Training labels.
+        y_test (pd.Series): Testing labels.
+        only_benign (bool, optional): If dataframes are not provided, this flag is passed
+            to the preprocessing pipeline. Defaults to False.
 
     Returns:
-        tuple: A tuple of the modified DataFrames (or None if inplace=True due to the flaw):
-            - X_train_new (pd.DataFrame or None): Modified training features or None.
-            - X_test_new (pd.DataFrame or None): Modified testing features or None.
-            - y_train_new (pd.DataFrame or None): Training labels (potentially modified incorrectly or None).
-            - y_test_new (pd.DataFrame or None): Testing labels (potentially modified incorrectly or None).
+        tuple: A tuple of the modified DataFrames:
+            - X_train_new (pd.DataFrame): Modified training features.
+            - X_test_new (pd.DataFrame): Modified testing features.
+            - y_train (pd.Series): Unmodified training labels.
+            - y_test (pd.Series): Unmodified testing labels.
 
     Raises:
         KeyError: If any of the aggregated feature columns ('agg_feat_0' to 'agg_feat_71') are not found
-            in X_train or X_test, or if they are unexpectedly found in y_train or y_test.
+            in X_train or X_test.
     """
-    if not all(
-        [X_train, X_test, y_train, y_test]
-    ):  # check if any of the dataframes are empty
+    if X_train is None or X_test is None or y_train is None or y_test is None:
         X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(
             last_train_time_step=LAST_TRAIN_TIME_STEP,
             last_time_step=LAST_TIME_STEP,
             only_labeled=ONLY_LABELED,
+            only_benign=only_benign,
         )
-        inplace = False
-    if not inplace:
-        X_train_new = X_train.drop(
-            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
-        )
-        X_test_new = X_test.drop(
-            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
-        )
-        y_train_new = y_train.drop(
-            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
-        )
-        y_test_new = y_test.drop(
-            columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=False
-        )
-        return X_train_new, X_test_new, y_train_new, y_test_new
-    else:
-        X_train.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=True)
-        X_test.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=True)
-        y_train.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=True)
-        y_test.drop(columns=[f"agg_feat_{i}" for i in range(72)], axis=1, inplace=True)
+
+    agg_cols_to_drop = [f"agg_feat_{i}" for i in range(72)]
+    X_train_new = X_train.drop(columns=agg_cols_to_drop, axis=1)
+    X_test_new = X_test.drop(columns=agg_cols_to_drop, axis=1)
+
+    return X_train_new, X_test_new, y_train, y_test
 
 
 def save_to_csv(

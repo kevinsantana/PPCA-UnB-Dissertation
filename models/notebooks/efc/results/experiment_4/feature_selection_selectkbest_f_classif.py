@@ -23,13 +23,15 @@ def make_feature_selection_with_k_best(
     X: pd.DataFrame = None,
     y: pd.Series = None,
     return_x_y: bool = False,
+    only_benign: bool = False,
 ) -> None:
     try:
-        if not all([X, y]):
+        if X is None and y is None:
             X, y = run_elliptic_preprocessing_pipeline(
                 last_train_time_step=LAST_TRAIN_TIME_STEP,
                 last_time_step=LAST_TIME_STEP,
                 only_x_y=True,
+                only_benign=only_benign,
             )
     except ValueError:
         pass
@@ -67,12 +69,16 @@ def make_feature_selection_with_k_best(
 
 
 def make_feature_selection_with_k_best_no_agg_features(
-    k: int, fig_folder: str, fig_name: str, technique: Optional[str] = None
+    k: int,
+    fig_folder: str,
+    fig_name: str,
+    technique: Optional[str] = None,
+    only_benign: bool = False,
 ) -> None:
-    X_train, X_test, y_train, y_test = drop_agg_features()
+    X_train, X_test, y_train, y_test = drop_agg_features(only_benign=only_benign)
     X, y = train_test_from_splitted(X_train, y_train, X_test, y_test, return_df=False)
     sizes, model_score, confusion_matrix_values = make_feature_selection_with_k_best(
-        technique=technique, k=k, fig_folder=fig_folder, fig_name=fig_name, X=X, y=y
+        technique=technique, k=k, fig_folder=fig_folder, fig_name=fig_name, X=X, y=y, only_benign=only_benign
     )
 
     return sizes, model_score, confusion_matrix_values

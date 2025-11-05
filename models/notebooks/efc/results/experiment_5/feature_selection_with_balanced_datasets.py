@@ -6,7 +6,7 @@ from results.experiment_4.feature_selection_selectkbest_f_classif import (
 
 
 def smote_with_feature_selection(
-    technique: str, fig_folder: str, fig_name: str, k: int, only_labeled: bool = True
+    technique: str, fig_folder: str, fig_name: str, k: int, only_labeled: bool = True, only_benign: bool = False,
 ):
     X, y = make_feature_selection_with_k_best(
         k=k, fig_folder=fig_folder, fig_name=fig_name, return_x_y=True
@@ -21,4 +21,5 @@ def smote_with_feature_selection(
         y=y,
         test_complete_dataset=True,
         is_resampled=True,
+        only_benign=only_benign,
     )

@@ -17,6 +17,7 @@ def main(
     technique: str,
     fig_name: str,
     save_csv: bool = True,
+    only_benign: bool = False
 ):
     try:
         logger.info("Initiating Experiment 5")
@@ -48,6 +49,7 @@ def main(
                 fig_name=fig_name_on_disk,
                 k=k,
                 only_labeled=ONLY_LABELED,
+                only_benign=only_benign,
             )
             df_efc_sizes.loc[len(df_efc_sizes)] = sizes
             df_efc_metrics.loc[len(df_efc_metrics)] = metrics
@@ -96,4 +98,6 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    # This block is intentionally left empty to allow the main function
+    # to be imported and called from a Jupyter Notebook without executing here.
+    pass

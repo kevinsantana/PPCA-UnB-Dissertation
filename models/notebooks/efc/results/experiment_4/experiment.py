@@ -20,7 +20,11 @@ ONLY_LABELED = True
 
 
 def main(
-    technique: str, fig_name: str, save_csv: bool = True, agg_features: bool = True
+    technique: str,
+    fig_name: str,
+    save_csv: bool = True,
+    agg_features: bool = True,
+    only_benign: bool = False,
 ):
     try:
         logger.info("Initiating Experiment 4")
@@ -50,6 +54,7 @@ def main(
                     fig_folder=fig_folder,
                     fig_name=fig_name_on_disk,
                     technique=technique_folder,
+                    only_benign=only_benign,
                 )
             else:
                 sizes, metrics, confusion_matrix = (
@@ -58,6 +63,7 @@ def main(
                         fig_folder=fig_folder,
                         fig_name=fig_name_on_disk,
                         technique=technique_folder,
+                        only_benign=only_benign,
                     )
                 )
             df_efc_sizes.loc[len(df_efc_sizes)] = sizes
@@ -107,4 +113,7 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    # This block is intentionally left empty to allow the main function
+    # to be imported and called from other scripts or notebooks without
+    # executing here.
+    pass

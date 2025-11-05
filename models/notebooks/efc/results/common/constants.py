@@ -16,6 +16,9 @@ LAST_TRAIN_TIME_STEP = 34
 # custom confusion matrix labels
 LABELS_CM = ["True Negative", "False positive", "False Negative", "True Positive"]
 
+# Wether to use only labeled data from elliptic dataset
+ONLY_LABELED = True
+
 # EFC set-up
 N_BINS = 30  #
 CUTOFF_QUANTILE = 0.9  #

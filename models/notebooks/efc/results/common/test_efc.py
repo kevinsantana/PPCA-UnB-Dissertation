@@ -1,24 +1,30 @@
 import numpy as np
 from efc_python.classification_functions import one_class_fit, one_class_predict
-from research_aml_elliptic.src.experiments.general_functions.elliptic_data_preprocessing import (
-    run_elliptic_preprocessing_pipeline,
-)
-
-# import Elliptic data set and set variables
-last_time_step = 49
-last_train_time_step = 34
-only_labeled = True
+from results.common.shared_functions import run_elliptic_preprocessing_pipeline
 
 
-X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(
-    last_train_time_step=last_train_time_step,
-    last_time_step=last_time_step,
-    only_labeled=only_labeled,
-)
+def main():
+    """Main function to run the EFC test."""
+    # import Elliptic data set and set variables
+    last_time_step = 49
+    last_train_time_step = 34
+    only_labeled = True
 
-# EFC's hyperparameters
-Q = np.int64(X_test.values.max())
-LAMBDA = 0.5  # pseudocount parameter
+    X_train, X_test, y_train, y_test = run_elliptic_preprocessing_pipeline(
+        last_train_time_step=last_train_time_step,
+        last_time_step=last_time_step,
+        only_labeled=only_labeled,
+    )
 
-# train model
-coupling, h_i, cutoff, _, _ = one_class_fit(np.array(X_train), Q, LAMBDA)
+    # EFC's hyperparameters
+    Q = np.int64(X_test.values.max())
+    LAMBDA = 0.5  # pseudocount parameter
+
+    # train model
+    coupling, h_i, cutoff, _, _ = one_class_fit(np.array(X_train), Q, LAMBDA)
+    print("Test EFC script executed successfully.")
+
+
+if __name__ == "__main__":
+    # This ensures the code only runs when the script is executed directly
+    main()

@@ -115,6 +115,7 @@ def smote(
     y: pd.Series = None,
     test_complete_dataset: bool = False,
     is_resampled: bool = False,
+    only_benign: bool = False,
 ):
     if X is None or y is None:
         X, y = run_elliptic_preprocessing_pipeline(
@@ -129,6 +130,12 @@ def smote(
     smote = SMOTE(sampling_strategy="minority", n_jobs=-1)
     X_sm, y_sm = smote.fit_resample(X, y)
     X_train, X_test, y_train, y_test = train_test_from_x_y(X_sm, y_sm)
+
+    if only_benign:
+        # For one-class classification, filter the training set to only include the benign class (0)
+        # after resampling has been done. The test set remains mixed.
+        X_train = X_train[y_train == 0]
+        y_train = y_train[y_train == 0]
     if test_complete_dataset:
         if is_resampled:
             _, X_test, _, y_test = train_test_from_x_y(X, y)
@@ -162,27 +169,6 @@ def smote(
         technique=technique, y_test=y_test, y_pred=y_pred
     )
     return sizes, metric_dict, confusion_matrix
-
-
-def grid_search(
-    X_train: pd.DataFrame,
-    X_test: pd.DataFrame,
-    y_train: pd.Series,
-    pipeline: Pipeline,
-    kf: StratifiedKFold,
-):
-    grid = GridSearchCV(
-        pipeline,
-        param_grid=EFC_HYPER_PARAMS,
-        cv=kf,
-        scoring="recall",
-        return_train_score=True,
-    )
-    grid.fit(X_train, y_train)
-    print("Best parameters:", grid.best_params_)
-    print("Best score:", grid.best_score_)
-    y_pred = grid.predict(X_test)
-    return y_pred
 
 
 class ResamplingEnum(Enum):
@@ -245,4 +231,3 @@ def random_resampling(
     confusion_matrix = custom_confusion_matrix(
         technique=technique, y_test=y_test, y_pred=y_pred
     )
-    return sizes, metric_dict, confusion_matrix
